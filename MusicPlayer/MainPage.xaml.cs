@@ -26,5 +26,19 @@ namespace MusicPlayer
         {
             this.InitializeComponent();
         }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            //点击HamburgerButton时将MenuList的IsPaneOpen属性值设为相反的值
+            MenuList.IsPaneOpen = !MenuList.IsPaneOpen;
+        }
+
+        private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //
+            if (SearchItem.IsSelected) {
+                MenuList.IsPaneOpen = true;
+            }
+        }
     }
 }

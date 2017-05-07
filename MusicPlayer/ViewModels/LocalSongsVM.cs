@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Windows.Storage.Search;
 
 namespace MusicPlayer.ViewModels
 {
@@ -35,33 +36,22 @@ namespace MusicPlayer.ViewModels
             // 清空数据
             Songs.Clear();
             DBManager.ClearData();
-            // 读取“音乐”文件夹根目录下的音乐文件
-            StorageFolder musicFolder = KnownFolders.MusicLibrary;
-            IReadOnlyList<StorageFile> fileList = await musicFolder.GetFilesAsync();
+            // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
+            List<string> fileTypeFilter = new List<string>();
+            fileTypeFilter.Add(".mp3");
+            fileTypeFilter.Add(".wma");
+            var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
+            var query = KnownFolders.MusicLibrary.CreateFileQueryWithOptions(queryOptions);
+            IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
             ReadMusicFiles(fileList);
-            // 读取“音乐”文件夹的各子文件夹根目录下的音乐文件
-            IReadOnlyList<StorageFolder> folderList = await musicFolder.GetFoldersAsync();
-            foreach (StorageFolder folder in folderList)
-            {
-                IReadOnlyList<StorageFile> folderFileList = await folder.GetFilesAsync();
-                ReadMusicFiles(folderFileList);
-            }
         }
 
         private async void ReadMusicFiles(IReadOnlyList<StorageFile> fileList)
         {
             foreach (StorageFile file in fileList)
             {
-                switch (file.FileType)
-                {
-                    // 过滤文件类型
-                    case ".mp3":
-                        MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
-                        Songs.Add(new Song(file.Path, musicProperties));
-                        break;
-                    default:
-                        break;
-                }
+                MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
+                Songs.Add(new Song(file.Path, musicProperties));
             }
             DBManager.AddSongs(Songs);
         }

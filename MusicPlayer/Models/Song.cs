@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.FileProperties;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace MusicPlayer.Models
 {
@@ -14,6 +15,7 @@ namespace MusicPlayer.Models
         public string Artist { get; set; }
         public string Album { get; set; }
         public string Length { get; set; }
+        public BitmapImage Cover { get; set; }
 
         public Song(string filePath, MusicProperties musicProperties)
         {

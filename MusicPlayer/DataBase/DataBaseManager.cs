@@ -1,4 +1,5 @@
-﻿using SQLitePCL;
+﻿using MusicPlayer.Models;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MusicPlayer
+namespace MusicPlayer.DataBase
 {
-    class DataBaseManager
+    public class DataBaseManager
     {
         // 单例模式
         // 在需要使用数据库的地方加上

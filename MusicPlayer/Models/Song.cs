@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.FileProperties;
 
-namespace MusicPlayer
+namespace MusicPlayer.Models
 {
-    class Song
+    public class Song
     {
         public string FilePath { get; set; }
         public string Title { get; set; }

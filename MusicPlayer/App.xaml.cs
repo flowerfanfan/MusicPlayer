@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicPlayer.DataBase;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,8 @@ namespace MusicPlayer
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            DataBaseManager.GetDBManager().LoadDatabase();
         }
 
         /// <summary>

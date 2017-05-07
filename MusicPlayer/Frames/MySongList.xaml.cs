@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MusicPlayer.ViewModels;
+using MusicPlayer.Frames;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,37 +15,33 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-//“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
+// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
 namespace MusicPlayer
 {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class MySongList : Page
     {
-        public MainPage()
+        public LocalSongsVM localSongsVM { get; set; }
+
+        public MySongList()
         {
             this.InitializeComponent();
 
-            ContentFrame.Navigate(typeof(Default));
+            localSongsVM = new LocalSongsVM();
+            localSongsVM.LoadSongs();
         }
 
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
-            // 点击HamburgerButton时将MenuList的IsPaneOpen属性值设为相反的值
-            MenuList.IsPaneOpen = !MenuList.IsPaneOpen;
-        }
-
-        private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SongList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             switch (((ListBoxItem)((ListBox)sender).SelectedItem).Name)
             {
-                case "SearchItem":
-                    MenuList.IsPaneOpen = true;
+                case "LocalSongsItem":
+                    SongListFrame.Navigate(typeof(LocalSongs));
                     break;
-                case "SongListItem":
-                    ContentFrame.Navigate(typeof(MySongList));
+                default:
                     break;
             }
         }

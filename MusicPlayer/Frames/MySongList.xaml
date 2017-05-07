@@ -1,0 +1,43 @@
+﻿<Page
+    x:Class="MusicPlayer.MySongList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicPlayer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="我的歌单"
+                   FontSize="32"
+                   Margin="10"/>
+
+        <ListBox x:Name="SongList"
+                 Grid.Row="1"
+                 Background="White"
+                 SelectionMode="Single"
+                 SelectionChanged="SongList_SelectionChanged">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBoxItem x:Name="LocalSongsItem"
+                         Width="100"
+                         Content="本地音乐" />
+            <ListBoxItem x:Name="CreateSongListItem"
+                         Width="100"
+                         Content="新建歌单" />
+        </ListBox>
+
+        <Frame x:Name="SongListFrame"
+               Grid.Row="2"/>
+    </Grid>
+</Page>

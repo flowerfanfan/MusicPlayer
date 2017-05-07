@@ -90,7 +90,7 @@
                                        Height="20" />
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem x:Name="SongsItem"
+                    <ListBoxItem x:Name="SongListItem"
                                  Width="300"
                                  Background="White">
                         <StackPanel Orientation="Horizontal"
@@ -126,61 +126,8 @@
             </SplitView.Pane>
 
             <SplitView.Content>
-                <Grid Width="auto">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="300" />
-                        <RowDefinition Height="1" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300" />
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="40" />
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <Image Source="Assets/singer.png"
-                                   Width="250"
-                                   Height="250"
-                                   VerticalAlignment="Top"
-                                   HorizontalAlignment="Left" />
-                            <TextBlock Text="歌曲"
-                                       FontSize="20"
-                                       VerticalAlignment="Bottom" />
-                        </Grid>
-
-                        <StackPanel Grid.Column="1">
-                            <TextBlock Text="专辑名"
-                                       FontSize="35" />
-                            <TextBlock Text="标签："
-                                       FontSize="20" />
-                            <TextBlock Text="简介："
-                                       FontSize="20" />
-                        </StackPanel>
-
-                        <Grid Grid.Column="2"
-                              Height="300"
-                              VerticalAlignment="Top">
-                            <AppBarButton Icon="Add"
-                                          VerticalAlignment="Bottom"
-                                          Width="40"
-                                          Height="40" />
-                        </Grid>
-                    </Grid>
-                    <Grid Grid.Row="1">
-                        <Line Grid.Column="2"
-                              Stretch="Fill"
-                              Stroke="Black"
-                              StrokeThickness="2"
-                              X1="1"
-                              VerticalAlignment="Center"
-                              HorizontalAlignment="Stretch" />
-                    </Grid>
-                    <Grid Grid.Row="2">
-                        <TextBlock Text="你还没有添加歌曲"
-                                   FontSize="25" />
-                    </Grid>
-                </Grid>
+                <!--使用Frame承载点击不同Item后应承载的页面-->
+                <Frame x:Name="ContentFrame" />
             </SplitView.Content>
         </SplitView>
     </Grid>

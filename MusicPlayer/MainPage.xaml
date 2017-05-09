@@ -6,12 +6,22 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:Schema="using:System.ComponentModel.DataAnnotations.Schema"
     x:Class="MusicPlayer.MainPage"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    >
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    <Grid Background="White"
           x:Name="MenuGrid">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
+                <VisualState>
+                    <VisualState.Setters>
+                        <Setter Target="MenuList.IsPaneOpen"
+                                Value="False" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500" />
+                    </VisualState.StateTriggers>
+                </VisualState>
                 <VisualState>
                     <VisualState.Setters>
                         <Setter Target="MenuList.IsPaneOpen"
@@ -28,34 +38,53 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+        <!--<RelativePanel>
         <Button x:Name="HamburgerButton"
                 FontFamily="Segoe MDL2 Assets"
                 Content="&#xE700;"
-                FontSize="20"
+                FontSize="24"
+                Width="50"
+                Background="#252535"
                 Click="HamburgerButton_Click" />
+        </RelativePanel>-->
 
         <!--这是汉堡菜单-->
         <SplitView x:Name="MenuList"
                    Grid.Row="1"
                    DisplayMode="CompactInline"
                    OpenPaneLength="300"
-                   CompactPaneLength="40"
+                   CompactPaneLength="50"
                    HorizontalAlignment="Left">
             <SplitView.Pane>
                 <ListBox SelectionMode="Single"
                          x:Name="IconListBox"
-                         SelectionChanged="IconListBox_SelectionChanged">
+                         SelectionChanged="IconListBox_SelectionChanged" Background="#252535">
                     <!--下面是五个菜单项-->
-                    <ListBoxItem x:Name="SearchItem"
-                                 Width="300"
-                                 Background="White">
+                    <ListBoxItem x:Name="menuItem"
+                                 Width="300" 
+                                 Background="#252535">
                         <StackPanel Orientation="Horizontal"
                                     Margin="-2">
-                            <Image Source="Assets/search.png"
+                            <Button x:Name="HamburgerButton"
+                                FontFamily="Segoe MDL2 Assets"
+                                Content="&#xE700;"
+                                FontSize="20"
+                                Width="40"
+                                Height="40"
+                                Background="#252535"
+                                Margin="-5"
+                                Click="HamburgerButton_Click" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="SearchItem"
+                                 Width="300" 
+                                 Background="#252535">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="-2">
+                            <Image Source="Assets/search-48.png"
                                    Height="30"
                                    Width="30"
-                                   HorizontalAlignment="left" />
+                                   HorizontalAlignment="left" Margin="0, 0, 10, 0"/>
                             <TextBox x:Name="Search"
                                      Width="220"
                                      Height="35"
@@ -66,57 +95,43 @@
                     </ListBoxItem>
                     <ListBoxItem x:Name="PerviousItem"
                                  Width="300"
-                                 Background="White">
+                                 Background="#252535">
                         <StackPanel Orientation="Horizontal"
                                     Margin="-2">
-                            <Image Source="Assets/time.png"
+                            <Image Source="Assets/time-48.png"
                                    Height="30"
                                    Width="30"
-                                   HorizontalAlignment="Left" />
+                                   HorizontalAlignment="Left"  Margin="0, 0, 10, 0"/>
                             <TextBlock Text="最近播放"
                                        Height="20" />
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="FavoriteItem"
                                  Width="300"
-                                 Background="White">
+                                 Background="#252535">
                         <StackPanel Orientation="Horizontal"
                                     Margin="-2">
-                            <Image Source="Assets/heart.png"
+                            <Image Source="Assets/heart-48.png"
                                    Height="30"
                                    Width="30"
-                                   HorizontalAlignment="Left" />
+                                   HorizontalAlignment="Left"  Margin="0, 0, 10, 0"/>
                             <TextBlock Text="我的最爱"
-                                       Height="20" />
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBoxItem x:Name="SongListItem"
-                                 Width="300"
-                                 Background="White">
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="-2">
-                            <Image Source="Assets/music2.png"
-                                   Height="30"
-                                   Width="30"
-                                   HorizontalAlignment="Left" />
-                            <TextBlock Text="我的歌单"
                                        Height="20" />
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="ListItem"
                                  Width="300"
-                                 Background="White">
+                                 Background="#252535">
                         <StackPanel Orientation="Horizontal"
                                     Margin="-2">
-                            <Image Source="Assets/list.png"
+                            <Image Source="Assets/songs-48.png"
                                    Height="30"
                                    Width="30"
-                                   HorizontalAlignment="Left" />
-                            <TextBlock Text="播放列表"
+                                   HorizontalAlignment="Left"  Margin="0, 0, 10, 0"/>
+                            <TextBlock Text="歌曲列表"
                                        Height="20"
-                                       Width="200" />
+                                       Width="180"/>
                             <AppBarButton Icon="Add"
-                                          Background="White"
                                           Width="50"
                                           Height="46"
                                           HorizontalAlignment="Right" />
@@ -134,7 +149,51 @@
 
     <!--底部菜单栏，貌似不能在BottomAppBar中添加Slider还有图片。-->
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar Background="#DC143C">
+            <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
+            <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play"/>
+            <AppBarButton x:Name="PauseButton" Icon="Stop" Label="Pause"/>
+            <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song"/>
+            <AppBarSeparator/>
+            <AppBarButton x:Name="playing" Icon="MusicInfo"  Label="Playing" >
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <Flyout.FlyoutPresenterStyle>
+                            <Style TargetType="FlyoutPresenter">
+                                <Setter Property="MinWidth" Value="250"/>
+                            </Style>
+                        </Flyout.FlyoutPresenterStyle>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Assets/logo-300.png"  Width="70" Height="70" Margin="0, 0, 20, 0"></Image>
+                                <StackPanel>
+                                    <TextBlock>song1</TextBlock>
+                                    <TextBlock></TextBlock>
+                                    <TextBlock>singer</TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Assets/logo-300.png"  Width="70" Height="70" Margin="0, 0, 20, 0"></Image>
+                                <StackPanel>
+                                    <TextBlock>song2</TextBlock>
+                                    <TextBlock></TextBlock>
+                                    <TextBlock>singer</TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="Assets/logo-300.png"  Width="70" Height="70" Margin="0, 0, 20, 0"></Image>
+                                <StackPanel>
+                                    <TextBlock>song3</TextBlock>
+                                    <TextBlock></TextBlock>
+                                    <TextBlock>singer</TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarButton x:Name="VolumeButton" Icon="Volume" Label="Volume">
                 <AppBarButton.Flyout>
                     <Flyout>
@@ -142,12 +201,7 @@
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song"/>
-            <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play"/>
-            <AppBarButton x:Name="PauseButton" Icon="Pause" Label="Pause"/>
-            <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song"/>
-            <AppBarSeparator/>
-            <AppBarButton x:Name="ShareButton" Icon="Link" Label="Share"/>
+            <AppBarButton x:Name="ShareButton" Icon="Go"  Label="Share"/>
         </CommandBar>
     </Page.BottomAppBar>
 

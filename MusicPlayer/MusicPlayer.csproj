@@ -119,14 +119,12 @@
     <None Include="MusicPlayer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\heart.png" />
-    <Content Include="Assets\list.png" />
-    <Content Include="Assets\music.png" />
-    <Content Include="Assets\music2.png" />
-    <Content Include="Assets\music3.png" />
-    <Content Include="Assets\search.png" />
+    <Content Include="Assets\heart-48.png" />
+    <Content Include="Assets\logo-300.png" />
+    <Content Include="Assets\search-48.png" />
     <Content Include="Assets\singer.png" />
-    <Content Include="Assets\time.png" />
+    <Content Include="Assets\songs-48.png" />
+    <Content Include="Assets\time-48.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +26,13 @@ namespace MusicPlayer
         public MainPage()
         {
             this.InitializeComponent();
+            //设置窗口栏的颜色
+            var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = Colors.Crimson;
+            titleBar.ForegroundColor = Colors.White;
+            titleBar.ButtonBackgroundColor = Colors.Crimson;
+            titleBar.ButtonForegroundColor = Colors.White;
+            titleBar.ButtonHoverBackgroundColor = Colors.LightCoral;
 
             ContentFrame.Navigate(typeof(Default));
         }

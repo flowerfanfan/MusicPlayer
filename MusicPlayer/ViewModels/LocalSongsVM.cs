@@ -3,13 +3,9 @@ using MusicPlayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace MusicPlayer.ViewModels
 {
@@ -52,7 +48,8 @@ namespace MusicPlayer.ViewModels
             foreach (StorageFile file in fileList)
             {
                 MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
-                Songs.Add(new Song(file.Path, musicProperties));
+                StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+                Songs.Add(new Song(file.Path, musicProperties, thumbnail));
             }
             DBManager.AddSongs(Songs);
         }

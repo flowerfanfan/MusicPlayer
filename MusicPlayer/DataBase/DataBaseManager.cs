@@ -1,11 +1,6 @@
 ﻿using MusicPlayer.Models;
 using SQLitePCL;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicPlayer.DataBase
 {
@@ -16,6 +11,7 @@ namespace MusicPlayer.DataBase
         // DataBaseManager DBManager = DataBaseManager.GetDBManager();
         // 即可通过 DBManager 来进行数据库操作
         private static DataBaseManager DBManager;
+
         private SQLiteConnection conn { get; set; }
 
         private DataBaseManager() { }
@@ -38,8 +34,9 @@ namespace MusicPlayer.DataBase
                                                     Title VARCHAR(200),
                                                     Artist VARCHAR(200),
                                                     Album VARCHAR(200),
-                                                    Length VARCHAR(10)
-                                             );"))
+                                                    Length VARCHAR(10),
+                                                    Cover BLOB
+                                                   );"))
             {
                 stmt.Step();
             }
@@ -53,7 +50,8 @@ namespace MusicPlayer.DataBase
             {
                 while (stmt.Step() == SQLiteResult.ROW)
                 {
-                    data.Add(new Song((string)stmt["FilePath"], (string)stmt["Title"], (string)stmt["Artist"], (string)stmt["Album"], (string)stmt["Length"]));
+                    data.Add(new Song((string)stmt["FilePath"], (string)stmt["Title"],
+                        (string)stmt["Artist"], (string)stmt["Album"], (string)stmt["Length"], (byte[])stmt["Cover"]));
                 }
             }
             return data;
@@ -62,13 +60,14 @@ namespace MusicPlayer.DataBase
         // 添加一首歌曲的信息
         public void Add(Song song)
         {
-            using (var stmt = conn.Prepare("INSERT INTO Songs(FilePath, Title, Artist, Album, Length) VALUES (?, ?, ?, ?, ?)"))
+            using (var stmt = conn.Prepare("INSERT INTO Songs(FilePath, Title, Artist, Album, Length, Cover) VALUES (?, ?, ?, ?, ?, ?)"))
             {
                 stmt.Bind(1, song.FilePath);
                 stmt.Bind(2, song.Title);
                 stmt.Bind(3, song.Artist);
                 stmt.Bind(4, song.Album);
                 stmt.Bind(5, song.Length);
+                stmt.Bind(6, song.CoverBytes);
                 stmt.Step();
             }
         }

@@ -8,47 +8,60 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Button x:Name="RefreshBtn"
-                Click="RefreshBtn_Click"
-                VerticalAlignment="Top"
-                Background="White"
-                Content="刷新"/>
+        <Grid Grid.Row="0">
+            <TextBlock Text="歌曲列表" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+            <Line Stretch="Fill"
+                  Stroke="Black"
+                  StrokeThickness="1"
+                  X1="1"
+                  Margin="20, 0, 20, 0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+        </Grid>
 
-        <ListView Grid.Column="1"
-                  ItemsSource="{x:Bind localSongsVM.Songs}">
+        <ListView Grid.Row="1" x:Name="recentSongs" Padding="20">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
+                <StackPanel Margin="20, 0, 0, 0">
+                    <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
+                    <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
+                <StackPanel Margin="20, 0, 0, 0">
+                    <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
+                    <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
+                <StackPanel Margin="20, 0, 0, 0">
+                    <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
+                    <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </StackPanel>
+        </ListView>
+        <!--上面是显示效果，要绑定的话应该用下面这个，因为没试过，所以有问题的话可以参考下面网址-->
+        <!--https://msdn.microsoft.com/zh-cn/library/windows/apps/xaml/hh780650.aspx-->
+        <!--<ListView Grid.Row="1" x:Name="songList" Padding="20"
+                  ItemsSource="xxx" SelectionChanged="xxx">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:Song">
-                    <Grid Height="60">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="150" />
-                            <ColumnDefinition Width="30" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock x:Name="title"
-                                   TextWrapping="WrapWholeWords"
-                                   Text="{x:Bind Title, Mode=OneWay}" />
-                        <TextBlock x:Name="artist"
-                                   Grid.Column="1"
-                                   TextWrapping="WrapWholeWords"
-                                   Text="{x:Bind Artist, Mode=OneWay}" />
-                        <TextBlock x:Name="album"
-                                   Grid.Column="2"
-                                   TextWrapping="WrapWholeWords"
-                                   Text="{x:Bind Album, Mode=OneWay}" />
-                        <TextBlock x:Name="length"
-                                   Grid.Column="3"
-                                   Text="{x:Bind Length, Mode=OneWay}" />
-                    </Grid>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                        <Image Source="{Binding xxx}" Width="50" Height="50" />
+                        <StackPanel Margin="20, 0, 0, 0">
+                            <TextBlock Text="{Binding xxx}" FontSize="25" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding xxx}" FontSize="20" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
     </Grid>
 </Page>

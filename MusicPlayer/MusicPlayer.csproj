@@ -99,8 +99,17 @@
     <Compile Include="Frames\Default.xaml.cs">
       <DependentUpon>Default.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Frames\favourite.xaml.cs">
+      <DependentUpon>favourite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Frames\LocalSongs.xaml.cs">
       <DependentUpon>LocalSongs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\mySongList.xaml.cs">
+      <DependentUpon>mySongList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Frames\recent.xaml.cs">
+      <DependentUpon>recent.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -116,8 +125,12 @@
     <None Include="MusicPlayer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\dislike.png" />
     <Content Include="Assets\heart-128.png" />
+    <Content Include="Assets\like.png" />
     <Content Include="Assets\logo-300.png" />
+    <Content Include="Assets\player_disk_cover.scale-200.png" />
+    <Content Include="Assets\player_needle.scale-200.png" />
     <Content Include="Assets\search-128.png" />
     <Content Include="Assets\singer.png" />
     <Content Include="Assets\songs-128.png" />
@@ -140,7 +153,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Frames\favourite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Frames\LocalSongs.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Frames\mySongList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Frames\recent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,9 +177,6 @@
   <ItemGroup>
     <SDKReference Include="SQLite.UWP.2015, Version=3.18.0">
       <Name>SQLite for Universal Windows Platform</Name>
-    </SDKReference>
-    <SDKReference Include="SQLite.WinRT, Version=3.18.0">
-      <Name>SQLite for Windows Runtime</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup />

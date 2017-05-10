@@ -7,56 +7,139 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="White">
+    <Page.Resources>
+        <Storyboard x:Name="EllStoryboard" RepeatBehavior="Forever">
+            <DoubleAnimation Duration="0:0:15" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="ellipse" d:IsOptimized="True"/>
+        </Storyboard>
+        <Storyboard x:Name="EllStoryboard2" RepeatBehavior="Forever">
+            <DoubleAnimation x:Name="picture" Duration="0:0:15" To="360" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="ellipse2" d:IsOptimized="True"/>
+        </Storyboard>
+        <Storyboard x:Name="little" RepeatBehavior="1x">
+            <DoubleAnimation Duration="0:0:1" To="5" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="little1" d:IsOptimized="True"/>
+        </Storyboard>
+        <Storyboard x:Name="little2" RepeatBehavior="1x">
+            <DoubleAnimation Duration="0:0:1" To="-45" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="little1" d:IsOptimized="True"/>
+        </Storyboard>
+    </Page.Resources>
+
+    <Grid Background="LightGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="300" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="1" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
-        
+
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="150"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Image Source="ms-appx:///Assets/singer.png"
-                       Width="250"
-                       Height="250"
+                       Grid.Row="1"
+                       Grid.Column="1"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"/>
-                <TextBlock Text="歌曲"
-                           FontSize="20"
-                           VerticalAlignment="Bottom"/>
             </Grid>
 
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="专辑名"
-                           FontSize="35" />
-                <TextBlock Text="标签："
-                           FontSize="20" />
-                <TextBlock Text="简介："
-                           FontSize="20" />
-            </StackPanel>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <AppBarButton Grid.Column="2"
-                          Icon="Add"
-                          VerticalAlignment="Bottom"
-                          Width="40"
-                          Height="40" />
+                <StackPanel Grid.Column="1">
+                    
+                    <TextBlock Text="歌曲名"
+                           FontSize="35"/>
+                    <TextBlock Text="专辑："
+                           FontSize="20"/>
+                    <TextBlock Text="歌手："
+                           FontSize="20"/>
+                    <TextBlock Text="播放次数："
+                           FontSize="20"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="喜欢"
+                           FontSize="20"/>
+                        <Image x:Name="like" Source="ms-appx:///Assets/dislike.png" Width="20" Margin="20, 5, 0, 0" Tapped="likeButton"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
         </Grid>
+        
         <Grid Grid.Row="1">
-            <Line Grid.Column="2"
-                  Stretch="Fill"
+            <Line Stretch="Fill"
                   Stroke="Black"
                   StrokeThickness="2"
                   X1="1"
                   HorizontalAlignment="Stretch" />
         </Grid>
         <Grid Grid.Row="2">
-            <TextBlock Text="你还没有添加歌曲"
-                       FontSize="25" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="350"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Canvas Background="LightGray" Grid.Column="1">
+                    <Ellipse x:Name="ellipse" 
+                             Width="250"
+                             Height="250"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center" 
+                             RenderTransformOrigin="0.5,0.5" Canvas.Top="100">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="ms-appx:///Assets/player_disk_cover.scale-200.png" Stretch="Fill"/>
+                        </Ellipse.Fill>
+                        <Ellipse.RenderTransform>
+                            <CompositeTransform/>
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+
+                    <Ellipse x:Name="ellipse2" 
+                             Width="150"
+                             Height="150"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center" 
+                             RenderTransformOrigin="0.5,0.5" Canvas.Top="150" Canvas.Left="51">
+                        <Ellipse.Fill>
+                            <ImageBrush ImageSource="ms-appx:///Assets/logo-300.png" Stretch="Fill"/>
+                        </Ellipse.Fill>
+                        <Ellipse.RenderTransform>
+                            <CompositeTransform/>
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+
+                    <Rectangle x:Name="little1" Width="80" Height="100" Canvas.Left="100" Canvas.Top="50" RenderTransformOrigin="0.2,0.15" >
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="ms-appx:///Assets/player_needle.scale-200.png" Stretch="Fill"/>
+                        </Rectangle.Fill>
+                        <Rectangle.RenderTransform>
+                            <CompositeTransform Rotation="-45"/>
+                        </Rectangle.RenderTransform>
+                    </Rectangle>
+                </Canvas>
+            </Grid>
+            <!--这里用来放歌词-->
+            <Grid Grid.Row="1">
+                
+            </Grid>
         </Grid>
     </Grid>
 </Page>

@@ -47,14 +47,19 @@ namespace MusicPlayer
 
         private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch (((ListBoxItem)((ListBox)sender).SelectedItem).Name)
+            // 使用 ContentFrame.Navigate(typeof(Page)); 来加载页面
+            if (SearchItem.IsSelected)
             {
-                case "SearchItem":
-                    MenuList.IsPaneOpen = true;
-                    break;
-                case "ListItem":
-                    ContentFrame.Navigate(typeof(MySongList));
-                    break;
+                MenuList.IsPaneOpen = true;
+            } else if (RecentItem.IsSelected)
+            {
+
+            } else if (FavoriteItem.IsSelected)
+            {
+
+            } else if (ListItem.IsSelected)
+            {
+
             }
         }
     }

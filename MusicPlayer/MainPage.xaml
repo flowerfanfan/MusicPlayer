@@ -93,7 +93,7 @@
                                      Text="搜索" />
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem x:Name="PerviousItem"
+                    <ListBoxItem x:Name="RecentItem"
                                  Width="300"
                                  Background="#252535">
                         <StackPanel Orientation="Horizontal"
@@ -147,9 +147,37 @@
         </SplitView>
     </Grid>
 
-    <!--底部菜单栏，貌似不能在BottomAppBar中添加Slider还有图片。-->
     <Page.BottomAppBar>
         <CommandBar Background="#DC143C">
+            <CommandBar.Content>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
+
+                    <Image x:Name="Cover"
+                           Source="Assets/singer.png" />
+                    <StackPanel Grid.Column="1"
+                                Margin="5, 0, 0, 0">
+                        <TextBlock x:Name="SongTitle"
+                                   Text="Title" />
+                        <TextBlock x:Name="SongArtist"
+                                   Text="Artist" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock x:Name="PlayingPoint"
+                                   Text="00:00"/>
+                        <ProgressBar Width="200"
+                                     Margin="5, 0, 5, 0"/>
+                        <TextBlock x:Name="SongLength"
+                                   Text="00:00" />
+                    </StackPanel>
+                </Grid>
+            </CommandBar.Content>
             <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
             <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play"/>
             <AppBarButton x:Name="PauseButton" Icon="Stop" Label="Pause"/>

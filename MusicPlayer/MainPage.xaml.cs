@@ -52,7 +52,7 @@ namespace MusicPlayer
                 case "SearchItem":
                     MenuList.IsPaneOpen = true;
                     break;
-                case "SongListItem":
+                case "ListItem":
                     ContentFrame.Navigate(typeof(MySongList));
                     break;
             }

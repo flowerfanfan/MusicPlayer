@@ -14,7 +14,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="我的歌单"
+        <TextBlock Text="我的歌单" 
                    FontSize="32"
                    Margin="10"/>
 

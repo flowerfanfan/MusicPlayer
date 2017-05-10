@@ -24,31 +24,6 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <!--<ListView Grid.Row="1" x:Name="recentSongs" Padding="20">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
-                <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
-                <StackPanel Margin="20, 0, 0, 0">
-                    <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
-                    <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
-                <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
-                <StackPanel Margin="20, 0, 0, 0">
-                    <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
-                    <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
-                <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
-                <StackPanel Margin="20, 0, 0, 0">
-                    <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
-                    <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </StackPanel>
-        </ListView>-->
-        <!--上面是显示效果，要绑定的话应该用下面这个，因为没试过，所以有问题的话可以参考下面网址-->
-        <!--https://msdn.microsoft.com/zh-cn/library/windows/apps/xaml/hh780650.aspx-->
         <ListView Grid.Row="1" x:Name="songList" Padding="20"
                   ItemsSource="{x:Bind localSongsVM.Songs}">
             <ListView.ItemTemplate>

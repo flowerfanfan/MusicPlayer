@@ -25,6 +25,8 @@ namespace MusicPlayer
     {
         public MainPage()
         {
+            //SAY("Hello World!");
+            
             this.InitializeComponent();
             //设置窗口栏的颜色
             var titleBar = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().TitleBar;

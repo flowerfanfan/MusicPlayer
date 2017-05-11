@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediaPlayer;
+using System;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.Storage.FileProperties;
@@ -17,7 +18,10 @@ namespace MusicPlayer.Models
         public BitmapImage Cover { get; set; }
         public byte[] CoverBytes { get; set; }
 
-        public Song(string filePath, MusicProperties musicProperties, StorageItemThumbnail thumbnail)
+        //加入歌词作为成员
+        public Lyric lyric { get; set; }
+
+        public Song(string  filePath , MusicProperties musicProperties, StorageItemThumbnail thumbnail)
         {
             FilePath = filePath;
             Title = musicProperties.Title;
@@ -25,9 +29,16 @@ namespace MusicPlayer.Models
             Album = musicProperties.Album;
             Length = GetLength(musicProperties.Duration);
             Cover = new BitmapImage();
+            
             Cover.SetSource(thumbnail);
             // 将StorageItemThumbnail转为byte[]
             ConvertToBytes(thumbnail);
+        }
+
+        //设置空构造函数，方便构造Song用于传递
+        public Song()
+        {
+            
         }
 
         private async void ConvertToBytes(StorageItemThumbnail thumbnail)

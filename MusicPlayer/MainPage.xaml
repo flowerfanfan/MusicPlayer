@@ -17,6 +17,8 @@
                     <VisualState.Setters>
                         <Setter Target="MenuList.IsPaneOpen"
                                 Value="False" />
+                        <Setter Target="ContentFrame.HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Target="ContentFrame.HorizontalAlignment" Value="Stretch"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="500" />
@@ -26,6 +28,8 @@
                     <VisualState.Setters>
                         <Setter Target="MenuList.IsPaneOpen"
                                 Value="True" />
+                        <Setter Target="ContentFrame.HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Target="ContentFrame.HorizontalAlignment" Value="Stretch"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="800" />
@@ -42,7 +46,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
+        <!--找不到位置加了！没仔细读代码， 随便加上去的。 看到的话帮忙放到合适的地方-->
 
+        
+        
+        
         <!--这是汉堡菜单-->
         <SplitView x:Name="MenuList"
                    Grid.Row="1"
@@ -158,12 +167,17 @@
                     </ListBoxItem>
                 </ListBox>
             </SplitView.Pane>
-
             <SplitView.Content>
                 <!--使用Frame承载点击不同Item后应承载的页面-->
-            <Frame x:Name="ContentFrame"/>
+                <Frame  x:Name="ContentFrame" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                    
+                </Frame>
             </SplitView.Content>
         </SplitView>
+        <MediaPlayerElement x:FieldModifier="Public" x:Name="player"
+                                        AutoPlay="False">
+        </MediaPlayerElement>
+
     </Grid>
 
     <Page.BottomAppBar>
@@ -172,12 +186,12 @@
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="300" />
-                        <ColumnDefinition Width="300" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="500" />
                     </Grid.ColumnDefinitions>
 
                     <Image x:Name="Cover"
-                           Source="Assets/singer.png" Tapped="palyingNow"/>
+                           Source="Assets/singer.png" Tapped="playingNow"/>
                     <StackPanel Grid.Column="1"
                                 Margin="5, 0, 0, 0">
                         <TextBlock x:Name="SongTitle"
@@ -190,16 +204,20 @@
                                 VerticalAlignment="Center">
                         <TextBlock x:Name="PlayingPoint"
                                    Text="00:00"/>
-                        <ProgressBar Width="200"
-                                     Margin="5, 0, 5, 0"/>
+                        <Slider Name="timeline" Width="400" 
+                                Value="{Binding CurrentValue, Mode=TwoWay}" Maximum="{Binding Max,Mode=TwoWay}"
+                                     Margin="5, 0, 5, 0" ValueChanged="timelineChanged"/>
                         <TextBlock x:Name="SongLength"
                                    Text="00:00" />
                     </StackPanel>
                 </Grid>
             </CommandBar.Content>
+            <!--为什么暂停用的停止的icon呢。。我给加上暂停了-->
+            <AppBarButton Icon = "OpenFile" Label = "Select"  Click="pickFileButton_Click"/>
             <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
-            <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play"/>
-            <AppBarButton x:Name="PauseButton" Icon="Stop" Label="Pause"/>
+            <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play" Click="play_Click"/>
+            <AppBarButton Icon="Pause" Label="Pause" Click="pause_Click"/>
+            <AppBarButton Icon = "Stop" Label = "Stop"  Click="stop_Click"/>
             <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song"/>
             <AppBarSeparator/>
             <AppBarButton x:Name="playing" Icon="MusicInfo"  Label="Playing" >
@@ -244,11 +262,11 @@
             <AppBarButton x:Name="VolumeButton" Icon="Volume" Label="Volume">
                 <AppBarButton.Flyout>
                     <Flyout>
-                        <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center"/>
+                        <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center" Name="volume"/>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="ShareButton" Icon="Go"  Label="Share"/>
+            <AppBarButton x:Name="ShareButton" Icon="Go"  Label="Share" Click="share_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
 

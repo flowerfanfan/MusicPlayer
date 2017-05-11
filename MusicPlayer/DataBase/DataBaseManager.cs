@@ -11,8 +11,8 @@ namespace MusicPlayer.DataBase
         // DataBaseManager DBManager = DataBaseManager.GetDBManager();
         // 即可通过 DBManager 来进行数据库操作
         private static DataBaseManager DBManager;
-
-        private SQLiteConnection conn { get; set; }
+        private SQLiteConnection Conn;
+        //private SQLiteConnection SongListTableConn;
 
         private DataBaseManager() { }
 
@@ -24,11 +24,11 @@ namespace MusicPlayer.DataBase
         }
 
         // 创建或打开数据库
-        // 数据库内有一个 Songs 表
         public void LoadDatabase()
         {
-            conn = new SQLiteConnection("songs.db");
-            using (var stmt = conn.Prepare(@"CREATE TABLE IF NOT EXISTS
+            Conn = new SQLiteConnection("music_player.db");
+            // 加载Songs表
+            using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
                                              Songs (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                     FilePath VARCHAR(300),
                                                     Title VARCHAR(200),
@@ -40,13 +40,22 @@ namespace MusicPlayer.DataBase
             {
                 stmt.Step();
             }
+            // 加载SongList表
+            using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
+                                          SongList (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                    Name VARCHAR(200),
+                                                    Number INTEGER
+                                                   );"))
+            {
+                stmt.Step();
+            }
         }
 
         // 返回 Songs 表中所有歌曲的信息
-        public ObservableCollection<Song> GetData()
+        public ObservableCollection<Song> GetSongs()
         {
             ObservableCollection<Song> data = new ObservableCollection<Song>();
-            using (var stmt = conn.Prepare("SELECT * FROM Songs"))
+            using (var stmt = Conn.Prepare("SELECT * FROM Songs"))
             {
                 while (stmt.Step() == SQLiteResult.ROW)
                 {
@@ -58,9 +67,9 @@ namespace MusicPlayer.DataBase
         }
 
         // 添加一首歌曲的信息
-        public void Add(Song song)
+        public void AddSong(Song song)
         {
-            using (var stmt = conn.Prepare("INSERT INTO Songs(FilePath, Title, Artist, Album, Length, Cover) VALUES (?, ?, ?, ?, ?, ?)"))
+            using (var stmt = Conn.Prepare("INSERT INTO Songs(FilePath, Title, Artist, Album, Length, Cover) VALUES (?, ?, ?, ?, ?, ?)"))
             {
                 stmt.Bind(1, song.FilePath);
                 stmt.Bind(2, song.Title);
@@ -77,14 +86,14 @@ namespace MusicPlayer.DataBase
         {
             foreach (Song song in songs)
             {
-                Add(song);
+                AddSong(song);
             }
         }
 
         // 清空 Songs 表
-        public void ClearData()
+        public void ClearSongs()
         {
-            using (var stmt = conn.Prepare("DELETE FROM Songs"))
+            using (var stmt = Conn.Prepare("DELETE FROM Songs"))
             {
                 stmt.Step();
             }
@@ -99,5 +108,22 @@ namespace MusicPlayer.DataBase
         //        stmt.Step();
         //    }
         //}
+
+        public void AddSongList(string name)
+        {
+            using (var stmt = Conn.Prepare("INSERT INTO SongList(Name, Number) VALUES (?, ?)"))
+            {
+                stmt.Bind(1, name);
+                stmt.Bind(2, 0);
+                stmt.Step();
+            }
+        }
+
+        public void CreateSongList(string name)
+        {
+            AddSongList(name);
+            // 新建对应的歌单表
+
+        }
     }
 }

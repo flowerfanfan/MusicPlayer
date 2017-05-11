@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MusicPlayer.Controls;
+using MusicPlayer.Frames;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,19 +57,19 @@ namespace MusicPlayer
                 MenuList.IsPaneOpen = true;
             } else if (RecentItem.IsSelected)
             {
-                ContentFrame.Navigate(typeof(Frames.recent));
+                ContentFrame.Navigate(typeof(recent));
                 RecentItem.IsSelected = false;
             } else if (FavoriteItem.IsSelected)
             {
-                ContentFrame.Navigate(typeof(Frames.favourite));
+                ContentFrame.Navigate(typeof(favourite));
                 FavoriteItem.IsSelected = false;
             } else if (ListItem.IsSelected)
             {
-                ContentFrame.Navigate(typeof(Frames.LocalSongs));
+                ContentFrame.Navigate(typeof(LocalSongs));
                 ListItem.IsSelected = false;
             } else if (mySongListItem.IsSelected)
             {
-                ContentFrame.Navigate(typeof(Frames.mySongList));
+                ContentFrame.Navigate(typeof(mySongList));
                 mySongListItem.IsSelected = false;
             }
         }
@@ -77,5 +79,11 @@ namespace MusicPlayer
             ContentFrame.Navigate(typeof(Default));
         }
 
+        private async void AddSongListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            mySongListItem.IsSelected = true;
+            CreateSongListDialog dialog = new CreateSongListDialog();
+            await dialog.ShowAsync();
+        }
     }
 }

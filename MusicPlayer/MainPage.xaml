@@ -131,10 +131,12 @@
                             <TextBlock Text="我的歌单"
                                        Height="20"
                                        Width="180"/>
-                            <AppBarButton Icon="Add"
+                            <AppBarButton x:Name="AddSongListBtn"
+                                          Icon="Add"
                                           Width="50"
                                           Height="46"
-                                          HorizontalAlignment="Right" />
+                                          HorizontalAlignment="Right" 
+                                          Click="AddSongListBtn_Click"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="ListItem"

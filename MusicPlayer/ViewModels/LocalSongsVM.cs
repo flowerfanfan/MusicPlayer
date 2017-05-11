@@ -22,7 +22,7 @@ namespace MusicPlayer.ViewModels
         // 从数据库加载歌曲信息
         public void LoadSongs()
         {
-            Songs = DBManager.GetData();
+            Songs = DBManager.GetSongs();
             // 第一次启动时
             if (Songs.Count == 0) ReloadSongs();
         }
@@ -32,7 +32,7 @@ namespace MusicPlayer.ViewModels
         {
             // 清空数据
             Songs.Clear();
-            DBManager.ClearData();
+            DBManager.ClearSongs();
             // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".mp3");

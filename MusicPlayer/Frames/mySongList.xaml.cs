@@ -13,24 +13,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MusicPlayer
+namespace MusicPlayer.Frames
 {
     /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Default : Page
+    public sealed partial class mySongList : Page
     {
-        public Default()
+        public mySongList()
         {
             this.InitializeComponent();
-        }
-
-        void likeButton(object sender, TappedRoutedEventArgs e)
-        {
-            //如果当前歌曲是喜欢的，按下变成不喜欢，如果是不喜欢，按下变成喜欢
-            //应该也是需要相关的绑定吧
         }
     }
 }

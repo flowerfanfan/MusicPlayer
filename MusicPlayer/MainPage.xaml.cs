@@ -36,6 +36,8 @@ namespace MusicPlayer
             titleBar.ButtonForegroundColor = Colors.White;
             titleBar.ButtonHoverBackgroundColor = Colors.LightCoral;
 
+            var a = ContentFrame.ActualWidth;
+
             ContentFrame.Navigate(typeof(Default));
         }
 
@@ -53,14 +55,27 @@ namespace MusicPlayer
                 MenuList.IsPaneOpen = true;
             } else if (RecentItem.IsSelected)
             {
-
+                ContentFrame.Navigate(typeof(Frames.recent));
+                RecentItem.IsSelected = false;
             } else if (FavoriteItem.IsSelected)
             {
-
+                ContentFrame.Navigate(typeof(Frames.favourite));
+                FavoriteItem.IsSelected = false;
             } else if (ListItem.IsSelected)
             {
-
+                ContentFrame.Navigate(typeof(Frames.LocalSongs));
+                ListItem.IsSelected = false;
+            } else if (mySongListItem.IsSelected)
+            {
+                ContentFrame.Navigate(typeof(Frames.mySongList));
+                mySongListItem.IsSelected = false;
             }
         }
+
+        void palyingNow(object sender, TappedRoutedEventArgs e)
+        {
+            ContentFrame.Navigate(typeof(Default));
+        }
+
     }
 }

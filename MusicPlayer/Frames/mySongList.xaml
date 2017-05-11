@@ -1,0 +1,62 @@
+﻿<Page
+    x:Class="MusicPlayer.Frames.mySongList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MusicPlayer.Frames"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <TextBlock Text="我的歌单" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+            <Line Stretch="Fill"
+                  Stroke="Black"
+                  StrokeThickness="1"
+                  X1="1"
+                  Margin="20, 0, 20, 0"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView Grid.Column="0" x:Name="listName" Padding="10">
+                <StackPanel Margin="10">
+                    <TextBlock Text="songList1" FontSize="25" VerticalAlignment="Top"/>
+                    <TextBlock/>
+                    <TextBlock Text="12 首" FontSize="15" VerticalAlignment="Bottom"/>
+                </StackPanel>
+                <StackPanel Margin="10">
+                    <TextBlock Text="songList1" FontSize="25" VerticalAlignment="Top"/>
+                    <TextBlock/>
+                    <TextBlock Text="12 首" FontSize="15" VerticalAlignment="Bottom"/>
+                </StackPanel>
+            </ListView>
+
+            <ListView Grid.Column="1" x:Name="songsInList" Padding="10">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                    <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
+                    <StackPanel Margin="20, 0, 0, 0">
+                        <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
+                        <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                    <Image Source="ms-appx:///Assets/logo-300.png" Width="50" Height="50" />
+                    <StackPanel Margin="20, 0, 0, 0">
+                        <TextBlock Text="song1" FontSize="25" VerticalAlignment="Top"/>
+                        <TextBlock Text="singer" FontSize="20" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </StackPanel>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

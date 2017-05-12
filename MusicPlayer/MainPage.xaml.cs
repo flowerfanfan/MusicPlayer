@@ -4,14 +4,9 @@ using MusicPlayer.Frames;
 using MusicPlayer.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -23,12 +18,12 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 using Windows.Storage.AccessCache;
+using MusicPlayer.Controls;
+using MusicPlayer.DataBase;
+using Windows.Storage.FileProperties;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -40,13 +35,15 @@ namespace MusicPlayer
     {
         Lyric lrc = new Lyric();
         public static MainPage Current;
+        public DataBaseManager DBManager { get; set; }
+
         public MainPage()
         {
             //SAY("Hello World!");
             //设置页面为static， 以便于得到控件
             this.InitializeComponent();
             Current = this;
-            
+
             InitialColorSetting();
 
             InitialPlayerSetting();
@@ -55,6 +52,7 @@ namespace MusicPlayer
             ContentFrame.Navigate(typeof(PlayingPage));
             double t = ContentFrame.ActualWidth;
 
+            DBManager = DataBaseManager.GetDBManager();
         }
 
         //设置窗口栏的颜色
@@ -83,19 +81,23 @@ namespace MusicPlayer
             if (SearchItem.IsSelected)
             {
                 MenuList.IsPaneOpen = true;
-            } else if (RecentItem.IsSelected)
+            }
+            else if (RecentItem.IsSelected)
             {
                 ContentFrame.Navigate(typeof(Frames.recent));
                 RecentItem.IsSelected = false;
-            } else if (FavoriteItem.IsSelected)
+            }
+            else if (FavoriteItem.IsSelected)
             {
                 ContentFrame.Navigate(typeof(Frames.favourite));
                 FavoriteItem.IsSelected = false;
-            } else if (ListItem.IsSelected)
+            }
+            else if (ListItem.IsSelected)
             {
                 ContentFrame.Navigate(typeof(Frames.LocalSongs));
                 ListItem.IsSelected = false;
-            } else if (mySongListItem.IsSelected)
+            }
+            else if (mySongListItem.IsSelected)
             {
                 ContentFrame.Navigate(typeof(Frames.mySongList));
                 mySongListItem.IsSelected = false;
@@ -135,7 +137,8 @@ namespace MusicPlayer
         }
         async private void MediaPlayer_MediaFailed(Windows.Media.Playback.MediaPlayer sender, MediaPlayerFailedEventArgs args)
         {
-            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => {
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
                 await new MessageDialog("不支持该视频或音频的播放！请重新选择文件。").ShowAsync();
             });
         }
@@ -163,15 +166,15 @@ namespace MusicPlayer
             if (file != null)
             {
 
-                    var thumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView);
-                    BitmapImage tn = new BitmapImage();
-                    tn.SetSource(thumbnail);
+                var thumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView);
+                BitmapImage tn = new BitmapImage();
+                tn.SetSource(thumbnail);
                 player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
 
                 mediaFile = file;
 
                 player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
-                
+
                 //
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace(file.Name, file);
 
@@ -193,27 +196,27 @@ namespace MusicPlayer
                     while (parent == null) ; //在这里无限等待了
                     lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
                     */
-                    
-                        openPicker = new FileOpenPicker();
-                        openPicker.ViewMode = PickerViewMode.Thumbnail;
-                        openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                        openPicker.FileTypeFilter.Add(".lrc");
-                        lrcFile = await openPicker.PickSingleFileAsync();
-                        if (lrcFile != null)
+
+                    openPicker = new FileOpenPicker();
+                    openPicker.ViewMode = PickerViewMode.Thumbnail;
+                    openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                    openPicker.FileTypeFilter.Add(".lrc");
+                    lrcFile = await openPicker.PickSingleFileAsync();
+                    if (lrcFile != null)
                         StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
                 }
                 //
 
                 //while (lrcFile == null) ;
-                    string text = "";
-                    if (lrcFile != null)
-                    {
+                string text = "";
+                if (lrcFile != null)
+                {
 
-                        text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
-                    }
+                    text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                }
 
-               
-                
+
+
                 lrc.getLrc(text);
                 Song s = new Song(file.Path, properties, thumbnail);
                 s.lyric = lrc;
@@ -323,6 +326,17 @@ namespace MusicPlayer
         {
             DataTransferManager.ShowShareUI();
         }
-    }
 
+        private async void AddSongListBtn_Click(object sender, RoutedEventArgs e)
+        {
+            mySongListItem.IsSelected = true;
+            await new CreateSongListDialog().ShowAsync();
+        }
+
+        // TODO
+        private void AddSongBtn_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+    }
 }

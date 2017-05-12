@@ -1,38 +1,61 @@
-﻿<Page
-    x:Class="MusicPlayer.Frames.LocalSongs"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MusicPlayer.Frames"
-    xmlns:models="using:MusicPlayer.Models"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+﻿<Page x:Class="MusicPlayer.Frames.LocalSongs"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:MusicPlayer.Frames"
+      xmlns:models="using:MusicPlayer.Models"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
 
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <TextBlock Text="歌曲列表" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+        <Grid>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="我的音乐"
+                           FontSize="36"
+                           VerticalAlignment="Center"
+                           Margin="20, 0, 0, 0" />
+                <AppBarButton x:Name="RefreshBtn"
+                              VerticalAlignment="Bottom"
+                              Icon="Refresh"
+                              Click="RefreshBtn_Click" />
+                <Button x:Name="AddSongsToListBtn"
+                        Content="编辑"
+                        Click="AddSongsToListBtn_Click" />
+            </StackPanel>
             <Line Stretch="Fill"
                   Stroke="Black"
                   StrokeThickness="1"
                   X1="1"
                   Margin="20, 0, 20, 0"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom" />
         </Grid>
 
-        <ListView Grid.Row="1" x:Name="songList" Padding="20"
-                  ItemsSource="{x:Bind localSongsVM.Songs}">
+        <ListView x:Name="SongListLV"
+                  Grid.Row="1"
+                  Padding="20"
+                  ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}"
+                  IsMultiSelectCheckBoxEnabled="True"
+                  SelectionChanged="SongListLV_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
-                        <Image Source="{x:Bind Cover}" Width="50" Height="50" />
+                    <StackPanel Orientation="Horizontal"
+                                Padding="10">
+                        <Image Source="{x:Bind Cover, Mode=OneWay}"
+                               Width="50"
+                               Height="50" />
                         <StackPanel Margin="20, 0, 0, 0">
-                            <TextBlock Text="{x:Bind Title}" FontSize="25" VerticalAlignment="Top"/>
-                            <TextBlock Text="{x:Bind Artist}" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                                       FontSize="25"
+                                       VerticalAlignment="Top" />
+                            <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
+                                       FontSize="20"
+                                       VerticalAlignment="Bottom" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

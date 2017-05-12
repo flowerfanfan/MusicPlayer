@@ -13,16 +13,18 @@ namespace MusicPlayer.ViewModels
     {
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<Song> Songs { get; set; }
+        public ObservableCollection<Song> SelectedSongs { get; set; }
 
         public LocalSongsVM()
         {
             DBManager = DataBaseManager.GetDBManager();
+            SelectedSongs = new ObservableCollection<Song>();
         }
 
         // 从数据库加载歌曲信息
         public void LoadSongs()
         {
-            Songs = DBManager.GetData();
+            Songs = DBManager.GetSongs("Songs");
             // 第一次启动时
             if (Songs.Count == 0) ReloadSongs();
         }
@@ -32,17 +34,17 @@ namespace MusicPlayer.ViewModels
         {
             // 清空数据
             Songs.Clear();
-            DBManager.ClearData();
+            DBManager.ClearSongs("Songs");
             // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".mp3");
-            fileTypeFilter.Add(".wma");
             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
             var query = KnownFolders.MusicLibrary.CreateFileQueryWithOptions(queryOptions);
             IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
             ReadMusicFiles(fileList);
         }
 
+        // 读取音乐文件的信息
         private async void ReadMusicFiles(IReadOnlyList<StorageFile> fileList)
         {
             foreach (StorageFile file in fileList)
@@ -51,7 +53,23 @@ namespace MusicPlayer.ViewModels
                 StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
                 Songs.Add(new Song(file.Path, musicProperties, thumbnail));
             }
-            DBManager.AddSongs(Songs);
+            DBManager.AddSongs(Songs, "Songs");
+        }
+        
+        // 判断再删除时用户是否已选中歌单
+        public bool HasSelected()
+        {
+            return SelectedSongs.Count != 0;
+        }
+
+        public void SelectSong(Song song)
+        {
+            SelectedSongs.Add(song);
+        }
+
+        public void RemoveSelectedSong(Song song)
+        {
+            SelectedSongs.Remove(song);
         }
     }
 }

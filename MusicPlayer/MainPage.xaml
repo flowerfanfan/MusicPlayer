@@ -143,10 +143,12 @@
                             <TextBlock Text="我的歌单"
                                        Height="20"
                                        Width="180"/>
-                            <AppBarButton Icon="Add"
+                            <AppBarButton x:Name="AddSongListBtn"
+                                          Icon="Add"
                                           Width="50"
                                           Height="46"
-                                          HorizontalAlignment="Right" />
+                                          HorizontalAlignment="Right"
+                                          Click="AddSongListBtn_Click" />
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="ListItem"
@@ -159,13 +161,15 @@
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="Left"  Margin="0, 0, 10, 0"/>
-                            <TextBlock Text="歌曲列表"
+                            <TextBlock Text="我的音乐"
                                        Height="20"
                                        Width="180"/>
-                            <AppBarButton Icon="Add"
+                            <AppBarButton x:Name="AddSongBtn"
+                                          Icon="Add"
                                           Width="50"
                                           Height="46"
-                                          HorizontalAlignment="Right" />
+                                          HorizontalAlignment="Right"
+                                          Click="AddSongBtn_Click"/>
                         </StackPanel>
                     </ListBoxItem>
                 </ListBox>

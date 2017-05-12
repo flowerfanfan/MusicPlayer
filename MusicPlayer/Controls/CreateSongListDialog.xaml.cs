@@ -1,4 +1,6 @@
 ﻿using MusicPlayer.DataBase;
+using MusicPlayer.Models;
+using MusicPlayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,9 +29,9 @@ namespace MusicPlayer.Controls
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            // 在数据库中对SongList插入新纪录，创建新表
-            DataBaseManager.GetDBManager().CreateSongList(SongListName.Text.ToString());
-            // vm
+            string listName = SongListName.Text.ToString();
+            // 更新MySongListVM中的数据
+            MySongListVM.GetMySongListVM().CreateSongList(listName);
         }
 
         private void SongListName_TextChanged(object sender, TextChangedEventArgs e)

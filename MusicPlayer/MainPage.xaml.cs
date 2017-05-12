@@ -82,8 +82,7 @@ namespace MusicPlayer
         private async void AddSongListBtn_Click(object sender, RoutedEventArgs e)
         {
             mySongListItem.IsSelected = true;
-            CreateSongListDialog dialog = new CreateSongListDialog();
-            await dialog.ShowAsync();
+            await new CreateSongListDialog().ShowAsync();
         }
     }
 }

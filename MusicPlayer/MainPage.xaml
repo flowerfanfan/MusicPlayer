@@ -149,7 +149,7 @@
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="Left"  Margin="0, 0, 10, 0"/>
-                            <TextBlock Text="歌曲列表"
+                            <TextBlock Text="我的音乐"
                                        Height="20"
                                        Width="180"/>
                             <AppBarButton Icon="Add"

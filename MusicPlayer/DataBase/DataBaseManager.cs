@@ -1,6 +1,8 @@
 ﻿using MusicPlayer.Models;
 using SQLitePCL;
 using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 
 namespace MusicPlayer.DataBase
 {
@@ -12,9 +14,11 @@ namespace MusicPlayer.DataBase
         // 即可通过 DBManager 来进行数据库操作
         private static DataBaseManager DBManager;
         private SQLiteConnection Conn;
-        //private SQLiteConnection SongListTableConn;
 
-        private DataBaseManager() { }
+        private DataBaseManager()
+        {
+            Conn = new SQLiteConnection("music_player.db");
+        }
 
         // 获得DataBaseManager实例
         public static DataBaseManager GetDBManager()
@@ -26,7 +30,6 @@ namespace MusicPlayer.DataBase
         // 创建或打开数据库
         public void LoadDatabase()
         {
-            Conn = new SQLiteConnection("music_player.db");
             // 加载Songs表
             using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
                                              Songs (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -40,22 +43,22 @@ namespace MusicPlayer.DataBase
             {
                 stmt.Step();
             }
-            // 加载SongList表
+            // 加载SongLists表
             using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
-                                          SongList (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                                                    Name VARCHAR(200),
-                                                    Number INTEGER
-                                                   );"))
+                                             SongLists (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                        Name VARCHAR(200),
+                                                        Number INTEGER
+                                                       );"))
             {
                 stmt.Step();
             }
         }
 
-        // 返回 Songs 表中所有歌曲的信息
-        public ObservableCollection<Song> GetSongs()
+        // 返回歌曲表中所有歌曲的数据
+        public ObservableCollection<Song> GetSongs(string listTable)
         {
             ObservableCollection<Song> data = new ObservableCollection<Song>();
-            using (var stmt = Conn.Prepare("SELECT * FROM Songs"))
+            using (var stmt = Conn.Prepare("SELECT * FROM " + listTable))
             {
                 while (stmt.Step() == SQLiteResult.ROW)
                 {
@@ -66,10 +69,33 @@ namespace MusicPlayer.DataBase
             return data;
         }
 
-        // 添加一首歌曲的信息
-        public void AddSong(Song song)
+        // 返回 SongList 表中所有歌单及歌单对应的表中所有歌曲的数据
+        public void GetSongLists(ObservableCollection<SongList> songLists, Dictionary<string, ObservableCollection<Song>> songsInList)
         {
-            using (var stmt = Conn.Prepare("INSERT INTO Songs(FilePath, Title, Artist, Album, Length, Cover) VALUES (?, ?, ?, ?, ?, ?)"))
+            using (var stmt = Conn.Prepare("SELECT * FROM SongLists"))
+            {
+                while (stmt.Step() == SQLiteResult.ROW)
+                {
+                    songLists.Add(new SongList((string)stmt["Name"], Convert.ToInt32((Int64)stmt["Number"])));
+                }
+            }
+            foreach (SongList songList in songLists)
+            {
+                string name = songList.Name;
+                if (!songsInList.ContainsKey(name))
+                {
+                    songsInList.Add(name, GetSongs(name));
+                }
+            }
+        }
+
+        // 添加一首歌曲的信息
+        public void AddSong(Song song, string listName)
+        {
+            using (var stmt = Conn.Prepare(@"INSERT
+                                             INTO " +  listName +
+                                            "(FilePath, Title, Artist, Album, Length, Cover)" +
+                                             "VALUES (?, ?, ?, ?, ?, ?)"))
             {
                 stmt.Bind(1, song.FilePath);
                 stmt.Bind(2, song.Title);
@@ -82,48 +108,64 @@ namespace MusicPlayer.DataBase
         }
 
         // 添加一批歌曲的信息
-        public void AddSongs(ObservableCollection<Song> songs)
+        public void AddSongs(ObservableCollection<Song> songs, string listName)
         {
             foreach (Song song in songs)
             {
-                AddSong(song);
+                AddSong(song, listName);
             }
         }
 
-        // 清空 Songs 表
-        public void ClearSongs()
-        {
-            using (var stmt = Conn.Prepare("DELETE FROM Songs"))
+        // 在SongLists表中添加一个新歌单
+        public void AddSongList(string listName)
+        {  
+            using (var stmt = Conn.Prepare(@"INSERT INTO SongLists (Name, Number) VALUES (?, ?)"))
             {
-                stmt.Step();
-            }
-        }
-
-        //// 删除一首歌曲的信息
-        //public void Delete(string filePath)
-        //{
-        //    using (var stmt = conn.Prepare("DELETE FROM Songs WHERE FilePath = ?"))
-        //    {
-        //        stmt.Bind(1, filePath);
-        //        stmt.Step();
-        //    }
-        //}
-
-        public void AddSongList(string name)
-        {
-            using (var stmt = Conn.Prepare("INSERT INTO SongList(Name, Number) VALUES (?, ?)"))
-            {
-                stmt.Bind(1, name);
+                stmt.Bind(1, listName);
                 stmt.Bind(2, 0);
                 stmt.Step();
             }
         }
 
-        public void CreateSongList(string name)
+        // 新建一个的歌单表
+        public void CreateSongList(string listName)
         {
-            AddSongList(name);
-            // 新建对应的歌单表
+            AddSongList(listName);
+            using (var stmt = Conn.Prepare("CREATE TABLE IF NOT EXISTS " +
+                                            listName + @" (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                           FilePath VARCHAR(300),
+                                                           Title VARCHAR(200),
+                                                           Artist VARCHAR(200),
+                                                           Album VARCHAR(200),
+                                                           Length VARCHAR(10),
+                                                           Cover BLOB
+                                                          );"))
+            {
+                stmt.Step();
+            }
+        }
 
+        // 清空歌曲表
+        public void ClearSongs(string listName)
+        {
+            using (var stmt = Conn.Prepare("DELETE FROM " + listName))
+            {
+                stmt.Step();
+            }
+        }
+
+        // 删除一个歌单表
+        public void DeleteSongList(string listName)
+        {
+            using (var stmt = Conn.Prepare("DELETE FROM SongLists WHERE Name = ?"))
+            {
+                stmt.Bind(1, listName);
+                stmt.Step();
+            }
+            using (var stmt = Conn.Prepare("DROP TABLE " + listName))
+            {
+                stmt.Step();
+            }
         }
     }
 }

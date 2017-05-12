@@ -15,7 +15,16 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBlock Text="歌曲列表" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="歌曲列表"
+                           FontSize="36"
+                           VerticalAlignment="Center"
+                           Margin="20, 0, 0, 0" />
+                <AppBarButton x:Name="RefreshBtn"
+                              VerticalAlignment="Bottom"
+                              Icon="Refresh"
+                              Click="RefreshBtn_Click"/>
+            </StackPanel>
             <Line Stretch="Fill"
                   Stroke="Black"
                   StrokeThickness="1"
@@ -25,14 +34,14 @@
         </Grid>
 
         <ListView Grid.Row="1" x:Name="songList" Padding="20"
-                  ItemsSource="{x:Bind localSongsVM.Songs}">
+                  ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
-                        <Image Source="{x:Bind Cover}" Width="50" Height="50" />
+                        <Image Source="{x:Bind Cover, Mode=OneWay}" Width="50" Height="50" />
                         <StackPanel Margin="20, 0, 0, 0">
-                            <TextBlock Text="{x:Bind Title}" FontSize="25" VerticalAlignment="Top"/>
-                            <TextBlock Text="{x:Bind Artist}" FontSize="20" VerticalAlignment="Bottom"/>
+                            <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontSize="25" VerticalAlignment="Top"/>
+                            <TextBlock Text="{x:Bind Artist, Mode=OneWay}" FontSize="20" VerticalAlignment="Bottom"/>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

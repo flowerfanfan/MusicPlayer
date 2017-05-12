@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 
 namespace MusicPlayer.ViewModels
@@ -22,7 +23,7 @@ namespace MusicPlayer.ViewModels
         // 从数据库加载歌曲信息
         public void LoadSongs()
         {
-            Songs = DBManager.GetSongs();
+            Songs = DBManager.GetSongs("Songs");
             // 第一次启动时
             if (Songs.Count == 0) ReloadSongs();
         }
@@ -32,7 +33,7 @@ namespace MusicPlayer.ViewModels
         {
             // 清空数据
             Songs.Clear();
-            DBManager.ClearSongs();
+            DBManager.ClearSongs("Songs");
             // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".mp3");
@@ -51,7 +52,7 @@ namespace MusicPlayer.ViewModels
                 StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
                 Songs.Add(new Song(file.Path, musicProperties, thumbnail));
             }
-            DBManager.AddSongs(Songs);
+            DBManager.AddSongs(Songs, "Songs");
         }
     }
 }

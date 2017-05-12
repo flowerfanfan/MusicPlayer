@@ -28,11 +28,17 @@ namespace MusicPlayer.Frames
         //这种用static的方法或许能帮助避免多次生成不同页面的方法， 但是我暂时还没去想。
         public static PlayingPage Current;
         DispatcherTimer timer;
+        //这里我单独写了一个lyric变量不太好...之前没有在Song里面加入lyric结构， 现在加上之后有些重复了。
+        //但是代码用lrc用得比较多， 懒得改回来了。 之后再说
+        //不影响使用。 只影响代码阅读. lrc和song里面的成员lyric是一致的
         Lyric lrc = new Lyric();
         MediaPlayerElement player = MainPage.Current.player;
-        Song song;
+        public Song song;
+        static bool Isinit = false;
         public PlayingPage()
         {
+            DataContext = song;
+            DataContextChanged += PlayingPage_DataContextChanged;
             if (Current == null)
             {
                 this.InitializeComponent();
@@ -42,26 +48,46 @@ namespace MusicPlayer.Frames
 
         }
 
+        private void PlayingPage_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            /*
+            songTitle.Text = song.Title;
+            songArtist.Text = song.Artist;
+            songAlbum.Text = song.Album;
+            */
+            if (song != null)
+            {
+                MainPage.Current.SongArtist.Text = song.Artist;
+                MainPage.Current.SongTitle.Text = song.Title;
+                MainPage.Current.Cover.Source = song.Cover;
+            }
+        }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             //这句不知道什么意思， 看上去好像是设置重载函数的样子
-            //base.OnNavigatedTo(e);
-            this.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            base.OnNavigatedTo(e);
             if (e.Parameter != null)
             {
                 song = (Song)e.Parameter;
                 lrc = song.lyric;
-                tn_pic.ImageSource = song.Cover;
+                /*
+                tn_pic.ImageSource = song.Cover;*/
                 setLRC();
-                InitRotate();
+                if (!Isinit)
+                {
+                    InitRotate();
+                    Isinit = true;
+                }
+                DataContext = song;
             }
         }
         void setLRC()
         {
+            /*
             songTitle.Text = song.Title;
             songAlbum.Text = "Album: " + song.Album;
-            songArtist.Text = "Artist: " + song.Artist;
+            songArtist.Text = "Artist: " + song.Artist;*/
             lrcText.Text = lrc.getAllText();
             lrcText.LineStackingStrategy = LineStackingStrategy.BaselineToBaseline;
             lrcText.LineHeight = Parameter.lyricLineHeight;

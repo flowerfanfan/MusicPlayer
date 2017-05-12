@@ -48,7 +48,7 @@
             </Ellipse>
             <Ellipse x:Name="ellipse" Width="150" Height="150" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
                 <Ellipse.Fill>
-                    <ImageBrush x:Name="tn_pic"/>
+                    <ImageBrush x:Name="tn_pic" ImageSource="{Binding Cover}"/>
                 </Ellipse.Fill>
                 <Ellipse.RenderTransform>
                     <TransformGroup>
@@ -72,20 +72,25 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Name="songTitle" FontSize="25" TextAlignment="Center" Grid.Row="0">None
+                    <TextBlock Name="songTitle" FontSize="25" TextAlignment="Center" Grid.Row="0" Text="{Binding Title}">None
                     </TextBlock>
                     <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Name="songAlbum" Text="Album: " HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Name="songArtist" Text="Artist: " HorizontalAlignment="Center"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Album:" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1"  Name="songAlbum"  Text="{Binding Album}" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Column="2"  Text="Artist: " HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Name="songArtist" Text="{Binding Artist}" HorizontalAlignment="Left"/>
                     </Grid>
                
                 </Grid>
                 <ScrollViewer Name="lrcContainer" Grid.Row="1">
-                <TextBlock Name="lrcText">
+                <TextBlock Name="lrcText" Text="">
+                    <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->
                 </TextBlock>
                 <!--
                         这里可以加一个矩形框之类的， 高亮一下当前歌词。

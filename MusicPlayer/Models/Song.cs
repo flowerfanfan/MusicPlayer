@@ -1,5 +1,6 @@
 ﻿using MediaPlayer;
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using Windows.Storage.FileProperties;
@@ -8,11 +9,42 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace MusicPlayer.Models
 {
-    public class Song
+    public class Song: INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public string FilePath { get; set; }
-        public string Title { get; set; }
-        public string Artist { get; set; }
+        private string _title;
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                if (_title != value)
+                {
+                    _title = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Title"));
+                }
+            }
+        }
+        private string _artist;
+        public string Artist
+        {
+            get
+            {
+                return _artist;
+            }
+            set
+            {
+                if (_artist != value)
+                {
+                    _artist = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Artist"));
+                }
+            }
+        }
         public string Album { get; set; }
         public string Length { get; set; }
         public BitmapImage Cover { get; set; }

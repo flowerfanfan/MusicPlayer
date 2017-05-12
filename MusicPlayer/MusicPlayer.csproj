@@ -98,6 +98,9 @@
     <Compile Include="Controls\CreateSongListDialog.xaml.cs">
       <DependentUpon>CreateSongListDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SelectSongListDialog.xaml.cs">
+      <DependentUpon>SelectSongListDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataBase\DataBaseManager.cs" />
     <Compile Include="Frames\Default.xaml.cs">
       <DependentUpon>Default.xaml</DependentUpon>
@@ -155,6 +158,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\CreateSongListDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SelectSongListDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

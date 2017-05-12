@@ -16,12 +16,15 @@ namespace MusicPlayer.ViewModels
         public ObservableCollection<SongList> SongLists { get; set; }
         public Dictionary<string, ObservableCollection<Song>> SongsInList { get; set; }
         public ObservableCollection<Song> SongsInSelectedList { get; set; }
+        public ObservableCollection<Song> SongsToBeAddedToList { get; set; }
 
         private MySongListVM()
         {
             DBManager = DataBaseManager.GetDBManager();
             SongLists = new ObservableCollection<SongList>();
             SongsInList = new Dictionary<string, ObservableCollection<Song>>();
+            SongsToBeAddedToList = new ObservableCollection<Song>();
+            LoadSongLists();
         }
 
         public static MySongListVM GetMySongListVM()
@@ -29,9 +32,19 @@ namespace MusicPlayer.ViewModels
             if (mySongListVM == null)
             {
                 mySongListVM = new MySongListVM();
-                mySongListVM.LoadSongLists();
             }
             return mySongListVM;
+        }
+
+        public void AddSongsToList(string name)
+        {
+            ObservableCollection<Song> songList = SongsInList[name];
+            foreach (Song song in SongsToBeAddedToList)
+            {
+                songList.Add(song);
+                // 在数据库中添加
+                DBManager.AddSong(song, name);
+            }
         }
 
         public void LoadSongLists()

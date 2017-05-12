@@ -14,7 +14,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="我的音乐"
                            FontSize="36"
@@ -24,6 +24,9 @@
                               VerticalAlignment="Bottom"
                               Icon="Refresh"
                               Click="RefreshBtn_Click"/>
+                <Button x:Name="AddSongsToList"
+                        Content="添加到歌单"
+                        Click="AddSongsToList_Click" />
             </StackPanel>
             <Line Stretch="Fill"
                   Stroke="Black"
@@ -33,11 +36,17 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <ListView Grid.Row="1" x:Name="songList" Padding="20"
-                  ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}">
+        <ListView x:Name="SongList"
+                  Grid.Row="1"
+                  Padding="20"
+                  ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}"
+                  IsMultiSelectCheckBoxEnabled="True"
+                  SelectionMode="Multiple"
+                  SelectionChanged="SongList_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Padding="10">
+                    <StackPanel Orientation="Horizontal"
+                                Padding="10">
                         <Image Source="{x:Bind Cover, Mode=OneWay}" Width="50" Height="50" />
                         <StackPanel Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Bind Title, Mode=OneWay}" FontSize="25" VerticalAlignment="Top"/>

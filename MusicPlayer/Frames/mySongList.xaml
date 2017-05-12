@@ -69,8 +69,8 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ListView Grid.Column="1"
-                      x:Name="SongsInSelectedList"
+            <ListView x:Name="SongsInSelectedList"
+                      Grid.Column="1"
                       Padding="10"
                       ItemsSource="{x:Bind mySongListVM.SongsInSelectedList, Mode=OneWay}">
                 <ListView.ItemTemplate>

@@ -12,13 +12,25 @@ namespace MusicPlayer.ViewModels
 {
     public class LocalSongsVM
     {
+        //private static LocalSongsVM localSongsVM;
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<Song> Songs { get; set; }
+        public ObservableCollection<Song> SelectedSongs { get; set; }
 
         public LocalSongsVM()
         {
             DBManager = DataBaseManager.GetDBManager();
+            SelectedSongs = new ObservableCollection<Song>();
         }
+
+        //public static LocalSongsVM GetLocalSongsVM()
+        //{
+        //    if (localSongsVM == null)
+        //    {
+        //        localSongsVM = new LocalSongsVM();
+        //    }
+        //    return localSongsVM;
+        //}
 
         // 从数据库加载歌曲信息
         public void LoadSongs()
@@ -53,6 +65,16 @@ namespace MusicPlayer.ViewModels
                 Songs.Add(new Song(file.Path, musicProperties, thumbnail));
             }
             DBManager.AddSongs(Songs, "Songs");
+        }
+
+        public void SelectSong(Song song)
+        {
+            SelectedSongs.Add(song);
+        }
+
+        public void RemoveSelectedSong(Song song)
+        {
+            SelectedSongs.Remove(song);
         }
     }
 }

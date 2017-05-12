@@ -1,4 +1,6 @@
-﻿using MusicPlayer.ViewModels;
+﻿using MusicPlayer.Controls;
+using MusicPlayer.Models;
+using MusicPlayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +37,25 @@ namespace MusicPlayer.Frames
         private void RefreshBtn_Click(object sender, RoutedEventArgs e)
         {
             localSongsVM.ReloadSongs();
+        }
+
+        private async void AddSongsToList_Click(object sender, RoutedEventArgs e)
+        {
+            MySongListVM.GetMySongListVM().SongsToBeAddedToList = localSongsVM.SelectedSongs;
+            // 弹出歌单选择对话框
+            await new SelectSongListDialog().ShowAsync();
+        }
+
+        private void SongList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (Song song in e.AddedItems)
+            {
+                localSongsVM.SelectSong(song);
+            }
+            foreach (Song song in e.RemovedItems)
+            {
+                localSongsVM.RemoveSelectedSong(song);
+            }
         }
     }
 }

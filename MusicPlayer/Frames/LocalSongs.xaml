@@ -16,7 +16,7 @@
 
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="歌曲列表"
+                <TextBlock Text="我的音乐"
                            FontSize="36"
                            VerticalAlignment="Center"
                            Margin="20, 0, 0, 0" />

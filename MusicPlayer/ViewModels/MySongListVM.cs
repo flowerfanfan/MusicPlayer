@@ -68,14 +68,14 @@ namespace MusicPlayer.ViewModels
         }
 
         private bool IsNameValid(string listName)
-        {
+        {/*
             for (int i = 0; i < 9; i++)
             {
                 if (listName[0].ToString() == i.ToString())
                 {
                     return false;
                 }
-            }
+            }*/
             return !SongsInList.ContainsKey(listName);
         }
 

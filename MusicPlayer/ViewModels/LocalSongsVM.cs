@@ -24,7 +24,7 @@ namespace MusicPlayer.ViewModels
         // 从数据库加载歌曲信息
         public void LoadSongs()
         {
-            Songs = DBManager.GetSongs("Songs");
+            Songs = DBManager.GetSongs("_Songs_");
             // 第一次启动时
             if (Songs.Count == 0) ReloadSongs();
         }
@@ -34,7 +34,7 @@ namespace MusicPlayer.ViewModels
         {
             // 清空数据
             Songs.Clear();
-            DBManager.ClearSongs("Songs");
+            DBManager.ClearSongs("_Songs_");
             // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
             List<string> fileTypeFilter = new List<string>();
             fileTypeFilter.Add(".mp3");
@@ -53,7 +53,7 @@ namespace MusicPlayer.ViewModels
                 StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
                 Songs.Add(new Song(file.Path, musicProperties, thumbnail));
             }
-            DBManager.AddSongs(Songs, "Songs");
+            DBManager.AddSongs(Songs, "_Songs_");
         }
         
         // 判断再删除时用户是否已选中歌单

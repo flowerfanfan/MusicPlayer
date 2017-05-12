@@ -36,9 +36,9 @@ namespace MusicPlayer.Controls
 
         private void SongListName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SongListName.Text.ToString().Equals(""))
+           if (SongListName.Text == "" || SongListName.Text == "_Songs_")
             {
-                IsPrimaryButtonEnabled = false;
+               IsPrimaryButtonEnabled = false;
             }
             else
             {

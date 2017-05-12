@@ -177,7 +177,6 @@ namespace MusicPlayer
 
                 //
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace(file.Name, file);
-
                 string lrcPath = file.Path.Replace(".mp3", ".lrc");
                 StorageFile lrcFile = null;
                 var properties = await file.Properties.GetMusicPropertiesAsync();

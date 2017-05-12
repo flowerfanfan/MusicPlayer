@@ -32,7 +32,7 @@ namespace MusicPlayer.DataBase
         {
             // 加载Songs表
             using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
-                                             Songs (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                             `_Songs_` (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                     FilePath VARCHAR(300),
                                                     Title VARCHAR(200),
                                                     Artist VARCHAR(200),
@@ -58,7 +58,7 @@ namespace MusicPlayer.DataBase
         public ObservableCollection<Song> GetSongs(string listTable)
         {
             ObservableCollection<Song> data = new ObservableCollection<Song>();
-            using (var stmt = Conn.Prepare("SELECT * FROM " + listTable))
+            using (var stmt = Conn.Prepare("SELECT * FROM `" + listTable + "`"))
             {
                 while (stmt.Step() == SQLiteResult.ROW)
                 {
@@ -114,7 +114,7 @@ namespace MusicPlayer.DataBase
             {
                 AddSong(song, listName);
             }
-            if (listName != "Songs")
+            if (listName != "_Songs_")
             {
                 int number;
                 using (var stmt = Conn.Prepare(@"SELECT Number FROM SongLists WHERE Name = ?"))
@@ -147,8 +147,8 @@ namespace MusicPlayer.DataBase
         public void CreateSongList(string listName)
         {
             AddSongList(listName);
-            using (var stmt = Conn.Prepare("CREATE TABLE IF NOT EXISTS " +
-                                            listName + @" (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            using (var stmt = Conn.Prepare("CREATE TABLE IF NOT EXISTS `" +
+                                            listName + "`" + @" (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                            FilePath VARCHAR(300),
                                                            Title VARCHAR(200),
                                                            Artist VARCHAR(200),
@@ -164,7 +164,7 @@ namespace MusicPlayer.DataBase
         // 清空歌曲表
         public void ClearSongs(string listName)
         {
-            using (var stmt = Conn.Prepare("DELETE FROM " + listName))
+            using (var stmt = Conn.Prepare("DELETE FROM `" + listName + "`"))
             {
                 stmt.Step();
             }
@@ -178,7 +178,7 @@ namespace MusicPlayer.DataBase
                 stmt.Bind(1, listName);
                 stmt.Step();
             }
-            using (var stmt = Conn.Prepare("DROP TABLE " + listName))
+            using (var stmt = Conn.Prepare("DROP TABLE `" + listName +"`"))
             {
                 stmt.Step();
             }

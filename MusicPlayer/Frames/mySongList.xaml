@@ -65,7 +65,11 @@
             <ListView x:Name="SongsInSelectedListLV"
                       Grid.Column="1"
                       Padding="10"
-                      ItemsSource="{x:Bind mySongListVM.SongsInSelectedList, Mode=OneWay}">
+                      ItemsSource="{x:Bind mySongListVM.SongsInSelectedList, Mode=OneWay}"
+                      IsItemClickEnabled="True"
+                      ItemClick="Select_Songs"
+                      DoubleTapped="PlaySong"
+                      >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:Song">
                         <StackPanel Orientation="Horizontal"

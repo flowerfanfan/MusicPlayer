@@ -24,6 +24,7 @@ using Windows.Storage.AccessCache;
 using MusicPlayer.Controls;
 using MusicPlayer.DataBase;
 using Windows.Storage.FileProperties;
+using System.Linq;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -148,7 +149,72 @@ namespace MusicPlayer
             media.Max = sender.PlaybackSession.NaturalDuration.TotalSeconds;
         }
 
+        public async void Play(StorageFile file)
+        {
+            if (file != null)
+            {
+                bool fileFromPicker = true;
+                var thumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView);
+                BitmapImage tn = new BitmapImage();
+                tn.SetSource(thumbnail);
+                player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
 
+                //MostRecentlyUsedList 添加。
+                StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Name, file);
+
+                mediaFile = file;
+                player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
+                if (StorageApplicationPermissions.FutureAccessList.CheckAccess(file))
+                    fileFromPicker = false;
+                else
+                {
+                    fileFromPicker = true;
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(file.Name, file);
+                }
+
+
+
+                    string lrcPath = file.Path.Replace(".mp3", ".lrc");
+                    StorageFile lrcFile = null;
+                    
+                    try
+                    {
+                        lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (fileFromPicker)
+                        {
+                            await new MessageDialog(ex.Message + ", 请手动添加歌词文件， 或者直接按“取消”进行无歌词播放").ShowAsync();
+                            /*
+                            StorageFolder parent = null;
+                            StorageFile lrcFile = null;
+                            parent = await file.GetParentAsync();
+                            while (parent == null) ; //在这里无限等待了
+                            lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
+                            */
+
+                            FileOpenPicker openPicker = new FileOpenPicker();
+                            openPicker.ViewMode = PickerViewMode.Thumbnail;
+                            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                            openPicker.FileTypeFilter.Add(".lrc");
+                            lrcFile = await openPicker.PickSingleFileAsync();
+                        }
+                    }
+                    string text = "";
+                    if (lrcFile != null)
+                    {
+                        StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
+                        text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                    }
+                    lrc.getLrc(text);
+                var properties = await file.Properties.GetMusicPropertiesAsync();
+                Song s = new Song(file.Path, properties, thumbnail);
+                    s.lyric = lrc;
+                    s.Cover = tn;
+                    ContentFrame.Navigate(typeof(PlayingPage), s);
+                }
+        }
         private async void pickFileButton_Click(object sender, RoutedEventArgs e)
         {
             // Clear previous returned file name, if it exists, between iterations of this scenario
@@ -163,75 +229,7 @@ namespace MusicPlayer
             openPicker.FileTypeFilter.Add(".avi");
             openPicker.FileTypeFilter.Add(".mp3");
             StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
-            {
-
-                var thumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView);
-                BitmapImage tn = new BitmapImage();
-                tn.SetSource(thumbnail);
-                player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
-
-                mediaFile = file;
-
-                player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
-
-                //
-                StorageApplicationPermissions.FutureAccessList.AddOrReplace(file.Name, file);
-                string lrcPath = file.Path.Replace(".mp3", ".lrc");
-                StorageFile lrcFile = null;
-                var properties = await file.Properties.GetMusicPropertiesAsync();
-                try
-                {
-                    lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-
-                    await new MessageDialog(ex.Message).ShowAsync();
-                    /*
-                    StorageFolder parent = null;
-                    StorageFile lrcFile = null;
-                    parent = await file.GetParentAsync();
-                    while (parent == null) ; //在这里无限等待了
-                    lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
-                    */
-
-                    openPicker = new FileOpenPicker();
-                    openPicker.ViewMode = PickerViewMode.Thumbnail;
-                    openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                    openPicker.FileTypeFilter.Add(".lrc");
-                    lrcFile = await openPicker.PickSingleFileAsync();
-                    if (lrcFile != null)
-                        StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
-                }
-                //
-
-                //while (lrcFile == null) ;
-                string text = "";
-                if (lrcFile != null)
-                {
-
-                    text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
-                }
-
-
-
-                lrc.getLrc(text);
-                Song s = new Song(file.Path, properties, thumbnail);
-                s.lyric = lrc;
-                s.Cover = tn;
-
-                /*
-                s.Album = properties.Album;
-                s.Artist = properties.Artist;
-                s.Cover = tn;
-                s.Title = properties.Title;
-                s.lyric = lrc;
-                */
-                ContentFrame.Navigate(typeof(PlayingPage), s);
-
-            }
-
+            Play(file);
         }
         async private void PlaybackSession_PositionChanged(Windows.Media.Playback.MediaPlaybackSession sender, object args)
         {
@@ -333,9 +331,9 @@ namespace MusicPlayer
         }
 
         // TODO
-        private void AddSongBtn_Click(object sender, RoutedEventArgs e)
+        private async void AddSongBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+            //await pickFileButton_Click(sender, e);
         }
     }
 }

@@ -2,6 +2,7 @@
 using MusicPlayer.Models;
 using MusicPlayer.ViewModels;
 using System;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -20,7 +21,7 @@ namespace MusicPlayer.Frames
         private string CANCEL = "取消";
         private string DELETE = "删除";
         private bool isSelceting;
-
+        private Song song;
         public mySongList()
         {
             this.InitializeComponent();
@@ -96,6 +97,18 @@ namespace MusicPlayer.Frames
                     DeleteListBtn.Content = CANCEL;
                 }
             }
+        }
+
+        private void Select_Songs(object sender, ItemClickEventArgs e)
+        {
+            song = (Song)e.ClickedItem;
+        }
+
+        private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            //Song t = (Song)e.OriginalSource;
+            StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
+            MainPage.Current.Play(file);
         }
     }
 }

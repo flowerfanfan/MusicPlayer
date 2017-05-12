@@ -41,7 +41,9 @@
                   Padding="20"
                   ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}"
                   IsMultiSelectCheckBoxEnabled="True"
-                  SelectionChanged="SongListLV_SelectionChanged">
+                  SelectionChanged="SongLV_SelectionChanged"
+                  ItemClick="Select_Songs"
+                  DoubleTapped="PlaySong">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
                     <StackPanel Orientation="Horizontal"

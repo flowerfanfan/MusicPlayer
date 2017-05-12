@@ -30,7 +30,7 @@ namespace MusicPlayer.DataBase
         // 创建或打开数据库
         public void LoadDatabase()
         {
-            // 加载Songs表
+            // 加载Songs表（初始表）
             using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
                                              `_Songs_` (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                     FilePath VARCHAR(300),
@@ -90,11 +90,12 @@ namespace MusicPlayer.DataBase
         }
 
         // 添加一首歌曲的信息
+        // 插入某首歌到某个歌单中
         public void AddSong(Song song, string listName)
         {
             using (var stmt = Conn.Prepare(@"INSERT
-                                             INTO " + listName +
-                                            "(FilePath, Title, Artist, Album, Length, Cover)" +
+                                             INTO `" + listName +
+                                            "`(FilePath, Title, Artist, Album, Length, Cover)" +
                                             "VALUES (?, ?, ?, ?, ?, ?)"))
             {
                 stmt.Bind(1, song.FilePath);

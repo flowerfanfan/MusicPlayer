@@ -164,6 +164,7 @@
                             <TextBlock Text="我的音乐"
                                        Height="20"
                                        Width="180"/>
+                            <!--这里可以做一个flyout， 分别是添加音乐和添加文件夹-->
                             <AppBarButton x:Name="AddSongBtn"
                                           Icon="Add"
                                           Width="50"

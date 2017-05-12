@@ -19,7 +19,7 @@
              From="0" To="-40" Duration="0:0:0.5"/>
         </Storyboard>
     </Page.Resources>
-    <Grid  Background="LightGray" HorizontalAlignment="Stretch" MinWidth="1000">
+    <Grid  Background="LightGray" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="*"/>
@@ -105,6 +105,7 @@
         </Grid>
         <Grid Grid.Row="1">
             <Line
+                Stretch="Fill"
                   Stroke="Black"
                   StrokeThickness="1"
                   X1="1"

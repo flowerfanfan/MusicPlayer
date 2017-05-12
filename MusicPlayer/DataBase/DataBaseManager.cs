@@ -95,7 +95,7 @@ namespace MusicPlayer.DataBase
             using (var stmt = Conn.Prepare(@"INSERT
                                              INTO " +  listName +
                                             "(FilePath, Title, Artist, Album, Length, Cover)" +
-                                             "VALUES (?, ?, ?, ?, ?, ?)"))
+                                            "VALUES (?, ?, ?, ?, ?, ?)"))
             {
                 stmt.Bind(1, song.FilePath);
                 stmt.Bind(2, song.Title);
@@ -113,6 +113,15 @@ namespace MusicPlayer.DataBase
             foreach (Song song in songs)
             {
                 AddSong(song, listName);
+            }
+            if (listName != "Songs")
+            {
+                using (var stmt = Conn.Prepare(@"Update SongLists SET Number = ? WHERE Name = ?"))
+                {
+                    stmt.Bind(1, songs.Count);
+                    stmt.Bind(2, listName);
+                    stmt.Step();
+                }
             }
         }
 

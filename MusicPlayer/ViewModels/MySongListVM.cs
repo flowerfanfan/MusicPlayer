@@ -16,6 +16,7 @@ namespace MusicPlayer.ViewModels
         public ObservableCollection<SongList> SongLists { get; set; }
         public Dictionary<string, ObservableCollection<Song>> SongsInList { get; set; }
         public ObservableCollection<Song> SongsInSelectedList { get; set; }
+        public string SelectedSongList { get; set; }
         public ObservableCollection<Song> SongsToBeAddedToList { get; set; }
 
         private MySongListVM()
@@ -23,6 +24,7 @@ namespace MusicPlayer.ViewModels
             DBManager = DataBaseManager.GetDBManager();
             SongLists = new ObservableCollection<SongList>();
             SongsInList = new Dictionary<string, ObservableCollection<Song>>();
+            SongsInSelectedList = new ObservableCollection<Song>();
             SongsToBeAddedToList = new ObservableCollection<Song>();
             LoadSongLists();
         }
@@ -38,13 +40,20 @@ namespace MusicPlayer.ViewModels
 
         public void AddSongsToList(string name)
         {
-            ObservableCollection<Song> songList = SongsInList[name];
+            ObservableCollection<Song> songsInList = SongsInList[name];
             foreach (Song song in SongsToBeAddedToList)
             {
-                songList.Add(song);
+                songsInList.Add(song);
                 // 在数据库中添加
                 DBManager.AddSong(song, name);
             }
+            foreach (SongList songList in SongLists)
+            {
+                if (songList.Name == name)
+                {
+                    songList.Number = songsInList.Count;
+                }
+            } 
         }
 
         public void LoadSongLists()
@@ -54,7 +63,12 @@ namespace MusicPlayer.ViewModels
 
         public void SetSelectedList(string name)
         {
-            SongsInSelectedList = SongsInList[name];
+            SongsInSelectedList.Clear();
+            foreach (Song song in SongsInList[name])
+            {
+                SongsInSelectedList.Add(song);
+            }
+            SelectedSongList = name;
         }
 
         public void CreateSongList(string listName)
@@ -96,6 +110,10 @@ namespace MusicPlayer.ViewModels
                 }
             }
             DBManager.DeleteSongList(name);
+            if (SelectedSongList == name)
+            {
+                mySongListVM.SongsInSelectedList.Clear();
+            }
         }
     }
 }

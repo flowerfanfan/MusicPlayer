@@ -50,8 +50,7 @@
                                           Icon="Delete"
                                           Opacity="0"
                                           PointerEntered="DeleteSongListBtn_PointerEntered"
-                                          PointerExited="DeleteSongListBtn_PointerExited"
-                                          HorizontalContentAlignment="Left" />
+                                          PointerExited="DeleteSongListBtn_PointerExited"/>
 
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="{x:Bind Name, Mode=OneWay}"

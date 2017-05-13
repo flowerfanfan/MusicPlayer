@@ -169,8 +169,6 @@ namespace MusicPlayer.Frames
 
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
-            //Song t = (Song)e.OriginalSource;
-            
             StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
         }

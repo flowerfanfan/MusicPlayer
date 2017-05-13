@@ -29,6 +29,7 @@ using MusicPlayer.ViewModels;
 using MusicPlayer.Helper;
 using Windows.Storage.Search;
 using MusicPlayer.Tile;
+using System.Collections.ObjectModel;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -41,6 +42,8 @@ namespace MusicPlayer
         Lyric lrc = new Lyric();
         public static MainPage Current;
         public DataBaseManager DBManager { get; set; }
+        public ObservableCollection<Song> PlayingList { get; set; }
+        public Song ClickedSong { get; set; }
 
         public MainPage()
         {
@@ -58,6 +61,7 @@ namespace MusicPlayer
             double t = ContentFrame.ActualWidth;
 
             DBManager = DataBaseManager.GetDBManager();
+            PlayingList = new ObservableCollection<Song>();
         }
 
         //设置窗口栏的颜色
@@ -229,6 +233,17 @@ namespace MusicPlayer
                 {
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
+                // 设置正在播放
+                if (MySongListVM.GetMySongListVM().IfPlayingListChanged())
+                {
+                    ObservableCollection<Song> temp = MySongListVM.GetMySongListVM().PlayingList;
+                    PlayingList.Clear();
+                    foreach (Song song in temp)
+                    {
+                        PlayingList.Add(song);
+                    }
+                }
+
                 ContentFrame.Navigate(typeof(Default), s);
             }
         }
@@ -237,7 +252,7 @@ namespace MusicPlayer
         {
             await TestSomethingAsync(sender);
         }
-        async Task TestSomethingAsync(Windows.Media.Playback.MediaPlaybackSession sender)
+        async Task TestSomethingAsync(MediaPlaybackSession sender)
         {
             media.CurrentValue = sender.Position.TotalSeconds;
             await Task.Delay(0);
@@ -407,6 +422,17 @@ namespace MusicPlayer
             int k = list.getIndexOf(Default.Current.song);
             int next = (k + 1) % list.Count;
             PlaySongAt(next);
+        }
+
+        private void Select_Songs(object sender, ItemClickEventArgs e)
+        {
+            ClickedSong = (Song)e.ClickedItem;
+        }
+
+        private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            StorageFile file = await StorageFile.GetFileFromPathAsync(ClickedSong.FilePath);
+            Play(file);
         }
     }
 }

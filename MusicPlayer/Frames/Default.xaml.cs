@@ -72,7 +72,7 @@ namespace MusicPlayer
                 MainPage.Current.SongArtist.Text = song.Artist;
                 MainPage.Current.SongTitle.Text = song.Title;
                 MainPage.Current.Cover.Source = song.Cover;
-                search.Opacity = 1;
+                search.Visibility = Visibility.Visible;
             }
         }
 
@@ -165,6 +165,11 @@ namespace MusicPlayer
             //var s = Default.Current.song;
             setLRC();
             //ContentFrame.Navigate(typeof(Default), s);
+        }
+
+        private void FavoriteBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

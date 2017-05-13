@@ -209,8 +209,9 @@ namespace MusicPlayer.DataBase
         // 删除歌曲表中的一首歌
         public void DeleteSong(string listName, Song song)
         {
-            using (var stmt = Conn.Prepare("DELETE FROM '" + listName + "' WHERE FilePath = '" + song.FilePath + "'"))
+            using (var stmt = Conn.Prepare("DELETE FROM `" + listName + "` WHERE FilePath = ?"))
             {
+                stmt.Bind(1, song.FilePath);
                 stmt.Step();
             }
             if (listName != "_Songs_")

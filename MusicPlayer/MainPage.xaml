@@ -222,10 +222,10 @@
             </CommandBar.Content>
             <!--为什么暂停用的停止的icon呢。。我给加上暂停了-->
             <AppBarButton x:Name="tryFolder" Icon="Folder" Label="Floder Choose" Click="Addfolder_Click" />
-            <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
+            <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" Click="previous_Click"/>
             <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play" Click="play_Click"/>
             <AppBarButton Icon = "Stop" Label = "Stop"  Click="stop_Click"/>
-            <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song"/>
+            <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song" Click="next_Click"/>
             <AppBarSeparator/>
             <AppBarButton x:Name="playing" Icon="MusicInfo"  Label="Playing" >
                 <AppBarButton.Flyout>

@@ -164,7 +164,9 @@ namespace MusicPlayer
                     StorageApplicationPermissions.MostRecentlyUsedList.Remove(file.Name);*/
                 StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Name, file);
                 //自动播放！
+                //recent.Current.getRecentFiles();
                 player.MediaPlayer.Play();
+                
                 play_Click(player, null);
 
                 
@@ -367,6 +369,29 @@ namespace MusicPlayer
         {
 
             player.MediaPlayer.Volume = e.NewValue / 100; //binding its?
+        }
+
+        private void previous_Click(object sender, RoutedEventArgs e)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            int k = list.getIndexOf(Default.Current.song);
+            int previous = (k - 1 + list.Count) % list.Count;
+            PlaySongAt(previous);
+        }
+
+        private async void PlaySongAt(int k)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            mediaFile = await StorageFile.GetFileFromPathAsync(list.ElementAt(k).FilePath);
+            Play(mediaFile);
+        }
+
+        private void next_Click(object sender, RoutedEventArgs e)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            int k = list.getIndexOf(Default.Current.song);
+            int next = (k + 1) % list.Count;
+            PlaySongAt(next);
         }
     }
 }

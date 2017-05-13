@@ -51,7 +51,11 @@
         
         <GridView Grid.Row="1"
                   Padding="20"
-                  ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}">
+                  ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}"
+                  ItemClick="Select_Songs"
+                  DoubleTapped="PlaySong"
+                  IsItemClickEnabled="True"
+                  >
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
                     <StackPanel>

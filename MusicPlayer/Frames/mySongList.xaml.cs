@@ -39,6 +39,7 @@ namespace MusicPlayer.Frames
             mySongListVM.SetClickedList(clickedListName);
             ClickedListNameTB.Text = clickedListName;
             ClickedListHead.Visibility = Visibility.Visible;
+            MySongListVM.GetMySongListVM().PlayingList = MySongListVM.GetMySongListVM().SongsInList[clickedListName];
         }
 
         // 编辑/取消/删除 歌单按钮点击事件

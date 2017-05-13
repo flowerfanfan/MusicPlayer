@@ -34,21 +34,16 @@ namespace MusicPlayer.Frames
             favoriteVM = FavoriteVM.GetFavoriteVM();
         }
 
-        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UnFavoriteBtn_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
-        }
-
-        private void UnFavoriteBtn_Click(object sender, RoutedEventArgs e)
-        {
-            favoriteVM.RemoveFavoriteSong(((Song)((Button)sender).DataContext));
+            favoriteVM.RemoveFavoriteSong(((Song)((Image)sender).DataContext));
         }
 
         private void Select_Songs(object sender, ItemClickEventArgs e)
         {
             song = (Song)e.ClickedItem;
-
         }
+
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
             MySongListVM.GetMySongListVM().PlayingList = FavoriteVM.GetFavoriteVM().FavoriteSongs;

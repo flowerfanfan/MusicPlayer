@@ -140,13 +140,9 @@
                                    Grid.Row="2"
                                    FontSize="18" />
                         <TextBlock Text="{Binding Artist}"
-                                   Grid.Column="2" TextTrimming="CharacterEllipsis"/>
+                                   Grid.Column="2"
+                                   TextTrimming="CharacterEllipsis" />
                     </Grid>
-                    <!--<StackPanel Orientation="Horizontal" Grid.Row="3" VerticalAlignment="Center">
-                        <TextBlock Text="喜欢" 
-                           FontSize="18"/>
-                        <Image x:Name="like" Source="ms-appx:///Assets/dislike.png" Width="20" Margin="20, 5, 0, 0" Tapped="likeButton"/>
-                    </StackPanel>-->
                     <Image x:Name="FavoriteBtn"
                            Grid.Row="3"
                            Source="ms-appx:///Assets/dislike.png"

@@ -54,19 +54,17 @@
                   ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}"
                   ItemClick="Select_Songs"
                   DoubleTapped="PlaySong"
-                  IsItemClickEnabled="True"
-                  >
+                  IsItemClickEnabled="True">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
                     <StackPanel>
                         <Image Source="{x:Bind Cover, Mode=OneWay}" Width="150" Height="150" Margin="20"/>
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <Button x:Name="UnFavoriteBtn"
-                                    Click="UnFavoriteBtn_Click">
-                                <Image Source="ms-appx:///Assets/like.png"
-                                       Width="15"/>
-                            </Button>
+                            <Image x:Name="UnFavoriteBtn"
+                                   Source="ms-appx:///Assets/like.png"
+                                   Width="20"
+                                   Tapped="UnFavoriteBtn_Tapped" />
                             <StackPanel Width="100">
                                 <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                                            FontSize="25"

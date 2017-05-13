@@ -26,5 +26,6 @@ namespace MediaPlayer
             s.Cover = tn;
             return s;
         }
+
     }
 }

@@ -21,7 +21,10 @@ namespace MusicPlayer.Helper
             System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
             var response = client.GetStringAsync(addr).Result;
             JObject jresult = (JObject)JsonConvert.DeserializeObject(response);
-            return jresult["lrc"].ToString();
+            if (jresult.Count == 5)
+                return "No lyric";
+            else
+                return jresult["lrc"].ToString();
         }
         public static List<string> GetSongId(string name)
         {

@@ -86,7 +86,7 @@ namespace MusicPlayer
             }
             else if (RecentItem.IsSelected)
             {
-                ContentFrame.Navigate(typeof(Frames.universalPage), "最近播放");
+                ContentFrame.Navigate(typeof(Frames.recent));
                 RecentItem.IsSelected = false;
             }
             else if (FavoriteItem.IsSelected)
@@ -160,14 +160,14 @@ namespace MusicPlayer
                 player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
 
                 //MostRecentlyUsedList 添加。
-                if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(file.Name))
-                    StorageApplicationPermissions.MostRecentlyUsedList.Remove(file.Name);
+               /* if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(file.Name))
+                    StorageApplicationPermissions.MostRecentlyUsedList.Remove(file.Name);*/
                 StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Name, file);
                 //自动播放！
                 player.MediaPlayer.Play();
                 play_Click(player, null);
 
-
+                
                 mediaFile = file;
                 player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
                 if (StorageApplicationPermissions.FutureAccessList.CheckAccess(file))

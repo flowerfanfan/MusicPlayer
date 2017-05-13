@@ -369,7 +369,7 @@ namespace MusicPlayer
             player.MediaPlayer.Volume = e.NewValue / 100; //binding its?
         }
 
-
+        /*
         private void SearchContent_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (SearchContent.Text.ToString() != "")
@@ -385,6 +385,11 @@ namespace MusicPlayer
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
+        }*/
+
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
         }
     }
 }

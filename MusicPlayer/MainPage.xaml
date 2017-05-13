@@ -89,6 +89,12 @@
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="left" Margin="0, 0, 10, 0"/>
+                            <AutoSuggestBox PlaceholderText="搜索"
+                                            QueryIcon="Find"
+                                            Width="230"
+                                            Height="35"
+                                            QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
+                            <!--
                             <TextBox x:Name="SearchContent"
                                      Width="200"
                                      Height="35"
@@ -102,6 +108,7 @@
                                           HorizontalAlignment="Right"
                                           IsEnabled="False"
                                           Click="SearchBtn_Click"/>
+                            -->
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="RecentItem"
@@ -197,7 +204,7 @@
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar Background="#DC143C">
+        <CommandBar Background="#744DA9">
             <CommandBar.Content>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>

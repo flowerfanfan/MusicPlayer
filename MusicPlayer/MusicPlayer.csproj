@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Helper\Helper.cs" />
     <Compile Include="Helper\Parameter.cs" />
+    <Compile Include="Helper\WebRequest.cs" />
     <Compile Include="Lyric\Lyric.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

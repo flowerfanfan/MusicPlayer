@@ -223,7 +223,6 @@
             <!--为什么暂停用的停止的icon呢。。我给加上暂停了-->
             <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
             <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play" Click="play_Click"/>
-            <AppBarButton Icon="Pause" Label="Pause" Click="pause_Click"/>
             <AppBarButton Icon = "Stop" Label = "Stop"  Click="stop_Click"/>
             <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song"/>
             <AppBarSeparator/>

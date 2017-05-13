@@ -243,20 +243,24 @@ namespace MusicPlayer
             if (Math.Abs(timeline.Value - media.Max) < 0.1) stop_Click(null, null);
         }
 
+        /*把play和pause button合到一起了*/
         private void play_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
+            {
                 PlayingPage.Current.switchOnAnimation.Begin();
-            player.MediaPlayer.PlaybackSession.PlaybackRate = 1;
-            player.MediaPlayer.Play();
-        }
-
-        private void pause_Click(object sender, RoutedEventArgs e)
-        {
-            if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
+                PlayButton.Icon = new SymbolIcon(Symbol.Pause);
+                PlayButton.Label = "Pause";
+                player.MediaPlayer.PlaybackSession.PlaybackRate = 1;
+                player.MediaPlayer.Play();
+            }
+            else if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
+            {
                 PlayingPage.Current.switchPauseAnimation.Begin();
-
-            player.MediaPlayer.Pause();
+                PlayButton.Icon = new SymbolIcon(Symbol.Play);
+                PlayButton.Label = "Play";
+                player.MediaPlayer.Pause();
+            }
         }
 
 

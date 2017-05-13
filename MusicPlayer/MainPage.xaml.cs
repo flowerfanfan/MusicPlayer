@@ -28,6 +28,7 @@ using System.Linq;
 using MusicPlayer.ViewModels;
 using MusicPlayer.Helper;
 using Windows.Storage.Search;
+using MusicPlayer.Tile;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -215,6 +216,7 @@ namespace MusicPlayer
                 Song s = new Song(file.Path, properties, thumbnail);
                 s.lyric = lrc;
                 s.Cover = tn;
+                TileManager.UpdateTileAsync(s);
                 ContentFrame.Navigate(typeof(Default), s);
             }
         }

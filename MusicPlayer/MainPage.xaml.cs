@@ -157,6 +157,10 @@ namespace MusicPlayer
 
                 //MostRecentlyUsedList 添加。
                 StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Name, file);
+                //自动播放！
+                player.MediaPlayer.Play();
+                play_Click(player, null);
+
 
                 mediaFile = file;
                 player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
@@ -208,7 +212,7 @@ namespace MusicPlayer
                 Song s = new Song(file.Path, properties, thumbnail);
                     s.lyric = lrc;
                     s.Cover = tn;
-                    ContentFrame.Navigate(typeof(PlayingPage), s);
+                    ContentFrame.Navigate(typeof(Default), s);
                 }
         }
 
@@ -226,11 +230,11 @@ namespace MusicPlayer
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
-                PlayingPage.Current.switchPauseAnimation.Begin();
+                Default.Current.switchPauseAnimation.Begin();
             player.MediaPlayer.PlaybackSession.Position = new TimeSpan(0);
             player.MediaPlayer.Pause();
-            PlayingPage.Current.rotation.Angle = 0;
-            PlayingPage.Current.out_rotation.Angle = 0;
+            Default.Current.rotation.Angle = 0;
+            Default.Current.out_rotation.Angle = 0;
 
         }
 
@@ -248,7 +252,7 @@ namespace MusicPlayer
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
             {
-                PlayingPage.Current.switchOnAnimation.Begin();
+                Default.Current.switchOnAnimation.Begin();
                 PlayButton.Icon = new SymbolIcon(Symbol.Pause);
                 PlayButton.Label = "Pause";
                 player.MediaPlayer.PlaybackSession.PlaybackRate = 1;
@@ -256,7 +260,7 @@ namespace MusicPlayer
             }
             else if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
             {
-                PlayingPage.Current.switchPauseAnimation.Begin();
+                Default.Current.switchPauseAnimation.Begin();
                 PlayButton.Icon = new SymbolIcon(Symbol.Play);
                 PlayButton.Label = "Play";
                 player.MediaPlayer.Pause();

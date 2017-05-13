@@ -11,7 +11,7 @@
     <Grid Background="#A9A9A9">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
-            <RowDefinition />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid>
             <TextBlock Text="我的最爱" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
@@ -48,10 +48,10 @@
             </StackPanel>
             
         </GridView>-->
-        
+
         <GridView Grid.Row="1"
                   Padding="20"
-                  ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}">
+                  ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}" Margin="0, 0, 0,44" Grid.RowSpan="2">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
                     <StackPanel>
@@ -61,7 +61,7 @@
                             <Button x:Name="UnFavoriteBtn"
                                     Click="UnFavoriteBtn_Click">
                                 <Image Source="ms-appx:///Assets/like.png"
-                                       Width="15"/>
+                                       Width="15" Margin="10"/>
                             </Button>
                             <StackPanel Width="100">
                                 <TextBlock Text="{x:Bind Title, Mode=OneWay}"

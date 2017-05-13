@@ -23,13 +23,21 @@
                               VerticalAlignment="Bottom"
                               Icon="Refresh"
                               Click="RefreshBtn_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="AddSongsToListBtn"
                         Content="编辑"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="0, 0, 20, 0"
                         Click="AddSongsToListBtn_Click" />
-                <Button x:Name="DeleteSongsBtn"
-                        Content="删除"
-                        Visibility="Collapsed"
-                        Click="DeleteSongsBtn_Click" />
+                <AppBarButton x:Name="DeleteSongsBtn" 
+                                      Icon="Delete" 
+                                      Margin="-5, 0, 0, 0"
+                                      VerticalAlignment="Bottom"
+                                      HorizontalAlignment="Right"
+                                      Visibility="Collapsed"
+                                      Click="DeleteSongsBtn_Click"/>
             </StackPanel>
             <Line Stretch="Fill"
                   Stroke="Black"

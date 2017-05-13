@@ -3,6 +3,7 @@ using MusicPlayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
@@ -10,12 +11,32 @@ using Windows.Storage.Search;
 
 namespace MusicPlayer.ViewModels
 {
-    public class LocalSongsVM
+    public class LocalSongsVM: INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         // 因需要与其他页面（MainPage）进行数据交换，故采用单例模式
         private static LocalSongsVM localSongsVM;
         public DataBaseManager DBManager { get; set; }
-        public ObservableCollection<Song> Songs { get; set; }
+        private ObservableCollection<Song> _Songs { get; set; }
+
+        public ObservableCollection<Song> Songs
+        {
+            get
+            {
+                return _Songs;
+            }
+            set
+            {
+                
+                if (_Songs != value)
+                {
+                    _Songs = value;
+                    PropertyChanged(this, new PropertyChangedEventArgs("Songs"));
+                }
+            }
+        }
+
+
         public ObservableCollection<Song> SelectedSongs { get; set; }
 
         private LocalSongsVM()

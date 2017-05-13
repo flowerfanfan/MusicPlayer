@@ -1,7 +1,9 @@
 ﻿using MediaPlayer;
 using MusicPlayer.Models;
+using MusicPlayer.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -40,7 +42,7 @@ namespace MusicPlayer.Frames
         {
             AccessListEntryView entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries;
             //存放得到的recent歌曲
-            List<Song> songs = new List<Song>();
+            ObservableCollection<Song> songs = new ObservableCollection<Song>();
             if (entries.Count > 0)
             {
                 foreach (AccessListEntry entry in entries)
@@ -50,7 +52,7 @@ namespace MusicPlayer.Frames
                     songs.Add(s);
                 }
             }
-            //这里把songs添加到recent列表中即可。。。
+            LocalSongsVM.GetLocalSongsVM().Songs = songs;
 
         }
     }

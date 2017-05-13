@@ -86,7 +86,7 @@ namespace MusicPlayer
             }
             else if (RecentItem.IsSelected)
             {
-                ContentFrame.Navigate(typeof(Frames.recent));
+                ContentFrame.Navigate(typeof(Frames.universalPage), "最近播放");
                 RecentItem.IsSelected = false;
             }
             else if (FavoriteItem.IsSelected)
@@ -160,6 +160,8 @@ namespace MusicPlayer
                 player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
 
                 //MostRecentlyUsedList 添加。
+                if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(file.Name))
+                    StorageApplicationPermissions.MostRecentlyUsedList.Remove(file.Name);
                 StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Name, file);
                 //自动播放！
                 player.MediaPlayer.Play();
@@ -322,12 +324,13 @@ namespace MusicPlayer
             openPicker.FileTypeFilter.Add(".mp3");
             StorageFolder folder = await openPicker.PickSingleFolderAsync();
 
-
-            var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
-            var query = folder.CreateFileQueryWithOptions(queryOptions);
-            IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
-            LocalSongsVM.GetLocalSongsVM().ReadMusicFiles(fileList);
-
+            if (folder != null)
+            {
+                var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
+                var query = folder.CreateFileQueryWithOptions(queryOptions);
+                IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
+                LocalSongsVM.GetLocalSongsVM().ReadMusicFiles(fileList);
+            }
         }
 
         private async void AddSongBtn_Click(object sender, RoutedEventArgs e)

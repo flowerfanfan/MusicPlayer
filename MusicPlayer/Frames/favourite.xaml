@@ -11,39 +11,62 @@
     <Grid Background="#A9A9A9">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid>
-            <TextBlock Text="我的最爱"
-                       FontSize="36"
-                       VerticalAlignment="Center"
-                       Margin="20, 0, 0, 0" />
+            <TextBlock Text="我的最爱" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
             <Line Stretch="Fill"
                   Stroke="Black"
                   StrokeThickness="1"
                   X1="1"
                   Margin="20, 0, 20, 0"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Bottom" />
+                  HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <GridView x:Name="FavoriteGV"
-                  Grid.Row="1"
+        <!--<GridView Grid.Row="1" x:Name="recentSongs" Padding="20">
+            
+            <StackPanel>
+                <Image Source="ms-appx:///Assets/logo-300.png" Width="150" Height="150" Margin="20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="song1" HorizontalAlignment="Center" FontSize="20"/>
+                    <Image x:Name="like" Source="ms-appx:///Assets/like.png" Width="18" Margin="20, 5, 0, 0"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <Image Source="ms-appx:///Assets/logo-300.png" Width="150" Height="150" Margin="20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="song1" HorizontalAlignment="Center" FontSize="20"/>
+                    <Image x:Name="like1" Source="ms-appx:///Assets/like.png" Width="18" Margin="20, 5, 0, 0"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <Image Source="ms-appx:///Assets/logo-300.png" Width="150" Height="150" Margin="20"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="song1" HorizontalAlignment="Center" FontSize="20"/>
+                    <Image x:Name="like2" Source="ms-appx:///Assets/like.png" Width="18" Margin="20, 5, 0, 0"/>
+                </StackPanel>
+            </StackPanel>
+            
+        </GridView>-->
+        
+        <GridView Grid.Row="1"
                   Padding="20"
                   ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}"
+                  ItemClick="Select_Songs"
+                  DoubleTapped="PlaySong"
                   IsItemClickEnabled="True"
-                  ItemClick="FavoriteGV_ItemClick"
-                  DoubleTapped="PlaySong">
+                  >
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">
                     <StackPanel>
                         <Image Source="{x:Bind Cover, Mode=OneWay}" Width="150" Height="150" Margin="20"/>
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center">
-                            <Image x:Name="UnFavoriteBtn"
-                                   Source="ms-appx:///Assets/like.png"
-                                   Width="20"
-                                   Tapped="UnFavoriteBtn_Tapped"/>
+                            <Button x:Name="UnFavoriteBtn"
+                                    Click="UnFavoriteBtn_Click">
+                                <Image Source="ms-appx:///Assets/like.png"
+                                       Width="15"/>
+                            </Button>
                             <StackPanel Width="100">
                                 <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                                            FontSize="25"

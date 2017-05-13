@@ -1,6 +1,7 @@
 ﻿using MusicPlayer.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,16 @@ namespace MediaPlayer
             s.lyric = new Lyric();
             s.Cover = tn;
             return s;
+        }
+        //根据路径判断是否相等
+        //找不到的话返回-1
+        static public int getIndexOf(this ObservableCollection<Song> songs, Song m)
+        {
+            foreach (Song s in songs)
+            {
+                if (s.FilePath == m.FilePath) return songs.IndexOf(s);
+            }
+            return -1;
         }
 
     }

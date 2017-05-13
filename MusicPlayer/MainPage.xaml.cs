@@ -386,5 +386,27 @@ namespace MusicPlayer
         {
             ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
         }
+        private void previous_Click(object sender, RoutedEventArgs e)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            int k = list.getIndexOf(Default.Current.song);
+            int previous = (k - 1 + list.Count) % list.Count;
+            PlaySongAt(previous);
+        }
+
+        private async void PlaySongAt(int k)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            mediaFile = await StorageFile.GetFileFromPathAsync(list.ElementAt(k).FilePath);
+            Play(mediaFile);
+        }
+
+        private void next_Click(object sender, RoutedEventArgs e)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            int k = list.getIndexOf(Default.Current.song);
+            int next = (k + 1) % list.Count;
+            PlaySongAt(next);
+        }
     }
 }

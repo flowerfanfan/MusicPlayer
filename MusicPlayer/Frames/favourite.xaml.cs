@@ -26,8 +26,7 @@ namespace MusicPlayer.Frames
     public sealed partial class favourite : Page
     {
         public FavoriteVM favoriteVM { get; set; }
-        public Song ClickedSong { get; set; }
-
+        Song song;
         public favourite()
         {
             this.InitializeComponent();
@@ -35,19 +34,25 @@ namespace MusicPlayer.Frames
             favoriteVM = FavoriteVM.GetFavoriteVM();
         }
 
-        private void UnFavoriteBtn_Tapped(object sender, TappedRoutedEventArgs e)
+        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            favoriteVM.RemoveFavoriteSong(((Song)((Image)sender).DataContext));
+
         }
 
-        private void FavoriteGV_ItemClick(object sender, ItemClickEventArgs e)
+        private void UnFavoriteBtn_Click(object sender, RoutedEventArgs e)
         {
-            ClickedSong = (Song)e.ClickedItem;
+            favoriteVM.RemoveFavoriteSong(((Song)((Button)sender).DataContext));
         }
 
+        private void Select_Songs(object sender, ItemClickEventArgs e)
+        {
+            song = (Song)e.ClickedItem;
+
+        }
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
-            StorageFile file = await StorageFile.GetFileFromPathAsync(ClickedSong.FilePath);
+            MySongListVM.GetMySongListVM().PlayingList = FavoriteVM.GetFavoriteVM().FavoriteSongs;
+            StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
         }
     }

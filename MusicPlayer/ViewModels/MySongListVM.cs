@@ -8,7 +8,7 @@ namespace MusicPlayer.ViewModels
 {
     public class MySongListVM
     {
-        // 因需要与其他页面（MainPage）进行数据交换，故采用单例模式
+        // 因需要与其他页面（MainPage, LocalSongs）进行数据交换，故采用单例模式
         private static MySongListVM mySongListVM;
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<SongList> SongLists { get; set; }
@@ -80,12 +80,27 @@ namespace MusicPlayer.ViewModels
             ObservableCollection<Song> songsInList = SongsInList[name];
             foreach (Song song in SongsToBeAddedToList)
             {
-                songsInList.Add(song);
+                if (!IsSongInList(song, songsInList))
+                {
+                    songsInList.Add(song);
+                    // 在数据库中添加
+                    DBManager.AddSong(song, name);
+                }
             }
             UpdateNumberInList(name);
-            // 在数据库中添加
-            DBManager.AddSongs(SongsToBeAddedToList, name);
             SongsToBeAddedToList.Clear();
+        }
+
+        private bool IsSongInList(Song song, ObservableCollection<Song> songsInList)
+        {
+            foreach (Song item in songsInList)
+            {
+                if (song.FilePath == item.FilePath)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void UpdateNumberInList(string name)

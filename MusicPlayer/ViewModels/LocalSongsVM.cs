@@ -12,14 +12,17 @@ namespace MusicPlayer.ViewModels
 {
     public class LocalSongsVM
     {
+        // 因需要与其他页面（MainPage）进行数据交换，故采用单例模式
+        private static LocalSongsVM localSongsVM;
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<Song> Songs { get; set; }
         public ObservableCollection<Song> SelectedSongs { get; set; }
 
-        public LocalSongsVM()
+        private LocalSongsVM()
         {
             DBManager = DataBaseManager.GetDBManager();
             SelectedSongs = new ObservableCollection<Song>();
+            LoadSongs();
         }
 
         // 从数据库加载歌曲信息
@@ -28,6 +31,15 @@ namespace MusicPlayer.ViewModels
             Songs = DBManager.GetSongs("_Songs_");
             // 第一次启动时
             if (Songs.Count == 0) ReloadSongs();
+        }
+
+        public static LocalSongsVM GetLocalSongsVM()
+        {
+            if (localSongsVM == null)
+            {
+                localSongsVM = new LocalSongsVM();
+            }
+            return localSongsVM;
         }
 
         // 重新读取本地歌曲信息
@@ -84,6 +96,18 @@ namespace MusicPlayer.ViewModels
         public void RemoveSelectedSong(Song song)
         {
             SelectedSongs.Remove(song);
+        }
+
+        public bool HasSong(string path)
+        {
+            foreach (Song song in Songs)
+            {
+                if (path == song.FilePath)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

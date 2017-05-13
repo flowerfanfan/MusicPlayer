@@ -25,6 +25,7 @@ using MusicPlayer.Controls;
 using MusicPlayer.DataBase;
 using Windows.Storage.FileProperties;
 using System.Linq;
+using MusicPlayer.ViewModels;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -207,25 +208,10 @@ namespace MusicPlayer
                 Song s = new Song(file.Path, properties, thumbnail);
                     s.lyric = lrc;
                     s.Cover = tn;
-                    ContentFrame.Navigate(typeof(Default), s);
+                    ContentFrame.Navigate(typeof(PlayingPage), s);
                 }
         }
-        private async void pickFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Clear previous returned file name, if it exists, between iterations of this scenario
-            //NotifyUser("", NotifyType.StatusMessage);
 
-            // Create and open the file picker
-            FileOpenPicker openPicker = new FileOpenPicker();
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            openPicker.SuggestedStartLocation = PickerLocationId.VideosLibrary;
-            openPicker.FileTypeFilter.Add(".mp4");
-            openPicker.FileTypeFilter.Add(".mkv");
-            openPicker.FileTypeFilter.Add(".avi");
-            openPicker.FileTypeFilter.Add(".mp3");
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            Play(file);
-        }
         async private void PlaybackSession_PositionChanged(Windows.Media.Playback.MediaPlaybackSession sender, object args)
         {
             await TestSomethingAsync(sender);
@@ -240,11 +226,11 @@ namespace MusicPlayer
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
-                Default.Current.switchPauseAnimation.Begin();
+                PlayingPage.Current.switchPauseAnimation.Begin();
             player.MediaPlayer.PlaybackSession.Position = new TimeSpan(0);
             player.MediaPlayer.Pause();
-            Default.Current.rotation.Angle = 0;
-            Default.Current.out_rotation.Angle = 0;
+            PlayingPage.Current.rotation.Angle = 0;
+            PlayingPage.Current.out_rotation.Angle = 0;
 
         }
 
@@ -257,20 +243,24 @@ namespace MusicPlayer
             if (Math.Abs(timeline.Value - media.Max) < 0.1) stop_Click(null, null);
         }
 
+        /*把play和pause button合到一起了*/
         private void play_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
-                Default.Current.switchOnAnimation.Begin();
-            player.MediaPlayer.PlaybackSession.PlaybackRate = 1;
-            player.MediaPlayer.Play();
-        }
-
-        private void pause_Click(object sender, RoutedEventArgs e)
-        {
-            if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
-                Default.Current.switchPauseAnimation.Begin();
-
-            player.MediaPlayer.Pause();
+            {
+                PlayingPage.Current.switchOnAnimation.Begin();
+                PlayButton.Icon = new SymbolIcon(Symbol.Pause);
+                PlayButton.Label = "Pause";
+                player.MediaPlayer.PlaybackSession.PlaybackRate = 1;
+                player.MediaPlayer.Play();
+            }
+            else if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
+            {
+                PlayingPage.Current.switchPauseAnimation.Begin();
+                PlayButton.Icon = new SymbolIcon(Symbol.Play);
+                PlayButton.Label = "Play";
+                player.MediaPlayer.Pause();
+            }
         }
 
 
@@ -324,11 +314,23 @@ namespace MusicPlayer
             mySongListItem.IsSelected = true;
             await new CreateSongListDialog().ShowAsync();
         }
-
-        // TODO
+        
         private async void AddSongBtn_Click(object sender, RoutedEventArgs e)
         {
-            //await pickFileButton_Click(sender, e);
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.VideosLibrary;
+            openPicker.FileTypeFilter.Add(".mp3");
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            Play(file);
+            MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
+            StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+            if (!LocalSongsVM.GetLocalSongsVM().HasSong(file.Path))
+            {
+                Song song = new Song(file.Path, musicProperties, thumbnail);
+                LocalSongsVM.GetLocalSongsVM().Songs.Add(song);
+                DBManager.AddSong(song, "_Songs_");
+            }
         }
     }
 }

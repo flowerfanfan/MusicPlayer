@@ -106,6 +106,27 @@ namespace MusicPlayer.DataBase
                 stmt.Bind(6, song.CoverBytes);
                 stmt.Step();
             }
+            if (listName != "_Songs_")
+            {
+                using (var stmt = Conn.Prepare(@"UPDATE SongLists SET Number = ? WHERE Name = ?"))
+                {
+                    stmt.Bind(1, GetNumberInList(listName) + 1);
+                    stmt.Bind(2, listName);
+                    stmt.Step();
+                }
+            }
+        }
+
+        private int GetNumberInList(string listName)
+        {
+            int number;
+            using (var stmt = Conn.Prepare(@"SELECT Number FROM SongLists WHERE Name = ?"))
+            {
+                stmt.Bind(1, listName);
+                stmt.Step();
+                number = Convert.ToInt32((Int64)stmt["Number"]);
+            }
+            return number;
         }
 
         // 添加一批歌曲的信息
@@ -131,18 +152,6 @@ namespace MusicPlayer.DataBase
                     stmt.Step();
                 }
             }
-        }
-
-        private int GetNumberInList(string listName)
-        {
-            int number;
-            using (var stmt = Conn.Prepare(@"SELECT Number FROM SongLists WHERE Name = ?"))
-            {
-                stmt.Bind(1, listName);
-                stmt.Step();
-                number = Convert.ToInt32((Int64)stmt["Number"]);
-            }
-            return number;
         }
 
         // 在SongLists表中添加一个新歌单

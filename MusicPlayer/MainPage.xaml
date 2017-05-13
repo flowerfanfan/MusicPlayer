@@ -178,7 +178,7 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <!--使用Frame承载点击不同Item后应承载的页面-->
-                <Frame x:Name="ContentFrame" />
+                <Frame  x:Name="ContentFrame" />
             </SplitView.Content>
         </SplitView>
         <MediaPlayerElement x:FieldModifier="Public"
@@ -217,11 +217,15 @@
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right">
-                        <TextBlock x:Name="PlayingPoint" Text="{Binding CurrentValue, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
-                           
-                        <Slider Name="timeline" Width="350" 
-                                Value="{Binding CurrentValue, Mode=TwoWay}" Maximum="{Binding Max,Mode=TwoWay}"
-                                     Margin="5, 0, 5, 0" ValueChanged="timelineChanged"/> 
+
+                        <TextBlock x:Name="PlayingPoint"
+                                   Text="{Binding CurrentValue, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
+                        <Slider Name="timeline"
+                                Width="350"
+                                Value="{Binding CurrentValue, Mode=TwoWay}"
+                                Maximum="{Binding Max,Mode=TwoWay}"
+                                Margin="5, 0, 5, 0"
+                                ValueChanged="timelineChanged" />
                         <TextBlock x:Name="SongLength"
                                    Text="{Binding Max, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
                     </StackPanel>

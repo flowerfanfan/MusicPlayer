@@ -159,8 +159,6 @@ namespace MusicPlayer
             {
                 bool fileFromPicker = true;
                 var thumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView);
-                BitmapImage tn = new BitmapImage();
-                tn.SetSource(thumbnail);
                 player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
 
                 //MostRecentlyUsedList 添加。
@@ -215,13 +213,12 @@ namespace MusicPlayer
                 if (lrcFile != null)
                 {
                     StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
-                    text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                    text = await FileIO.ReadTextAsync(lrcFile, UnicodeEncoding.Utf8);
                 }
                 lrc.getLrc(text);
                 var properties = await file.Properties.GetMusicPropertiesAsync();
                 Song s = new Song(file.Path, properties, thumbnail);
                 s.lyric = lrc;
-                s.Cover = tn;
                 // 更新磁贴
                 TileManager.UpdateTileAsync(s);
                 // 设置播放页面的 喜爱 按钮

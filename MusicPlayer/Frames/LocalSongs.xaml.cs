@@ -27,9 +27,7 @@ namespace MusicPlayer.Frames
         {
             this.InitializeComponent();
 
-            localSongsVM = new LocalSongsVM();
-            // 加载本地歌曲
-            localSongsVM.LoadSongs();
+            localSongsVM = LocalSongsVM.GetLocalSongsVM();
         }
 
         // 刷新按钮点击事件

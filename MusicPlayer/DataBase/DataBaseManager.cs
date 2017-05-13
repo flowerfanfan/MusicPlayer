@@ -106,11 +106,14 @@ namespace MusicPlayer.DataBase
                 stmt.Bind(6, song.CoverBytes);
                 stmt.Step();
             }
-            using (var stmt = Conn.Prepare(@"UPDATE SongLists SET Number = ? WHERE Name = ?"))
+            if (listName != "_Songs_")
             {
-                stmt.Bind(1, GetNumberInList(listName) + 1);
-                stmt.Bind(2, listName);
-                stmt.Step();
+                using (var stmt = Conn.Prepare(@"UPDATE SongLists SET Number = ? WHERE Name = ?"))
+                {
+                    stmt.Bind(1, GetNumberInList(listName) + 1);
+                    stmt.Bind(2, listName);
+                    stmt.Step();
+                }
             }
         }
 

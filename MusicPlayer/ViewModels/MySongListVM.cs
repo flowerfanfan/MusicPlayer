@@ -8,7 +8,7 @@ namespace MusicPlayer.ViewModels
 {
     public class MySongListVM
     {
-        // 因需要与其他页面（MainPage）进行数据交换，故采用单例模式
+        // 因需要与其他页面（MainPage, LocalSongs）进行数据交换，故采用单例模式
         private static MySongListVM mySongListVM;
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<SongList> SongLists { get; set; }

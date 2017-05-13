@@ -25,6 +25,7 @@ using MusicPlayer.Controls;
 using MusicPlayer.DataBase;
 using Windows.Storage.FileProperties;
 using System.Linq;
+using MusicPlayer.ViewModels;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -210,22 +211,7 @@ namespace MusicPlayer
                     ContentFrame.Navigate(typeof(PlayingPage), s);
                 }
         }
-        private async void pickFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Clear previous returned file name, if it exists, between iterations of this scenario
-            //NotifyUser("", NotifyType.StatusMessage);
 
-            // Create and open the file picker
-            FileOpenPicker openPicker = new FileOpenPicker();
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            openPicker.SuggestedStartLocation = PickerLocationId.VideosLibrary;
-            openPicker.FileTypeFilter.Add(".mp4");
-            openPicker.FileTypeFilter.Add(".mkv");
-            openPicker.FileTypeFilter.Add(".avi");
-            openPicker.FileTypeFilter.Add(".mp3");
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            Play(file);
-        }
         async private void PlaybackSession_PositionChanged(Windows.Media.Playback.MediaPlaybackSession sender, object args)
         {
             await TestSomethingAsync(sender);
@@ -324,11 +310,23 @@ namespace MusicPlayer
             mySongListItem.IsSelected = true;
             await new CreateSongListDialog().ShowAsync();
         }
-
-        // TODO
+        
         private async void AddSongBtn_Click(object sender, RoutedEventArgs e)
         {
-            //await pickFileButton_Click(sender, e);
+            FileOpenPicker openPicker = new FileOpenPicker();
+            openPicker.ViewMode = PickerViewMode.Thumbnail;
+            openPicker.SuggestedStartLocation = PickerLocationId.VideosLibrary;
+            openPicker.FileTypeFilter.Add(".mp3");
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            Play(file);
+            MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
+            StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+            if (!LocalSongsVM.GetLocalSongsVM().HasSong(file.Path))
+            {
+                Song song = new Song(file.Path, musicProperties, thumbnail);
+                LocalSongsVM.GetLocalSongsVM().Songs.Add(song);
+                DBManager.AddSong(song, "_Songs_");
+            }
         }
     }
 }

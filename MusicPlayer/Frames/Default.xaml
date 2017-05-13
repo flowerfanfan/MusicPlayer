@@ -86,22 +86,54 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="1">
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock  Text="{Binding Title}"
+                           FontSize="36"/>
+                    <Grid Grid.Row="1" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="专辑：" 
+                           FontSize="18"/>
+                        <TextBlock Text="{Binding Album}" Grid.Column="2"/>
+                    </Grid>
+                    <Grid Grid.Row="2" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="歌手:" Grid.Row="2"
+                           FontSize="18"/>
+                        <TextBlock Text="{Binding Artist}" Grid.Column="2"/>
+                    </Grid>
+                    <Grid  Grid.Row="3" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="播放次数："
+                           FontSize="18"/>
+                        <!--播放次数这里还没实现， 不好绑定-->
+                        <TextBlock Text="" Grid.Column="2"/>
+                    </Grid>
 
-                    <TextBlock Text="歌曲名"
-                           FontSize="35"/>
-                    <TextBlock Text="专辑："
-                           FontSize="20"/>
-                    <TextBlock Text="歌手："
-                           FontSize="20"/>
-                    <TextBlock Text="播放次数："
-                           FontSize="20"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="喜欢"
-                           FontSize="20"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" VerticalAlignment="Center">
+                        <TextBlock Text="喜欢" 
+                           FontSize="18"/>
                         <Image x:Name="like" Source="ms-appx:///Assets/dislike.png" Width="20" Margin="20, 5, 0, 0" Tapped="likeButton"/>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
 
@@ -171,6 +203,7 @@
             这里需要加上适当的Margin padding 以及调整字体大小，颜色。
             忙着写其他的， 还没弄。
             -->
+                    
                     <ScrollViewer Name="lrcContainer" Grid.Row="1">
                         <TextBlock Name="lrcText" Text="">
                     <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->

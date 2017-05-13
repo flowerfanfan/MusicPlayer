@@ -207,7 +207,7 @@ namespace MusicPlayer
                 Song s = new Song(file.Path, properties, thumbnail);
                     s.lyric = lrc;
                     s.Cover = tn;
-                    ContentFrame.Navigate(typeof(PlayingPage), s);
+                    ContentFrame.Navigate(typeof(Default), s);
                 }
         }
         private async void pickFileButton_Click(object sender, RoutedEventArgs e)
@@ -240,11 +240,11 @@ namespace MusicPlayer
         private void stop_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
-                PlayingPage.Current.switchPauseAnimation.Begin();
+                Default.Current.switchPauseAnimation.Begin();
             player.MediaPlayer.PlaybackSession.Position = new TimeSpan(0);
             player.MediaPlayer.Pause();
-            PlayingPage.Current.rotation.Angle = 0;
-            PlayingPage.Current.out_rotation.Angle = 0;
+            Default.Current.rotation.Angle = 0;
+            Default.Current.out_rotation.Angle = 0;
 
         }
 
@@ -260,7 +260,7 @@ namespace MusicPlayer
         private void play_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
-                PlayingPage.Current.switchOnAnimation.Begin();
+                Default.Current.switchOnAnimation.Begin();
             player.MediaPlayer.PlaybackSession.PlaybackRate = 1;
             player.MediaPlayer.Play();
         }
@@ -268,7 +268,7 @@ namespace MusicPlayer
         private void pause_Click(object sender, RoutedEventArgs e)
         {
             if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
-                PlayingPage.Current.switchPauseAnimation.Begin();
+                Default.Current.switchPauseAnimation.Begin();
 
             player.MediaPlayer.Pause();
         }

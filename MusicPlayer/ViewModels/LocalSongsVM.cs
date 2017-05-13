@@ -58,7 +58,7 @@ namespace MusicPlayer.ViewModels
         }
 
         // 读取音乐文件的信息
-        public async void ReadMusicFiles(IReadOnlyList<StorageFile> fileList)
+        private async void ReadMusicFiles(IReadOnlyList<StorageFile> fileList)
         {
             foreach (StorageFile file in fileList)
             {

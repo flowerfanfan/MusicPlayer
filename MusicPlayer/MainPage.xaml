@@ -221,7 +221,6 @@
                 </Grid>
             </CommandBar.Content>
             <!--为什么暂停用的停止的icon呢。。我给加上暂停了-->
-            <AppBarButton x:Name="tryFunc" Icon="Folder" Label="Choose Folder" Click="Addfolder_Click"/>
             <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
             <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play" Click="play_Click"/>
             <AppBarButton Icon = "Stop" Label = "Stop"  Click="stop_Click"/>
@@ -269,7 +268,7 @@
             <AppBarButton x:Name="VolumeButton" Icon="Volume" Label="Volume">
                 <AppBarButton.Flyout>
                     <Flyout>
-                        <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center" Name="volume" ValueChanged="volumeChanged" Minimum="0.0" Maximum="1.0" StepFrequency="0.01"/>
+                        <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center" Name="volume"/>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

@@ -215,7 +215,7 @@ namespace MusicPlayer
                 s.lyric = lrc;
                 s.Cover = tn;
                 // 更新磁贴
-                TileManager.UpdateTile(s);
+                TileManager.UpdateTileAsync(s);
                 ContentFrame.Navigate(typeof(Default), s);
             }
         }

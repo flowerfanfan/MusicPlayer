@@ -9,6 +9,7 @@ using Windows.UI.Notifications;
 using MusicPlayer.Models;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage;
 
 namespace MusicPlayer.Tile
 {
@@ -110,13 +111,18 @@ namespace MusicPlayer.Tile
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
         }
 
-        public static void UpdateTile(Song song)
+        public static async void UpdateTileAsync(Song song)
         {
             string title = song.Title;
             string artist = song.Artist;
             string album = song.Album;
-            BitmapImage cover = song.Cover;
-            
+            byte[] coverBytes = song.CoverBytes;
+
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            StorageFile file = await folder.CreateFileAsync(title + ".png", CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteBytesAsync(file, coverBytes);
+            string coverUri = "ms-appdata:///local/" + title + ".png";
+
             TileContent updateContent = new TileContent()
             {
                 Visual = new TileVisual()
@@ -128,11 +134,17 @@ namespace MusicPlayer.Tile
                     {
                         Content = new TileBindingContentAdaptive()
                         {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = coverUri
+                            },
+
                             Children =
                 {
                     new AdaptiveText()
                     {
-                        Text = title
+                        Text = title,
+                        HintWrap = true
                     }
                 }
                         }
@@ -142,16 +154,23 @@ namespace MusicPlayer.Tile
                     {
                         Content = new TileBindingContentAdaptive()
                         {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = coverUri
+                            },
+
                             Children =
                 {
                     new AdaptiveText()
                     {
-                        Text = title
+                        Text = title,
+                        HintWrap = true
                     },
                     new AdaptiveText()
                     {
                         Text = artist,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                        HintWrap = true
                     }
                 }
                         }
@@ -161,21 +180,29 @@ namespace MusicPlayer.Tile
                     {
                         Content = new TileBindingContentAdaptive()
                         {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = coverUri
+                            },
+
                             Children =
                 {
                     new AdaptiveText()
                     {
-                        Text = title
+                        Text = title,
+                        HintWrap = true
                     },
                     new AdaptiveText()
                     {
                         Text = artist,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                        HintWrap = true
                     },
                     new AdaptiveText()
                     {
                         Text = album,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                        HintWrap = true
                     }
                 }
                         }
@@ -185,21 +212,29 @@ namespace MusicPlayer.Tile
                     {
                         Content = new TileBindingContentAdaptive()
                         {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = coverUri
+                            },
+
                             Children =
                 {
                     new AdaptiveText()
                     {
-                        Text = title
+                        Text = title,
+                        HintWrap = true
                     },
                     new AdaptiveText()
                     {
                         Text = artist,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                        HintWrap = true
                     },
                     new AdaptiveText()
                     {
                         Text = album,
-                        HintStyle = AdaptiveTextStyle.CaptionSubtle
+                        HintStyle = AdaptiveTextStyle.CaptionSubtle,
+                        HintWrap = true
                     }
                 }
                         }

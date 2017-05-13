@@ -269,7 +269,7 @@
             <AppBarButton x:Name="VolumeButton" Icon="Volume" Label="Volume">
                 <AppBarButton.Flyout>
                     <Flyout>
-                        <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center" Name="volume"/>
+                        <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center" Minimum="0" Maximum="100" StepFrequency="1" x:Name="volume" ValueChanged="volumeChanged"/>
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

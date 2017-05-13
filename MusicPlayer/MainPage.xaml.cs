@@ -131,7 +131,7 @@ namespace MusicPlayer
             DataContext = media;
             player.MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             player.MediaPlayer.Volume = 0.5;
-            volume.Value = 0.5;
+            volume.Value = 50;
             player.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
             DataTransferManager.GetForCurrentView().DataRequested += OnShareDataRequested;
         }
@@ -353,7 +353,7 @@ namespace MusicPlayer
         private void volumeChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
 
-            player.MediaPlayer.Volume = e.NewValue; //binding its?
+            player.MediaPlayer.Volume = e.NewValue / 100; //binding its?
         }
     }
 }

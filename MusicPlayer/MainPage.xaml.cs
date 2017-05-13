@@ -380,11 +380,43 @@ namespace MusicPlayer
         }
         private void volumeChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-
-            player.MediaPlayer.Volume = e.NewValue / 100; //binding its?
+            double newVolume = e.NewValue / 100;
+            player.MediaPlayer.Volume = newVolume; //binding its? 
+            if (newVolume == 0)
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE992"
+                };
+            }
+            else if (newVolume > 0 && newVolume <= 0.33)
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE993"
+                };
+            }
+            else if (newVolume > 0.33 && newVolume <= 0.66)
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE994"
+                };
+            }
+            else
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE995"
+                };
+            }
         }
 
-
+        /*
         private void SearchContent_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (SearchContent.Text.ToString() != "")
@@ -400,7 +432,13 @@ namespace MusicPlayer
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
+        }*/
+
+        private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
         }
+
         private void previous_Click(object sender, RoutedEventArgs e)
         {
             var list = MySongListVM.GetMySongListVM().PlayingList;

@@ -50,7 +50,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-            
+
         <!--这是汉堡菜单-->
         <SplitView x:Name="MenuList"
                    Grid.Row="1"
@@ -90,19 +90,11 @@
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="left" Margin="0, 0, 10, 0"/>
-                            <TextBox x:Name="SearchContent"
-                                     Width="200"
-                                     Height="35"
-                                     HorizontalAlignment="Left"
-                                     FontSize="16"
-                                     TextChanged="SearchContent_TextChanged"
-                                     PlaceholderText="搜索" />
-                            <AppBarButton x:Name="SearchBtn"
-                                          Icon="Find"
-                                          Width="25"
-                                          HorizontalAlignment="Right"
-                                          IsEnabled="False"
-                                          Click="SearchBtn_Click"/>
+                            <AutoSuggestBox PlaceholderText="搜索"
+                                            QueryIcon="Find"
+                                            Width="230"
+                                            Height="35"
+                                            QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="RecentItem"
@@ -186,7 +178,7 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <!--使用Frame承载点击不同Item后应承载的页面-->
-                <Frame  x:Name="ContentFrame" />
+                <Frame x:Name="ContentFrame" />
             </SplitView.Content>
         </SplitView>
         <MediaPlayerElement x:FieldModifier="Public"
@@ -196,7 +188,7 @@
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar Background="#DC143C">
+        <CommandBar Background="#744DA9">
             <CommandBar.Content>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
@@ -225,15 +217,11 @@
                                 Orientation="Horizontal"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right">
-                        <TextBlock x:Name="PlayingPoint"
-                                   Text="{Binding CurrentValue, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
-
-                        <Slider Name="timeline"
-                                Width="350"
-                                Value="{Binding CurrentValue, Mode=TwoWay}"
-                                Maximum="{Binding Max,Mode=TwoWay}"
-                                Margin="5, 0, 5, 0"
-                                ValueChanged="timelineChanged" />
+                        <TextBlock x:Name="PlayingPoint" Text="{Binding CurrentValue, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
+                           
+                        <Slider Name="timeline" Width="350" 
+                                Value="{Binding CurrentValue, Mode=TwoWay}" Maximum="{Binding Max,Mode=TwoWay}"
+                                     Margin="5, 0, 5, 0" ValueChanged="timelineChanged"/> 
                         <TextBlock x:Name="SongLength"
                                    Text="{Binding Max, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
                     </StackPanel>
@@ -276,7 +264,10 @@
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="VolumeButton" Icon="Volume" Label="Volume">
+            <AppBarButton x:Name="VolumeButton" Label="Volume">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE994;"/>
+                </AppBarButton.Icon>
                 <AppBarButton.Flyout>
                     <Flyout>
                         <Slider Orientation="Vertical" Height="100" HorizontalAlignment="Center" Minimum="0" Maximum="100" StepFrequency="1" x:Name="volume" ValueChanged="volumeChanged"/>

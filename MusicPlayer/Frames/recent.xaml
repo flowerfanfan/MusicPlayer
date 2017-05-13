@@ -25,11 +25,13 @@
                               VerticalAlignment="Bottom"
                               Icon="Refresh"
                               Click="RefreshBtn_Click" />
-                <AppBarButton x:Name="clearRecent"
+            </StackPanel>
+            <AppBarButton x:Name="clearRecent"
                               VerticalAlignment="Bottom"
                               Icon="Delete"
+                              HorizontalAlignment="Right"
+                              Margin="0, 0, 20, 0"
                               Click="clear_Click" />
-            </StackPanel>
             <Line Stretch="Fill"
                   Stroke="Black"
                   StrokeThickness="1"

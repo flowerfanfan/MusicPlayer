@@ -365,8 +365,40 @@ namespace MusicPlayer
         }
         private void volumeChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-
-            player.MediaPlayer.Volume = e.NewValue / 100; //binding its?
+            double newVolume = e.NewValue / 100;
+            player.MediaPlayer.Volume = newVolume; //binding its? 
+            if (newVolume == 0)
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE992"
+                };
+            }
+            else if (newVolume > 0 && newVolume <= 0.33)
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE993"
+                };
+            }
+            else if (newVolume > 0.33 && newVolume <= 0.66)
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE994"
+                };
+            }
+            else
+            {
+                VolumeButton.Icon = new FontIcon
+                {
+                    FontFamily = new Windows.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"),
+                    Glyph = "\uE995"
+                };
+            }
         }
 
         /*
@@ -391,6 +423,7 @@ namespace MusicPlayer
         {
             ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
         }
+
         private void previous_Click(object sender, RoutedEventArgs e)
         {
             var list = MySongListVM.GetMySongListVM().PlayingList;

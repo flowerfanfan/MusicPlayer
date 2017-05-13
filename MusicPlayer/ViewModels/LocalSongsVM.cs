@@ -11,32 +11,13 @@ using Windows.Storage.Search;
 
 namespace MusicPlayer.ViewModels
 {
-    public class LocalSongsVM: INotifyPropertyChanged
+    public class LocalSongsVM
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         // 因需要与其他页面（MainPage）进行数据交换，故采用单例模式
         private static LocalSongsVM localSongsVM;
         public DataBaseManager DBManager { get; set; }
-        private ObservableCollection<Song> _Songs { get; set; }
-
-        public ObservableCollection<Song> Songs
-        {
-            get
-            {
-                return _Songs;
-            }
-            set
-            {
-                
-                if (_Songs != value)
-                {
-                    _Songs = value;
-                    PropertyChanged(this, new PropertyChangedEventArgs("Songs"));
-                }
-            }
-        }
-
-
+        public ObservableCollection<Song> Songs;
         public ObservableCollection<Song> SelectedSongs { get; set; }
 
         private LocalSongsVM()
@@ -44,6 +25,22 @@ namespace MusicPlayer.ViewModels
             DBManager = DataBaseManager.GetDBManager();
             SelectedSongs = new ObservableCollection<Song>();
             LoadSongs();
+        }
+
+        // 根据搜索内容返回相关歌曲信息
+        public ObservableCollection<Song> SearchSongs(string searchContent)
+        {
+            ObservableCollection<Song> results = new ObservableCollection<Song>();
+            foreach (Song song in Songs)
+            {
+                if (song.Title.Contains(searchContent) ||
+                    song.Artist.Contains(searchContent) ||
+                    song.Album.Contains(searchContent))
+                {
+                    results.Add(song);
+                }
+            }
+            return results;
         }
 
         // 从数据库加载歌曲信息

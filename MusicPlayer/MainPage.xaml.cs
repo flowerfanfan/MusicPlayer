@@ -368,5 +368,23 @@ namespace MusicPlayer
 
             player.MediaPlayer.Volume = e.NewValue / 100; //binding its?
         }
+
+
+        private void SearchContent_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SearchContent.Text.ToString() != "")
+            {
+                SearchBtn.IsEnabled = true;
+            }
+            else
+            {
+                SearchBtn.IsEnabled = false;
+            }
+        }
+
+        private void SearchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
+        }
     }
 }

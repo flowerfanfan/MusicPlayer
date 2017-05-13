@@ -94,12 +94,19 @@
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="left" Margin="0, 0, 10, 0"/>
-                            <TextBox x:Name="Search"
-                                     Width="220"
+                            <TextBox x:Name="SearchContent"
+                                     Width="200"
                                      Height="35"
                                      HorizontalAlignment="Left"
                                      FontSize="16"
-                                     Text="搜索" />
+                                     TextChanged="SearchContent_TextChanged"
+                                     PlaceholderText="搜索" />
+                            <AppBarButton x:Name="SearchBtn"
+                                          Icon="Find"
+                                          Width="25"
+                                          HorizontalAlignment="Right"
+                                          IsEnabled="False"
+                                          Click="SearchBtn_Click"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="RecentItem"

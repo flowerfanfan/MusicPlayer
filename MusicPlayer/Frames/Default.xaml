@@ -94,8 +94,19 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock  Text="{Binding Title}"
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  Text="{Binding Title}" Grid.Column="0" MaxWidth="250"
                            FontSize="36"/>
+                        <Button Name="search" Click="SearchLRCOnline" Grid.Column="2" Opacity="0">
+                            搜索歌词
+                        </Button>
+                    </Grid>
+
                     <Grid Grid.Row="1" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>

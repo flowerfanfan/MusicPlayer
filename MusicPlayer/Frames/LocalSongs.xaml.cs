@@ -110,8 +110,8 @@ namespace MusicPlayer.Frames
         private void Select_Songs(object sender, ItemClickEventArgs e)
         {
             song = (Song)e.ClickedItem;
-
         }
+
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
             MySongListVM.GetMySongListVM().PlayingList = localSongsVM.Songs;

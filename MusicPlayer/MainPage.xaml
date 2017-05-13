@@ -49,12 +49,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <!--找不到位置加了！没仔细读代码， 随便加上去的。 看到的话帮忙放到合适的地方-->
-
-        
-        
-        
+            
         <!--这是汉堡菜单-->
         <SplitView x:Name="MenuList"
                    Grid.Row="1"
@@ -94,12 +89,19 @@
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="left" Margin="0, 0, 10, 0"/>
-                            <TextBox x:Name="Search"
-                                     Width="220"
+                            <TextBox x:Name="SearchContent"
+                                     Width="200"
                                      Height="35"
                                      HorizontalAlignment="Left"
                                      FontSize="16"
-                                     Text="搜索" />
+                                     TextChanged="SearchContent_TextChanged"
+                                     PlaceholderText="搜索" />
+                            <AppBarButton x:Name="SearchBtn"
+                                          Icon="Find"
+                                          Width="25"
+                                          HorizontalAlignment="Right"
+                                          IsEnabled="False"
+                                          Click="SearchBtn_Click"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem x:Name="RecentItem"
@@ -169,8 +171,14 @@
                                           Icon="Add"
                                           Width="50"
                                           Height="46"
-                                          HorizontalAlignment="Right"
-                                          Click="AddSongBtn_Click"/>
+                                          HorizontalAlignment="Right">
+                                <AppBarButton.Flyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="添加音乐" Click="AddSongBtn_Click"/>
+                                        <MenuFlyoutItem Text="添加文件夹" Click="Addfolder_Click"/>
+                                    </MenuFlyout>
+                                </AppBarButton.Flyout>
+                            </AppBarButton>
                         </StackPanel>
                     </ListBoxItem>
                 </ListBox>
@@ -194,25 +202,29 @@
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="500" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="450" />
                     </Grid.ColumnDefinitions>
 
                     <Image x:Name="Cover" x:FieldModifier="Public"
-                           Source="Assets/singer.png" Tapped="playingNow"/>
+                           Source="Assets/singer.png" Tapped="playingNow"
+                           Margin="0, -5, 0, 0"/>
                     <StackPanel Grid.Column="1"
                                 Margin="5, 0, 0, 0">
                         <TextBlock x:Name="SongTitle" x:FieldModifier="Public"
-                                   Text="{Binding Title, Mode=TwoWay}" />
+                                   Text="{Binding Title, Mode=TwoWay}" 
+                                   TextTrimming="CharacterEllipsis"/>
                         <TextBlock x:Name="SongArtist" x:FieldModifier="Public"
-                                   Text= "{Binding Artist, Mode=TwoWay}" />
+                                   Text= "{Binding Artist, Mode=TwoWay}" 
+                                   TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
                     <StackPanel Grid.Column="2"
                                 Orientation="Horizontal"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right">
                         <TextBlock x:Name="PlayingPoint" Text="{Binding CurrentValue, Mode=TwoWay, Converter={StaticResource cvt}}">00:00</TextBlock>
                            
-                        <Slider Name="timeline" Width="400" 
+                        <Slider Name="timeline" Width="350" 
                                 Value="{Binding CurrentValue, Mode=TwoWay}" Maximum="{Binding Max,Mode=TwoWay}"
                                      Margin="5, 0, 5, 0" ValueChanged="timelineChanged"/>
                         <TextBlock x:Name="SongLength"
@@ -221,11 +233,10 @@
                 </Grid>
             </CommandBar.Content>
             <!--为什么暂停用的停止的icon呢。。我给加上暂停了-->
-            <AppBarButton x:Name="tryFolder" Icon="Folder" Label="Floder Choose" Click="Addfolder_Click" />
-            <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" Click="previous_Click"/>
+            <AppBarButton x:Name="PreviousButton" Icon="Previous" Label="Previous Song" />
             <AppBarButton x:Name="PlayButton" Icon="Play" Label="Play" Click="play_Click"/>
             <AppBarButton Icon = "Stop" Label = "Stop"  Click="stop_Click"/>
-            <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song" Click="next_Click"/>
+            <AppBarButton x:Name="NextButton" Icon="Next" Label="Next Song"/>
             <AppBarSeparator/>
             <AppBarButton x:Name="playing" Icon="MusicInfo"  Label="Playing" >
                 <AppBarButton.Flyout>

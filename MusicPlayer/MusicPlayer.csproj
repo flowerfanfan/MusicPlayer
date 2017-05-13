@@ -117,6 +117,9 @@
     <Compile Include="Frames\recent.xaml.cs">
       <DependentUpon>recent.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Frames\SearchResults.xaml.cs">
+      <DependentUpon>SearchResults.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Frames\universalPage.xaml.cs">
       <DependentUpon>universalPage.xaml</DependentUpon>
     </Compile>
@@ -196,6 +199,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Frames\recent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Frames\SearchResults.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

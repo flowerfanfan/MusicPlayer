@@ -22,10 +22,15 @@
                        FontSize="36"
                        VerticalAlignment="Center"
                        Margin="20, 0, 0, 0" />
-            <Button x:Name="DeleteListsBtn"
-                    Content="编辑"
-                    Click="DeleteListsBtn_Click" />
         </StackPanel>
+        <Button x:Name="DeleteListsBtn"
+                Grid.Row="0"
+                Grid.Column="0"
+                Content="编辑"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Click="DeleteListsBtn_Click" 
+                Margin="0, 0, 20, 0"/>
 
         <StackPanel x:Name="ClickedListHead"
                     Grid.Column="1"
@@ -36,10 +41,12 @@
                        FontSize="36"
                        VerticalAlignment="Center"
                        Margin="20, 0, 0, 0" />
-            <Button x:Name="DeleteSongsBtn"
-                    Content="编辑"
-                    Click="DeleteSongsBtn_Click" />
         </StackPanel>
+        <Button x:Name="DeleteSongsBtn"
+                Grid.Row="0"
+                Grid.Column="1"
+                Content="编辑"
+                Click="DeleteSongsBtn_Click" HorizontalAlignment="Right" Margin="0, 0, 20, 0" Visibility="Collapsed"/>
 
         <Line Grid.ColumnSpan="2"
               Stretch="Fill"
@@ -62,7 +69,7 @@
                     <StackPanel Grid.Column="1"
                                 Margin="10">
                         <TextBlock Text="{x:Bind Name, Mode=OneWay}"
-                                   FontSize="25" />
+                                   FontSize="25" TextTrimming="CharacterEllipsis"/>
                         <TextBlock />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Number, Mode=OneWay}"
@@ -96,10 +103,10 @@
                         <StackPanel Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                                        FontSize="25"
-                                       VerticalAlignment="Top" />
+                                       VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
                             <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
                                        FontSize="20"
-                                       VerticalAlignment="Bottom" />
+                                       VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>

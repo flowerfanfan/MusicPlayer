@@ -55,7 +55,15 @@ namespace MusicPlayer.ViewModels
 
         public void RemoveFavoriteSong(Song song)
         {
-            FavoriteSongs.Remove(song);
+            foreach (Song item in FavoriteSongs)
+            {
+                if (song.Title == item.Title)
+                {
+                    FavoriteSongs.Remove(item);
+                    break;
+                }
+            }
+            Default.Current.FavoriteBtnImg.Source = Default.Current.Dislike;
             DBManager.DeleteSong("_FavoriteSongs_", song);
         }
     }

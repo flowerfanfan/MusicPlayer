@@ -112,14 +112,9 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="{Binding Title}"
                                     Grid.Column="0"
-                                    MaxWidth="250"
                                     FontSize="36"
-                                    Margin="0, 0, 20, 0" />
-                        <Button Name="search"
-                                Click="SearchLRCOnline"
-                                Grid.Column="2"
-                                Visibility="Collapsed"
-                                Content="搜索歌词" />
+                                    Margin="0, 0, 20, 0" 
+                                    TextTrimming="CharacterEllipsis"/>
                     </StackPanel>
 
                     <Grid Grid.Row="1"
@@ -132,7 +127,7 @@
                         <TextBlock Text="专辑："
                                    FontSize="18" />
                         <TextBlock Text="{Binding Album}"
-                                   Grid.Column="2" />
+                                   Grid.Column="2" TextTrimming="CharacterEllipsis"/>
                     </Grid>
                     <Grid Grid.Row="2"
                           VerticalAlignment="Center">
@@ -145,7 +140,7 @@
                                    Grid.Row="2"
                                    FontSize="18" />
                         <TextBlock Text="{Binding Artist}"
-                                   Grid.Column="2" />
+                                   Grid.Column="2" TextTrimming="CharacterEllipsis"/>
                     </Grid>
                     <!--<StackPanel Orientation="Horizontal" Grid.Row="3" VerticalAlignment="Center">
                         <TextBlock Text="喜欢" 
@@ -254,15 +249,17 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <!--
-            这里需要加上适当的Margin padding 以及调整字体大小，颜色。
-            忙着写其他的， 还没弄。
-            -->
-
+                    <Grid Grid.Row="0">
+                        <Button Name="search"
+                                Click="SearchLRCOnline"
+                                Grid.Column="2"
+                                Visibility="Collapsed"
+                                Content="搜索歌词" HorizontalAlignment="Center"/>
+                    </Grid>
                     <ScrollViewer Name="lrcContainer"
                                   Grid.Row="1">
                         <TextBlock Name="lrcText"
-                                   Text="">
+                                   Text="" HorizontalAlignment="Center">
                     <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->
                         </TextBlock>
                         <!--

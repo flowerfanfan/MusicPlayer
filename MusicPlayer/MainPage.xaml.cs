@@ -50,7 +50,7 @@ namespace MusicPlayer
             InitialPlayerSetting();
 
             //指定页面
-            ContentFrame.Navigate(typeof(PlayingPage));
+            ContentFrame.Navigate(typeof(Default));
             double t = ContentFrame.ActualWidth;
 
             DBManager = DataBaseManager.GetDBManager();
@@ -65,9 +65,6 @@ namespace MusicPlayer
             titleBar.ButtonBackgroundColor = Colors.Crimson;
             titleBar.ButtonForegroundColor = Colors.White;
             titleBar.ButtonHoverBackgroundColor = Colors.LightCoral;
-
-            //a在这里干嘛的呢？ 加个注释呗~
-            var a = ContentFrame.ActualWidth;
 
         }
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
@@ -106,13 +103,11 @@ namespace MusicPlayer
         }
 
         /*
-         不是很懂这个函数名称的含义...
-         开始播放不应该是这里吧。。。我认为这里只有跳转
-         如果不同理解的话这里注释一下... 没有的话可以改个函数名...
-             */
+          这里是下边栏的图片点击响应函数，点击图片就会跳转到正在播放界面
+              */
         void playingNow(object sender, TappedRoutedEventArgs e)
         {
-            ContentFrame.Navigate(typeof(PlayingPage));
+            ContentFrame.Navigate(typeof(Default));
         }
 
 

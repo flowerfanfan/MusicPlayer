@@ -136,7 +136,7 @@
                                  Background="#252535">
                         <StackPanel Orientation="Horizontal"
                                     Margin="-2">
-                            <Image Source="Assets/songs-128.png"
+                            <Image Source="Assets/mysong-128.png"
                                    Height="30"
                                    Width="30"
                                    HorizontalAlignment="Left"  Margin="0, 0, 10, 0"/>
@@ -177,7 +177,7 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <!--使用Frame承载点击不同Item后应承载的页面-->
-                <Frame  x:Name="ContentFrame" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Frame  x:Name="ContentFrame">
                     
                 </Frame>
             </SplitView.Content>

@@ -140,6 +140,7 @@
     <Content Include="Assets\heart-128.png" />
     <Content Include="Assets\like.png" />
     <Content Include="Assets\logo-300.png" />
+    <Content Include="Assets\mySong-128.png" />
     <Content Include="Assets\player_disk_cover.scale-200.png" />
     <Content Include="Assets\player_needle.scale-200.png" />
     <Content Include="Assets\search-128.png" />

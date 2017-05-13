@@ -131,6 +131,7 @@
     <Compile Include="Models\SongList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tile\TileManager.cs" />
+    <Compile Include="ViewModels\FavoriteVM.cs" />
     <Compile Include="ViewModels\LocalSongsVM.cs" />
     <Compile Include="ViewModels\MySongListVM.cs" />
   </ItemGroup>

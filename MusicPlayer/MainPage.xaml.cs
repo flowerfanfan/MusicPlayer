@@ -218,7 +218,17 @@ namespace MusicPlayer
                 Song s = new Song(file.Path, properties, thumbnail);
                 s.lyric = lrc;
                 s.Cover = tn;
+                // 更新磁贴
                 TileManager.UpdateTileAsync(s);
+                // 设置播放页面的 喜爱 按钮
+                Default.Current.FavoriteBtnControl.Visibility = Visibility.Visible;
+                if (FavoriteVM.GetFavoriteVM().NoSuchSong(s))
+                {
+                    Default.Current.FavoriteBtnImg.Source = Default.Current.Dislike;
+                } else
+                {
+                    Default.Current.FavoriteBtnImg.Source = Default.Current.Like;
+                }
                 ContentFrame.Navigate(typeof(Default), s);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using MediaPlayer;
 using MusicPlayer.Helper;
 using MusicPlayer.Models;
+using MusicPlayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 
@@ -32,35 +34,36 @@ namespace MusicPlayer
             this.InitializeComponent();
         }
         */
-        void likeButton(object sender, TappedRoutedEventArgs e)
+
+        //这种用static的方法或许能帮助避免多次生成不同页面的方法， 但是我暂时还没去想。
+        public static Default Current;
+        DispatcherTimer timer;
+        Lyric lrc = new Lyric();
+        MediaPlayerElement player = MainPage.Current.player;
+        public Song song;
+        static bool Isinit = false;
+        public Button FavoriteBtnControl { get; set; }
+        public Image FavoriteBtnImg { get; set; }
+        public BitmapImage Like { get; set; }
+        public BitmapImage Dislike { get; set; }
+
+
+        public Default()
         {
-            //如果当前歌曲是喜欢的，按下变成不喜欢，如果是不喜欢，按下变成喜欢
-            //应该也是需要相关的绑定吧
-        }
-            //这种用static的方法或许能帮助避免多次生成不同页面的方法， 但是我暂时还没去想。
-            public static Default Current;
-            DispatcherTimer timer;
-            Lyric lrc = new Lyric();
-            MediaPlayerElement player = MainPage.Current.player;
-            public Song song;
-            static bool Isinit = false;
-            public Default()
+            DataContext = song;
+            DataContextChanged += PlayingPage_DataContextChanged;
+            if (Current == null)
             {
-                DataContext = song;
-                DataContextChanged += PlayingPage_DataContextChanged;
-                if (Current == null)
-                {
-                    this.InitializeComponent();
-                    Current = this;
-                }
-
-
+                this.InitializeComponent();
+                Current = this;
+                FavoriteBtnControl = FavoriteBtn;
+                FavoriteBtnImg = FavoriteImg;
+                Like = new BitmapImage(new Uri("ms-appx:///Assets/like.png"));
+                Dislike = new BitmapImage(new Uri("ms-appx:///Assets/dislike.png"));
             }
+        }
 
-
-
-
-            private void PlayingPage_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        private void PlayingPage_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             /*
             songTitle.Text = song.Title;
@@ -169,7 +172,19 @@ namespace MusicPlayer
 
         private void FavoriteBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (song != null)
+            {
+                if (((BitmapImage)FavoriteImg.Source).UriSource == Dislike.UriSource)
+                {
+                    FavoriteVM.GetFavoriteVM().AddFavoriteSong(song);
+                    FavoriteImg.Source = Like;
+                }
+                else
+                {
+                    FavoriteVM.GetFavoriteVM().RemoveFavoriteSong(song);
+                    FavoriteImg.Source = Dislike;
+                } 
+            }
         }
     }
 }

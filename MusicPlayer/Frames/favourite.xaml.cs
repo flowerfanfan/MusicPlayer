@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MusicPlayer.Models;
+using MusicPlayer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +24,23 @@ namespace MusicPlayer.Frames
     /// </summary>
     public sealed partial class favourite : Page
     {
+        public FavoriteVM favoriteVM { get; set; }
+
         public favourite()
         {
             this.InitializeComponent();
+
+            favoriteVM = FavoriteVM.GetFavoriteVM();
+        }
+
+        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void UnFavoriteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            favoriteVM.RemoveFavoriteSong(((Song)((Button)sender).DataContext));
         }
     }
 }

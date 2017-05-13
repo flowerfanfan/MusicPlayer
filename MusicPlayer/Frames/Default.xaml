@@ -1,22 +1,30 @@
-﻿<Page
-    x:Class="MusicPlayer.Default"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MusicPlayer"
-    xmlns:convert="using:MusicPlayer.Binding"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" NavigationCacheMode="Enabled">
+﻿<Page x:Class="MusicPlayer.Default"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:MusicPlayer"
+      xmlns:convert="using:MusicPlayer.Binding"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      NavigationCacheMode="Enabled">
 
     <Page.Resources>
-        <convert:MusicConverter x:Key="cvt"/>
-        <Storyboard x:Name="switchOnAnimation" x:FieldModifier="Public">
-            <DoubleAnimation Storyboard.TargetName="rotateTrans" Storyboard.TargetProperty="Angle"
-             From="-40" To="0" Duration="0:0:0.5"/>
+        <convert:MusicConverter x:Key="cvt" />
+        <Storyboard x:Name="switchOnAnimation"
+                    x:FieldModifier="Public">
+            <DoubleAnimation Storyboard.TargetName="rotateTrans"
+                             Storyboard.TargetProperty="Angle"
+                             From="-40"
+                             To="0"
+                             Duration="0:0:0.5" />
         </Storyboard>
-        <Storyboard x:Name="switchPauseAnimation" x:FieldModifier="Public">
-            <DoubleAnimation Storyboard.TargetName="rotateTrans" Storyboard.TargetProperty="Angle"
-             From="0" To="-40" Duration="0:0:0.5"/>
+        <Storyboard x:Name="switchPauseAnimation"
+                    x:FieldModifier="Public">
+            <DoubleAnimation Storyboard.TargetName="rotateTrans"
+                             Storyboard.TargetProperty="Angle"
+                             From="0"
+                             To="-40"
+                             Duration="0:0:0.5" />
         </Storyboard>
     </Page.Resources>
 
@@ -26,22 +34,27 @@
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.Setters>
-                        <Setter Target="songInfo.Visibility" Value="Collapsed"/>
-                        <Setter Target="lrcSpace.Visibility" Value="Collapsed"/>
-                        <Setter Target="diskAnimation.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="songInfo.Visibility"
+                                Value="Collapsed" />
+                        <Setter Target="lrcSpace.Visibility"
+                                Value="Collapsed" />
+                        <Setter Target="diskAnimation.(Grid.ColumnSpan)"
+                                Value="2" />
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="500"/>
+                        <AdaptiveTrigger MinWindowWidth="500" />
                     </VisualState.StateTriggers>
                 </VisualState>
 
                 <VisualState>
                     <VisualState.Setters>
-                        <Setter Target="songInfo.Visibility" Value="Visible"/>
-                        <Setter Target="diskAnimation.Visibility" Value="Visible"/>
+                        <Setter Target="songInfo.Visibility"
+                                Value="Visible" />
+                        <Setter Target="diskAnimation.Visibility"
+                                Value="Visible" />
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1000"/>
+                        <AdaptiveTrigger MinWindowWidth="1000" />
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
@@ -60,14 +73,14 @@
             </Grid.ColumnDefinitions>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="150"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="150" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <!--歌手头像显示-->
@@ -75,22 +88,25 @@
                        Grid.Row="1"
                        Grid.Column="1"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Top"/>
+                       VerticalAlignment="Top" />
             </Grid>
 
             <!--歌曲信息-->
-            <Grid x:Name="songInfo" Grid.Column="1">
+            <Grid x:Name="songInfo"
+                  Grid.Column="1"
+                  Height="160"
+                  VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="1.5*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1.5*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
@@ -98,7 +114,7 @@
                                     Grid.Column="0"
                                     MaxWidth="250"
                                     FontSize="36"
-                                    Margin="0, 0, 20, 0"/>
+                                    Margin="0, 0, 20, 0" />
                         <Button Name="search"
                                 Click="SearchLRCOnline"
                                 Grid.Column="2"
@@ -106,15 +122,17 @@
                                 Content="搜索歌词" />
                     </StackPanel>
 
-                    <Grid Grid.Row="1" VerticalAlignment="Center">
+                    <Grid Grid.Row="1"
+                          VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="专辑：" 
-                           FontSize="18"/>
-                        <TextBlock Text="{Binding Album}" Grid.Column="2"/>
+                        <TextBlock Text="专辑："
+                                   FontSize="18" />
+                        <TextBlock Text="{Binding Album}"
+                                   Grid.Column="2" />
                     </Grid>
                     <Grid Grid.Row="2"
                           VerticalAlignment="Center">
@@ -134,10 +152,13 @@
                            FontSize="18"/>
                         <Image x:Name="like" Source="ms-appx:///Assets/dislike.png" Width="20" Margin="20, 5, 0, 0" Tapped="likeButton"/>
                     </StackPanel>-->
-                    <AppBarButton x:Name="FavoriteBtn"
-                                  Grid.Row="3"
-                                  Icon="Favorite"
-                                  Click="FavoriteBtn_Click"/>
+                    <Button x:Name="FavoriteBtn"
+                            Grid.Row="3"
+                            Click="FavoriteBtn_Click"
+                            Visibility="Collapsed">
+                        <Image x:Name="FavoriteImg"
+                               Source="ms-appx:///Assets/dislike.png" />
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
@@ -154,42 +175,68 @@
         <Grid Grid.Row="2">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="256*" />
+                    <ColumnDefinition Width="65*" />
+                    <ColumnDefinition Width="191*" />
                 </Grid.ColumnDefinitions>
 
                 <!--光盘动画-->
-                <Grid x:Name="diskAnimation" Grid.Column="0">
+                <Grid x:Name="diskAnimation"
+                      Grid.Column="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <Grid Grid.Column="1">
-                        <Image Name="decorateBar" Source="ms-appx:///Assets/player_needle.scale-200.png" Width="120" Height="250"  VerticalAlignment="Center" Margin="60 , 0, 0, 270" Canvas.ZIndex="100" Grid.Row="1" Grid.RowSpan="1" RenderTransformOrigin="0.20,0.08">
+                        <Image Name="decorateBar"
+                               Source="ms-appx:///Assets/player_needle.scale-200.png"
+                               Width="120"
+                               Height="250"
+                               VerticalAlignment="Center"
+                               Margin="60 , 0, 0, 270"
+                               Canvas.ZIndex="100"
+                               Grid.Row="1"
+                               Grid.RowSpan="1"
+                               RenderTransformOrigin="0.20,0.08">
                             <Image.RenderTransform>
-                                <RotateTransform Angle="-40" x:Name="rotateTrans"/>
+                                <RotateTransform Angle="-40"
+                                                 x:Name="rotateTrans" />
                             </Image.RenderTransform>
 
                         </Image>
-                        <Ellipse x:Name="ring" Width="250" Height="250" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
+                        <Ellipse x:Name="ring"
+                                 Width="250"
+                                 Height="250"
+                                 Margin="10,10,10,10"
+                                 VerticalAlignment="Center"
+                                 Grid.Row="1">
                             <Ellipse.Fill>
-                                <ImageBrush x:Name="out_Img" ImageSource="ms-appx:///Assets/player_disk_cover.scale-200.png"/>
+                                <ImageBrush x:Name="out_Img"
+                                            ImageSource="ms-appx:///Assets/player_disk_cover.scale-200.png" />
                             </Ellipse.Fill>
                             <Ellipse.RenderTransform>
                                 <TransformGroup>
-                                    <RotateTransform x:Name="out_rotation" x:FieldModifier="Public"/>
+                                    <RotateTransform x:Name="out_rotation"
+                                                     x:FieldModifier="Public" />
                                 </TransformGroup>
                             </Ellipse.RenderTransform>
                         </Ellipse>
-                        <Ellipse x:Name="ellipse" Width="150" Height="150" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
+                        <Ellipse x:Name="ellipse"
+                                 Width="150"
+                                 Height="150"
+                                 Margin="10,10,10,10"
+                                 VerticalAlignment="Center"
+                                 Grid.Row="1">
                             <Ellipse.Fill>
-                                <ImageBrush x:Name="tn_pic" ImageSource="{Binding Cover}"/>
+                                <ImageBrush x:Name="tn_pic"
+                                            ImageSource="{Binding Cover}" />
                             </Ellipse.Fill>
                             <Ellipse.RenderTransform>
                                 <TransformGroup>
-                                    <RotateTransform x:Name="rotation" x:FieldModifier="Public"/>
+                                    <RotateTransform x:Name="rotation"
+                                                     x:FieldModifier="Public" />
                                 </TransformGroup>
                             </Ellipse.RenderTransform>
                         </Ellipse>
@@ -197,20 +244,25 @@
                 </Grid>
 
                 <!--歌词，之前在这里的歌手，专辑信息被我删了，麻烦在上面重新绑定一下。。-->
-                <Grid x:Name="lrcSpace" Grid.Column="1" Margin="0, 50, 0, 0">
+                <Grid x:Name="lrcSpace"
+                      Grid.Column="1"
+                      Margin="0, 50, 0, 0"
+                      Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="6*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="6*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <!--
             这里需要加上适当的Margin padding 以及调整字体大小，颜色。
             忙着写其他的， 还没弄。
             -->
-                    
-                    <ScrollViewer Name="lrcContainer" Grid.Row="1">
-                        <TextBlock Name="lrcText" Text="">
+
+                    <ScrollViewer Name="lrcContainer"
+                                  Grid.Row="1">
+                        <TextBlock Name="lrcText"
+                                   Text="">
                     <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->
                         </TextBlock>
                         <!--

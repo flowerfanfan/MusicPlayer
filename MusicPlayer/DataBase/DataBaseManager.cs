@@ -52,6 +52,19 @@ namespace MusicPlayer.DataBase
             {
                 stmt.Step();
             }
+            // 加载_FavoriteSongs_表
+            using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
+                                             `_FavoriteSongs_` (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                    FilePath VARCHAR(300),
+                                                    Title VARCHAR(200),
+                                                    Artist VARCHAR(200),
+                                                    Album VARCHAR(200),
+                                                    Length VARCHAR(10),
+                                                    Cover BLOB
+                                                   );"))
+            {
+                stmt.Step();
+            }
         }
 
         // 返回歌曲表中所有歌曲的数据
@@ -106,7 +119,7 @@ namespace MusicPlayer.DataBase
                 stmt.Bind(6, song.CoverBytes);
                 stmt.Step();
             }
-            if (listName != "_Songs_")
+            if (listName != "_Songs_" && listName != "_FavoriteSongs_")
             {
                 using (var stmt = Conn.Prepare(@"UPDATE SongLists SET Number = ? WHERE Name = ?"))
                 {
@@ -214,7 +227,7 @@ namespace MusicPlayer.DataBase
                 stmt.Bind(1, song.FilePath);
                 stmt.Step();
             }
-            if (listName != "_Songs_")
+            if (listName != "_Songs_" && listName != "_FavoriteSongs_")
             {
                 using (var stmt = Conn.Prepare("UPDATE SongLists SET Number = ? WHERE Name = ?"))
                 {

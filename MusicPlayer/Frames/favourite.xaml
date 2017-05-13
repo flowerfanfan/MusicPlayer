@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MusicPlayer.Frames"
+    xmlns:models="using:MusicPlayer.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -10,9 +11,9 @@
     <Grid Background="#A9A9A9">
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid>
             <TextBlock Text="我的最爱" FontSize="36" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
             <Line Stretch="Fill"
                   Stroke="Black"
@@ -22,8 +23,8 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <GridView Grid.Row="1" x:Name="recentSongs" Padding="20">
-            <!--
+        <!--<GridView Grid.Row="1" x:Name="recentSongs" Padding="20">
+            
             <StackPanel>
                 <Image Source="ms-appx:///Assets/logo-300.png" Width="150" Height="150" Margin="20"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -45,23 +46,35 @@
                     <Image x:Name="like2" Source="ms-appx:///Assets/like.png" Width="18" Margin="20, 5, 0, 0"/>
                 </StackPanel>
             </StackPanel>
-            -->
-        </GridView>
-        <!--上面是显示效果，要绑定的话应该用下面这个，因为没试过，所以有问题的话可以参考下面网址-->
-        <!--https://msdn.microsoft.com/zh-cn/library/windows/apps/xaml/hh780650.aspx-->
-        <!--<GridView Grid.Row="1" x:Name="favouriteSongs" Padding="20"
-                  ItemsSource="xxx" SelectionChanged="xxx">
+            
+        </GridView>-->
+        
+        <GridView Grid.Row="1"
+                  Padding="20"
+                  ItemsSource="{x:Bind favoriteVM.FavoriteSongs, Mode=OneWay}">
             <GridView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:Song">
                     <StackPanel>
-                        <Image Source="{Binding xxx}" Width="150" Height="150" Margin="20"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding xxx}" HorizontalAlignment="Center" FontSize="20"/>
-                            <Image x:Name="like" Source="{Binding xxx}" Width="18" Margin="20, 5, 0, 0"/>
+                        <Image Source="{x:Bind Cover, Mode=OneWay}" Width="150" Height="150" Margin="20"/>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <Button x:Name="UnFavoriteBtn"
+                                    Click="UnFavoriteBtn_Click">
+                                <Image Source="ms-appx:///Assets/like.png"
+                                       Width="15"/>
+                            </Button>
+                            <StackPanel Width="100">
+                                <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                                           FontSize="25"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
+                                           FontSize="20"
+                                           TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-        </GridView>-->
+        </GridView>
     </Grid>
 </Page>

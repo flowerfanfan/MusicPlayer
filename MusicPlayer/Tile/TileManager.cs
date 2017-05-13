@@ -98,13 +98,13 @@ namespace MusicPlayer.Tile
 
                     TileLarge = new TileBinding()
                     {
-                        BackgroundImage = new TileBackgroundImage()
-                        {
-                            Source = "Assets/player_disk_cover.scale-200.png"
-                        },
-
                         Content = new TileBindingContentAdaptive()
                         {
+                            BackgroundImage = new TileBackgroundImage()
+                            {
+                                Source = "Assets/player_disk_cover.scale-200.png"
+                            },
+
                             Children =
                 {
                     new AdaptiveText()

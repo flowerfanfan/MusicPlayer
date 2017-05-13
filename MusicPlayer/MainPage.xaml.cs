@@ -224,10 +224,10 @@ namespace MusicPlayer
                 Default.Current.FavoriteBtnControl.Visibility = Visibility.Visible;
                 if (FavoriteVM.GetFavoriteVM().NoSuchSong(s))
                 {
-                    Default.Current.FavoriteBtnImg.Source = Default.Current.Dislike;
+                    Default.Current.FavoriteBtnControl.Source = Default.Current.Dislike;
                 } else
                 {
-                    Default.Current.FavoriteBtnImg.Source = Default.Current.Like;
+                    Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
                 ContentFrame.Navigate(typeof(Default), s);
             }

@@ -63,7 +63,7 @@ namespace MusicPlayer.ViewModels
                     break;
                 }
             }
-            Default.Current.FavoriteBtnImg.Source = Default.Current.Dislike;
+            Default.Current.FavoriteBtnControl.Source = Default.Current.Dislike;
             DBManager.DeleteSong("_FavoriteSongs_", song);
         }
     }

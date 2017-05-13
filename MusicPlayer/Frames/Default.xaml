@@ -147,13 +147,12 @@
                            FontSize="18"/>
                         <Image x:Name="like" Source="ms-appx:///Assets/dislike.png" Width="20" Margin="20, 5, 0, 0" Tapped="likeButton"/>
                     </StackPanel>-->
-                    <Button x:Name="FavoriteBtn"
-                            Grid.Row="3"
-                            Click="FavoriteBtn_Click"
-                            Visibility="Collapsed">
-                        <Image x:Name="FavoriteImg"
-                               Source="ms-appx:///Assets/dislike.png" />
-                    </Button>
+                    <Image x:Name="FavoriteBtn"
+                           Grid.Row="3"
+                           Source="ms-appx:///Assets/dislike.png"
+                           Width="20"
+                           Visibility="Collapsed"
+                           Tapped="FavoriteBtn_Tapped" />
                 </Grid>
             </Grid>
         </Grid>

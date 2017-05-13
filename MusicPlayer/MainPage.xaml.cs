@@ -26,6 +26,7 @@ using MusicPlayer.DataBase;
 using Windows.Storage.FileProperties;
 using System.Linq;
 using MusicPlayer.ViewModels;
+using MusicPlayer.Tile;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -174,46 +175,47 @@ namespace MusicPlayer
 
 
 
-                    string lrcPath = file.Path.Replace(".mp3", ".lrc");
-                    StorageFile lrcFile = null;
-                    
-                    try
-                    {
-                        lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (fileFromPicker)
-                        {
-                            await new MessageDialog(ex.Message + ", 请手动添加歌词文件， 或者直接按“取消”进行无歌词播放").ShowAsync();
-                            /*
-                            StorageFolder parent = null;
-                            StorageFile lrcFile = null;
-                            parent = await file.GetParentAsync();
-                            while (parent == null) ; //在这里无限等待了
-                            lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
-                            */
+                string lrcPath = file.Path.Replace(".mp3", ".lrc");
+                StorageFile lrcFile = null;
 
-                            FileOpenPicker openPicker = new FileOpenPicker();
-                            openPicker.ViewMode = PickerViewMode.Thumbnail;
-                            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                            openPicker.FileTypeFilter.Add(".lrc");
-                            lrcFile = await openPicker.PickSingleFileAsync();
-                        }
-                    }
-                    string text = "";
-                    if (lrcFile != null)
+                try
+                {
+                    lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
+                }
+                catch (Exception ex)
+                {
+                    if (fileFromPicker)
                     {
-                        StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
-                        text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                        await new MessageDialog(ex.Message + ", 请手动添加歌词文件， 或者直接按“取消”进行无歌词播放").ShowAsync();
+                        /*
+                        StorageFolder parent = null;
+                        StorageFile lrcFile = null;
+                        parent = await file.GetParentAsync();
+                        while (parent == null) ; //在这里无限等待了
+                        lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
+                        */
+
+                        FileOpenPicker openPicker = new FileOpenPicker();
+                        openPicker.ViewMode = PickerViewMode.Thumbnail;
+                        openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                        openPicker.FileTypeFilter.Add(".lrc");
+                        lrcFile = await openPicker.PickSingleFileAsync();
                     }
-                    lrc.getLrc(text);
+                }
+                string text = "";
+                if (lrcFile != null)
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
+                    text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                }
+                lrc.getLrc(text);
                 var properties = await file.Properties.GetMusicPropertiesAsync();
                 Song s = new Song(file.Path, properties, thumbnail);
-                    s.lyric = lrc;
-                    s.Cover = tn;
-                    ContentFrame.Navigate(typeof(Default), s);
-                }
+                s.lyric = lrc;
+                // 更新磁贴
+                TileManager.UpdateTile(s);
+                ContentFrame.Navigate(typeof(Default), s);
+            }
         }
 
         async private void PlaybackSession_PositionChanged(Windows.Media.Playback.MediaPlaybackSession sender, object args)
@@ -318,7 +320,7 @@ namespace MusicPlayer
             mySongListItem.IsSelected = true;
             await new CreateSongListDialog().ShowAsync();
         }
-        
+
         private async void AddSongBtn_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker openPicker = new FileOpenPicker();

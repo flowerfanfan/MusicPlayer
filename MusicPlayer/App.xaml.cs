@@ -1,4 +1,5 @@
 ﻿using MusicPlayer.DataBase;
+using MusicPlayer.Tile;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,7 @@ namespace MusicPlayer
             this.Suspending += OnSuspending;
 
             DataBaseManager.GetDBManager().LoadDatabase();
+            TileManager.ShowTile();
         }
 
         /// <summary>

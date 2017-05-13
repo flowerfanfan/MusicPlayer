@@ -13,19 +13,21 @@ namespace MusicPlayer.ViewModels
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<SongList> SongLists { get; set; }
         public Dictionary<string, ObservableCollection<Song>> SongsInList { get; set; }
-        public ObservableCollection<Song> SongsInSelectedList { get; set; }
+        public ObservableCollection<Song> SongsInClickedList { get; set; }
         public string ClickedListName { get; set; }
         public ObservableCollection<Song> SongsToBeAddedToList { get; set; }
         public ObservableCollection<SongList> SelectedLists { get; set; }
+        private ObservableCollection<Song> SelectedSongs;
 
         private MySongListVM()
         {
             DBManager = DataBaseManager.GetDBManager();
             SongLists = new ObservableCollection<SongList>();
             SongsInList = new Dictionary<string, ObservableCollection<Song>>();
-            SongsInSelectedList = new ObservableCollection<Song>();
+            SongsInClickedList = new ObservableCollection<Song>();
             SongsToBeAddedToList = new ObservableCollection<Song>();
             SelectedLists = new ObservableCollection<SongList>();
+            SelectedSongs = new ObservableCollection<Song>();
             LoadSongLists();
         }
 
@@ -80,24 +82,31 @@ namespace MusicPlayer.ViewModels
             {
                 songsInList.Add(song);
             }
+            UpdateNumberInList(name);
+            // 在数据库中添加
+            DBManager.AddSongs(SongsToBeAddedToList, name);
+            SongsToBeAddedToList.Clear();
+        }
+
+        private void UpdateNumberInList(string name)
+        {
             foreach (SongList songList in SongLists)
             {
                 if (songList.Name == name)
                 {
-                    songList.Number = songsInList.Count;
+                    songList.Number = SongsInList[name].Count;
+                    break;
                 }
             }
-            // 在数据库中添加
-            DBManager.AddSongs(SongsToBeAddedToList, name);
         }
 
         // 用户点击一个歌单后，设置展示数据源
         public void SetClickedList(string name)
         {
-            SongsInSelectedList.Clear();
+            SongsInClickedList.Clear();
             foreach (Song song in SongsInList[name])
             {
-                SongsInSelectedList.Add(song);
+                SongsInClickedList.Add(song);
             }
             ClickedListName = name;
         }
@@ -120,7 +129,7 @@ namespace MusicPlayer.ViewModels
             DBManager.DeleteSongList(songList.Name);
             if (ClickedListName == songList.Name)
             {
-                mySongListVM.SongsInSelectedList.Clear();
+                mySongListVM.SongsInClickedList.Clear();
             }
         }
 
@@ -137,6 +146,35 @@ namespace MusicPlayer.ViewModels
         public void RemoveSelectedList(SongList songList)
         {
             SelectedLists.Remove(songList);
+        }
+
+        // 批量删除选中的歌曲
+        public void DeleteSelectedSongs()
+        {
+            ObservableCollection<Song> songsInList = SongsInList[ClickedListName];
+            foreach (Song song in SelectedSongs)
+            {
+                SongsInClickedList.Remove(song);
+                songsInList.Remove(song);
+                DBManager.DeleteSong(ClickedListName, song);
+            }
+            UpdateNumberInList(ClickedListName);
+            SelectedSongs.Clear();
+        }
+
+        public bool HasSelectedSongs()
+        {
+            return SelectedSongs.Count != 0;
+        }
+
+        public void SelectSong(Song song)
+        {
+            SelectedSongs.Add(song);
+        }
+
+        public void RemoveSelectedSong(Song song)
+        {
+            SelectedSongs.Remove(song);
         }
     }
 }

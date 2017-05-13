@@ -30,7 +30,7 @@ namespace MusicPlayer.DataBase
         // 创建或打开数据库
         public void LoadDatabase()
         {
-            // 加载Songs表（初始表）
+            // 加载_Songs_表（初始表）
             using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
                                              `_Songs_` (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                                                     FilePath VARCHAR(300),
@@ -133,6 +133,18 @@ namespace MusicPlayer.DataBase
             }
         }
 
+        private int GetNumberInList(string listName)
+        {
+            int number;
+            using (var stmt = Conn.Prepare(@"SELECT Number FROM SongLists WHERE Name = ?"))
+            {
+                stmt.Bind(1, listName);
+                stmt.Step();
+                number = Convert.ToInt32((Int64)stmt["Number"]);
+            }
+            return number;
+        }
+
         // 在SongLists表中添加一个新歌单
         public void AddSongList(string listName)
         {
@@ -182,6 +194,24 @@ namespace MusicPlayer.DataBase
             using (var stmt = Conn.Prepare("DROP TABLE `" + listName +"`"))
             {
                 stmt.Step();
+            }
+        }
+
+        // 删除歌曲表中的一首歌
+        public void DeleteSong(string listName, Song song)
+        {
+            using (var stmt = Conn.Prepare("DELETE FROM '" + listName + "' WHERE FilePath = '" + song.FilePath + "'"))
+            {
+                stmt.Step();
+            }
+            if (listName != "_Songs_")
+            {
+                using (var stmt = Conn.Prepare("UPDATE SongLists SET Number = ? WHERE Name = ?"))
+                {
+                    stmt.Bind(1, GetNumberInList(listName) - 1);
+                    stmt.Bind(2, listName);
+                    stmt.Step();
+                }
             }
         }
     }

@@ -12,84 +12,98 @@
             <RowDefinition Height="80" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        <Grid>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="我的歌单"
-                           FontSize="36"
-                           VerticalAlignment="Center"
-                           Margin="20, 0, 0, 0" />
-                <Button x:Name="DeleteListBtn"
-                        Content="编辑"
-                        Click="DeleteListBtn_Click"/>
-            </StackPanel>
-            <Line Stretch="Fill"
-                  Stroke="Black"
-                  StrokeThickness="1"
-                  X1="1"
-                  Margin="20, 0, 20, 0"
-                  VerticalAlignment="Bottom"/>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="我的歌单"
+                       FontSize="36"
+                       VerticalAlignment="Center"
+                       Margin="20, 0, 0, 0" />
+            <Button x:Name="DeleteListsBtn"
+                    Content="编辑"
+                    Click="DeleteListsBtn_Click" />
+        </StackPanel>
 
-            <ListView x:Name="SongListsLV"
-                      Padding="10"
-                      ItemsSource="{x:Bind mySongListVM.SongLists, Mode=OneWay}"
-                      IsItemClickEnabled="True"
-                      ItemClick="SongListsLV_ItemClick"
-                      IsMultiSelectCheckBoxEnabled="True"
-                      SelectionChanged="SongListsLV_SelectionChanged">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:SongList">
-                        <StackPanel Grid.Column="1"
-                                    Margin="10">
-                            <TextBlock Text="{x:Bind Name, Mode=OneWay}"
-                                       FontSize="25" />
-                            <TextBlock />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{x:Bind Number, Mode=OneWay}"
-                                           FontSize="15" />
-                                <TextBlock Text=" 首"
-                                           FontSize="15" />
-                            </StackPanel>
+        <StackPanel x:Name="ClickedListHead"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Visibility="Collapsed">
+            <TextBlock x:Name="ClickedListNameTB"
+                       Text="歌单"
+                       FontSize="36"
+                       VerticalAlignment="Center"
+                       Margin="20, 0, 0, 0" />
+            <Button x:Name="DeleteSongsBtn"
+                    Content="编辑"
+                    Click="DeleteSongsBtn_Click" />
+        </StackPanel>
+
+        <Line Grid.ColumnSpan="2"
+              Stretch="Fill"
+              Stroke="Black"
+              StrokeThickness="1"
+              X1="1"
+              Margin="20, 0, 20, 0"
+              VerticalAlignment="Bottom" />
+
+        <ListView x:Name="SongListsLV"
+                  Grid.Row="1"
+                  Padding="10"
+                  ItemsSource="{x:Bind mySongListVM.SongLists, Mode=OneWay}"
+                  IsItemClickEnabled="True"
+                  ItemClick="SongListsLV_ItemClick"
+                  IsMultiSelectCheckBoxEnabled="True"
+                  SelectionChanged="SongListsLV_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:SongList">
+                    <StackPanel Grid.Column="1"
+                                Margin="10">
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}"
+                                   FontSize="25" />
+                        <TextBlock />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Number, Mode=OneWay}"
+                                       FontSize="15" />
+                            <TextBlock Text=" 首"
+                                       FontSize="15" />
                         </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-            <ListView x:Name="SongsInSelectedListLV"
-                      Grid.Column="1"
-                      Padding="10"
-                      ItemsSource="{x:Bind mySongListVM.SongsInSelectedList, Mode=OneWay}"
-                      IsItemClickEnabled="True"
-                      ItemClick="Select_Songs"
-                      DoubleTapped="PlaySong"
-                      >
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Song">
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Stretch"
-                                    Padding="10">
-                            <Image Source="{x:Bind Cover, Mode=OneWay}"
-                                   Width="50"
-                                   Height="50" />
-                            <StackPanel Margin="20, 0, 0, 0">
-                                <TextBlock Text="{x:Bind Title, Mode=OneWay}"
-                                           FontSize="25"
-                                           VerticalAlignment="Top" />
-                                <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
-                                           FontSize="20"
-                                           VerticalAlignment="Bottom" />
-                            </StackPanel>
+        <ListView x:Name="SongsInSelectedListLV"
+                  Grid.Row="1"
+                  Grid.Column="1"
+                  Padding="10"
+                  ItemsSource="{x:Bind mySongListVM.SongsInClickedList, Mode=OneWay}"
+                  IsItemClickEnabled="True"
+                  ItemClick="Select_Songs"
+                  DoubleTapped="PlaySong"
+                  IsMultiSelectCheckBoxEnabled="True"
+                  SelectionChanged="SongsInSelectedListLV_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Song">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Stretch"
+                                Padding="10">
+                        <Image Source="{x:Bind Cover, Mode=OneWay}"
+                               Width="50"
+                               Height="50" />
+                        <StackPanel Margin="20, 0, 0, 0">
+                            <TextBlock Text="{x:Bind Title, Mode=OneWay}"
+                                       FontSize="25"
+                                       VerticalAlignment="Top" />
+                            <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
+                                       FontSize="20"
+                                       VerticalAlignment="Bottom" />
                         </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>

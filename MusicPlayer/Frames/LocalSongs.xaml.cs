@@ -20,7 +20,9 @@ namespace MusicPlayer.Frames
         private string EDIT = "编辑";
         private string CANCEL = "取消";
         private string ADD = "添加到歌单";
+        private bool isSelecting;
         Song song;
+
         public LocalSongs()
         {
             this.InitializeComponent();
@@ -44,12 +46,15 @@ namespace MusicPlayer.Frames
             {
                 AddSongsToListBtn.Content = CANCEL;
                 SongListLV.SelectionMode = ListViewSelectionMode.Multiple;
+                SongListLV.IsItemClickEnabled = false;
+                isSelecting = true;
             }
             // 取消
             else if (AddSongsToListBtn.Content.ToString() == CANCEL)
             {
                 AddSongsToListBtn.Content = EDIT;
                 SongListLV.SelectionMode = ListViewSelectionMode.Single;
+                SongListLV.IsItemClickEnabled = true;
             }
             // 添加
             else if (AddSongsToListBtn.Content.ToString() == ADD)
@@ -59,33 +64,51 @@ namespace MusicPlayer.Frames
                 await new SelectSongListDialog().ShowAsync();
                 AddSongsToListBtn.Content = EDIT;
                 SongListLV.SelectionMode = ListViewSelectionMode.Single;
+                SongListLV.IsItemClickEnabled = true;
             }
         }
 
-
         // 选中或取消选中歌曲事件处理
-        private void SongLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SongListLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           
-            foreach (Song song in e.AddedItems)
-            {
-                localSongsVM.SelectSong(song);
-            }
-            foreach (Song song in e.RemovedItems)
-            {
-                localSongsVM.RemoveSelectedSong(song);
-            }
             if (AddSongsToListBtn.Content.ToString() != EDIT)
             {
+                if (isSelecting)
+                {
+                    foreach (Song song in e.AddedItems)
+                    {
+                        localSongsVM.SelectSong(song);
+                    }
+                    foreach (Song song in e.RemovedItems)
+                    {
+                        localSongsVM.RemoveSelectedSong(song);
+                    }
+                }
                 if (localSongsVM.HasSelected())
                 {
                     AddSongsToListBtn.Content = ADD;
+                    DeleteSongsBtn.Opacity = 1;
+                    DeleteSongsBtn.IsEnabled = true;
                 }
                 else
                 {
                     AddSongsToListBtn.Content = CANCEL;
+                    DeleteSongsBtn.IsEnabled = false;
+                    DeleteSongsBtn.Opacity = 0;
                 }
             }
+        }
+
+        // 删除选中的歌曲
+        private void DeleteSongsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            isSelecting = false;
+            localSongsVM.DeleteSelectedSongs();
+            AddSongsToListBtn.Content = EDIT;
+            DeleteSongsBtn.IsEnabled = false;
+            DeleteSongsBtn.Opacity = 0;
+            SongListLV.SelectionMode = ListViewSelectionMode.Single;
+            SongListLV.IsItemClickEnabled = true;
         }
 
         private void Select_Songs(object sender, ItemClickEventArgs e)

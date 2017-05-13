@@ -26,6 +26,11 @@
                 <Button x:Name="AddSongsToListBtn"
                         Content="编辑"
                         Click="AddSongsToListBtn_Click" />
+                <Button x:Name="DeleteSongsBtn"
+                        Content="删除"
+                        IsEnabled="False"
+                        Opacity="0"
+                        Click="DeleteSongsBtn_Click" />
             </StackPanel>
             <Line Stretch="Fill"
                   Stroke="Black"
@@ -41,7 +46,7 @@
                   Padding="20"
                   ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}"
                   IsMultiSelectCheckBoxEnabled="True"
-                  SelectionChanged="SongLV_SelectionChanged"
+                  SelectionChanged="SongListLV_SelectionChanged"
                   ItemClick="Select_Songs"
                   DoubleTapped="PlaySong">
             <ListView.ItemTemplate>

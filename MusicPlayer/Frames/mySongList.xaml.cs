@@ -20,8 +20,10 @@ namespace MusicPlayer.Frames
         private string EDIT = "编辑";
         private string CANCEL = "取消";
         private string DELETE = "删除";
-        private bool isSelceting;
+        private bool isSelcetingLists;
+        private bool isSelectingSongs;
         private Song song;
+
         public mySongList()
         {
             this.InitializeComponent();
@@ -32,14 +34,17 @@ namespace MusicPlayer.Frames
         // 点击歌单，展示歌曲列表
         private void SongListsLV_ItemClick(object sender, ItemClickEventArgs e)
         {
-            mySongListVM.SetClickedList(((SongList)e.ClickedItem).Name);
+            string clickedListName = ((SongList)e.ClickedItem).Name;
+            mySongListVM.SetClickedList(clickedListName);
+            ClickedListNameTB.Text = clickedListName;
+            ClickedListHead.Visibility = Visibility.Visible;
         }
 
-        // 编辑/取消/删除 按钮点击事件
-        private async void DeleteListBtn_Click(object sender, RoutedEventArgs e)
+        // 编辑/取消/删除 歌单按钮点击事件
+        private async void DeleteListsBtn_Click(object sender, RoutedEventArgs e)
         {
             // 编辑
-            if (DeleteListBtn.Content.ToString() == EDIT)
+            if (DeleteListsBtn.Content.ToString() == EDIT)
             {
                 // 还没有自建歌单时，弹出创建歌单对话框
                 if (mySongListVM.NoListExist())
@@ -48,25 +53,25 @@ namespace MusicPlayer.Frames
                 }
                 else
                 {
-                    DeleteListBtn.Content = CANCEL;
+                    DeleteListsBtn.Content = CANCEL;
                     SongListsLV.SelectionMode = ListViewSelectionMode.Multiple;
                     SongListsLV.IsItemClickEnabled = false;
-                    isSelceting = true;
+                    isSelcetingLists = true;
                 }
             }
             // 取消
-            else if (DeleteListBtn.Content.ToString() == CANCEL)
+            else if (DeleteListsBtn.Content.ToString() == CANCEL)
             {
-                DeleteListBtn.Content = EDIT;
+                DeleteListsBtn.Content = EDIT;
                 SongListsLV.SelectionMode = ListViewSelectionMode.Single;
                 SongListsLV.IsItemClickEnabled = true;
             }
             // 删除
-            else if (DeleteListBtn.Content.ToString() == DELETE)
+            else if (DeleteListsBtn.Content.ToString() == DELETE)
             {
-                isSelceting = false;
+                isSelcetingLists = false;
                 mySongListVM.DeleteSelectedLists();
-                DeleteListBtn.Content = EDIT;
+                DeleteListsBtn.Content = EDIT;
                 SongListsLV.SelectionMode = ListViewSelectionMode.Single;
                 SongListsLV.IsItemClickEnabled = true;
             }
@@ -75,9 +80,9 @@ namespace MusicPlayer.Frames
         // 选中或取消选中歌单事件处理
         private void SongListsLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (DeleteListBtn.Content.ToString() != EDIT)
+            if (DeleteListsBtn.Content.ToString() != EDIT)
             {
-                if (isSelceting)
+                if (isSelcetingLists)
                 {
                     foreach (SongList songList in e.AddedItems)
                     {
@@ -90,11 +95,67 @@ namespace MusicPlayer.Frames
                 }
                 if (mySongListVM.HasSelected())
                 {
-                    DeleteListBtn.Content = DELETE;
+                    DeleteListsBtn.Content = DELETE;
                 }
                 else
                 {
-                    DeleteListBtn.Content = CANCEL;
+                    DeleteListsBtn.Content = CANCEL;
+                }
+            }
+        }
+
+        // 编辑/取消/删除 歌曲按钮点击事件
+        private void DeleteSongsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // 编辑
+            if (DeleteSongsBtn.Content.ToString() == EDIT)
+            {
+                DeleteSongsBtn.Content = CANCEL;
+                SongsInSelectedListLV.SelectionMode = ListViewSelectionMode.Multiple;
+                SongsInSelectedListLV.IsItemClickEnabled = false;
+                isSelectingSongs = true;
+            }
+            // 取消
+            else if (DeleteSongsBtn.Content.ToString() == CANCEL)
+            {
+                DeleteSongsBtn.Content = EDIT;
+                SongsInSelectedListLV.SelectionMode = ListViewSelectionMode.Single;
+                SongsInSelectedListLV.IsItemClickEnabled = true;
+            }
+            // 删除
+            else if (DeleteSongsBtn.Content.ToString() == DELETE)
+            {
+                isSelectingSongs = false;
+                mySongListVM.DeleteSelectedSongs();
+                DeleteSongsBtn.Content = EDIT;
+                SongsInSelectedListLV.SelectionMode = ListViewSelectionMode.Single;
+                SongsInSelectedListLV.IsItemClickEnabled = true;
+            }
+        }
+
+        // 选中或取消选中歌曲事件处理
+        private void SongsInSelectedListLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DeleteSongsBtn.Content.ToString() != EDIT)
+            {
+                if (isSelectingSongs)
+                {
+                    foreach (Song song in e.AddedItems)
+                    {
+                        mySongListVM.SelectSong(song);
+                    }
+                    foreach (Song song in e.RemovedItems)
+                    {
+                        mySongListVM.RemoveSelectedSong(song);
+                    }
+                }
+                if (mySongListVM.HasSelectedSongs())
+                {
+                    DeleteSongsBtn.Content = DELETE;
+                }
+                else
+                {
+                    DeleteSongsBtn.Content = CANCEL;
                 }
             }
         }

@@ -57,6 +57,19 @@ namespace MusicPlayer.ViewModels
             DBManager.AddSongs(Songs, "_Songs_");
         }
         
+        // 批量删除选中的歌曲
+        public void DeleteSelectedSongs()
+        {
+            foreach (Song song in SelectedSongs)
+            {
+                Songs.Remove(song);
+                // 在数据库中删除
+                DBManager.DeleteSong("_Songs_", song);
+                // TODO:删除本地文件
+
+            }
+        }
+
         // 判断再删除时用户是否已选中歌单
         public bool HasSelected()
         {

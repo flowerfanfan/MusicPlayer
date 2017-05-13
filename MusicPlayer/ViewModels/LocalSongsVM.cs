@@ -83,9 +83,13 @@ namespace MusicPlayer.ViewModels
         {
             foreach (StorageFile file in fileList)
             {
-                MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
-                StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
-                Songs.Add(new Song(file.Path, musicProperties, thumbnail));
+                if (!HasSong(file.Path))
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(file.Name, file);
+                    MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
+                    StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+                    Songs.Add(new Song(file.Path, musicProperties, thumbnail));
+                }
             }
             DBManager.AddSongs(Songs, "_Songs_");
         }

@@ -1,4 +1,5 @@
 ﻿using MediaPlayer;
+using MusicPlayer.Helper;
 using MusicPlayer.Models;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,7 @@ namespace MusicPlayer
                 MainPage.Current.SongArtist.Text = song.Artist;
                 MainPage.Current.SongTitle.Text = song.Title;
                 MainPage.Current.Cover.Source = song.Cover;
+                search.Opacity = 1;
             }
         }
 
@@ -153,6 +155,16 @@ namespace MusicPlayer
                 offset -= staticlength;
             }
             lrcContainer.ChangeView(null, offset, null, false);
+        }
+
+        private void SearchLRCOnline(object sender, RoutedEventArgs e)
+        {
+            string title = song.Title;
+            string lyric = WebRequest.getLyric(title);
+            lrc = new Lyric(lyric);
+            //var s = Default.Current.song;
+            setLRC();
+            //ContentFrame.Navigate(typeof(Default), s);
         }
     }
 }

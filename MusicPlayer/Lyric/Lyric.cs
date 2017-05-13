@@ -31,6 +31,10 @@ namespace MediaPlayer
             //
             currentIndex = 0;
         }
+        public Lyric(string text)
+        {
+            getLrc(text);
+        }
         public string getAllText()
         {
             List<string> result = new List<string>();
@@ -49,7 +53,10 @@ namespace MediaPlayer
             string[] temp = text.Split(new char[2] { '[', ']' });
             for (int i = 1; i <= temp.Length / 2; i++)
             {
-                lrc.Add(new Sentence(TimeSpan.Parse("00:" + temp[2 * i - 1]), temp[2 * i].Replace("\r", ""), i));
+                TimeSpan t = new TimeSpan();
+                bool success = TimeSpan.TryParse("00:" + temp[2 * i - 1], out t);
+                if (!success) ;
+                    lrc.Add(new Sentence(t, temp[2 * i].Replace("\r", "").Replace("\\n", "\n"), i));
             }
         }
         //这个可以更新currentIndex的。

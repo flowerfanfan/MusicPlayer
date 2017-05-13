@@ -26,6 +26,7 @@ using MusicPlayer.DataBase;
 using Windows.Storage.FileProperties;
 using System.Linq;
 using MusicPlayer.ViewModels;
+using MusicPlayer.Helper;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer

@@ -27,7 +27,7 @@ using Windows.Storage.FileProperties;
 using System.Linq;
 using MusicPlayer.ViewModels;
 using MusicPlayer.Helper;
-using Windows.Storage.Search;
+using MusicPlayer.Tile;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -134,7 +134,6 @@ namespace MusicPlayer
             player.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
             DataTransferManager.GetForCurrentView().DataRequested += OnShareDataRequested;
         }
-
         async private void MediaPlayer_MediaFailed(Windows.Media.Playback.MediaPlayer sender, MediaPlayerFailedEventArgs args)
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
@@ -177,46 +176,48 @@ namespace MusicPlayer
 
 
 
-                    string lrcPath = file.Path.Replace(".mp3", ".lrc");
-                    StorageFile lrcFile = null;
-                    
-                    try
-                    {
-                        lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (fileFromPicker)
-                        {
-                            await new MessageDialog(ex.Message + ", 请手动添加歌词文件， 或者直接按“取消”进行无歌词播放").ShowAsync();
-                            /*
-                            StorageFolder parent = null;
-                            StorageFile lrcFile = null;
-                            parent = await file.GetParentAsync();
-                            while (parent == null) ; //在这里无限等待了
-                            lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
-                            */
+                string lrcPath = file.Path.Replace(".mp3", ".lrc");
+                StorageFile lrcFile = null;
 
-                            FileOpenPicker openPicker = new FileOpenPicker();
-                            openPicker.ViewMode = PickerViewMode.Thumbnail;
-                            openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                            openPicker.FileTypeFilter.Add(".lrc");
-                            lrcFile = await openPicker.PickSingleFileAsync();
-                        }
-                    }
-                    string text = "";
-                    if (lrcFile != null)
+                try
+                {
+                    lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
+                }
+                catch (Exception ex)
+                {
+                    if (fileFromPicker)
                     {
-                        StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
-                        text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                        await new MessageDialog(ex.Message + ", 请手动添加歌词文件， 或者直接按“取消”进行无歌词播放").ShowAsync();
+                        /*
+                        StorageFolder parent = null;
+                        StorageFile lrcFile = null;
+                        parent = await file.GetParentAsync();
+                        while (parent == null) ; //在这里无限等待了
+                        lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
+                        */
+
+                        FileOpenPicker openPicker = new FileOpenPicker();
+                        openPicker.ViewMode = PickerViewMode.Thumbnail;
+                        openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                        openPicker.FileTypeFilter.Add(".lrc");
+                        lrcFile = await openPicker.PickSingleFileAsync();
                     }
-                    lrc.getLrc(text);
+                }
+                string text = "";
+                if (lrcFile != null)
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(lrcFile.Name, lrcFile);
+                    text = await Windows.Storage.FileIO.ReadTextAsync(lrcFile, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                }
+                lrc.getLrc(text);
                 var properties = await file.Properties.GetMusicPropertiesAsync();
                 Song s = new Song(file.Path, properties, thumbnail);
-                    s.lyric = lrc;
-                    s.Cover = tn;
-                    ContentFrame.Navigate(typeof(Default), s);
-                }
+                s.lyric = lrc;
+                s.Cover = tn;
+                // 更新磁贴
+                TileManager.UpdateTileAsync(s);
+                ContentFrame.Navigate(typeof(Default), s);
+            }
         }
 
         async private void PlaybackSession_PositionChanged(Windows.Media.Playback.MediaPlaybackSession sender, object args)
@@ -232,13 +233,13 @@ namespace MusicPlayer
         //在MainPage中控制另一个页面的动画， 感觉不是很好。
         private void stop_Click(object sender, RoutedEventArgs e)
         {
-                if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
-                    Default.Current.switchPauseAnimation.Begin();
-                player.MediaPlayer.PlaybackSession.Position = new TimeSpan(0);
-                player.MediaPlayer.Pause();
-                Default.Current.rotation.Angle = 0;
-                Default.Current.out_rotation.Angle = 0;
-                PlayButton.Icon = new SymbolIcon(Symbol.Play);
+            if (player.MediaPlayer.Source != null && player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Paused)
+                Default.Current.switchPauseAnimation.Begin();
+            player.MediaPlayer.PlaybackSession.Position = new TimeSpan(0);
+            player.MediaPlayer.Pause();
+            Default.Current.rotation.Angle = 0;
+            Default.Current.out_rotation.Angle = 0;
+
         }
 
         private void timelineChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -247,7 +248,7 @@ namespace MusicPlayer
             if (Math.Abs(player.MediaPlayer.PlaybackSession.Position.TotalSeconds - timeline.Value) > 1)
                 player.MediaPlayer.PlaybackSession.Position = TimeSpan.FromSeconds((double)timeline.Value);
             player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
-            //if (Math.Abs(timeline.Value - media.Max) < 0.2) stop_Click(null, null);
+            if (Math.Abs(timeline.Value - media.Max) < 0.1) stop_Click(null, null);
         }
 
         /*把play和pause button合到一起了*/
@@ -279,19 +280,31 @@ namespace MusicPlayer
 
             try
             {
+                //Uri musicUri = new Uri(mediaUri);
+                //Uri pictureUri = ((BitmapImage)ViewModel.SelectedItem.image).UriSource;
+                /*if (musicUri != null )*/
+                /*StorageFile photoFile = null;
+                 if (mediaUri != null)
+                    photoFile = await StorageFile.GetFileFromApplicationUriAsync(mediaUri);*/
+
                 request.Data.Properties.Title = mediaFile.DisplayName;
                 request.Data.Properties.Description = "这是我喜欢听的音乐， 分享给你们，一起听一下吧~（这台词可以改）";
+
+                // It's recommended to use both SetBitmap and SetStorageItems for sharing a single image
+                // since the target app may only support one or the other.
+
+
                 RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromFile(mediaFile);
+                // It is recommended that you always add a thumbnail image any time you're sharing an image
+                /*request.Data.Properties.Thumbnail = imageStreamRef;
+                request.Data.SetBitmap(imageStreamRef);*/
                 List<IStorageItem> musicList = new List<IStorageItem>();
                 musicList.Add(mediaFile as IStorageItem);
                 request.Data.SetStorageItems(musicList);
+                // Set Text to share for those targets that can't accept images
                 var ymd = DateTime.Now;
-                request.Data.SetText("这是我喜欢听的音乐， 分享给你们，一起听一下吧~（这台词可以改）\n" + ymd.Year.ToString() + "年" + ymd.Month.ToString() + "月" + ymd.Day.ToString() + "日");
+                request.Data.SetText("这是我喜欢听的音乐， 分享给你们，一起听一下吧~（这台词可以改）" + ymd.Year.ToString() + "年" + ymd.Month.ToString() + "月" + ymd.Day.ToString() + "日");
 
-            }
-            catch (NullReferenceException ex)
-            {
-                await new MessageDialog("请先选择需要分享的一首歌呀").ShowAsync();
             }
             finally
             {
@@ -310,24 +323,6 @@ namespace MusicPlayer
             await new CreateSongListDialog().ShowAsync();
         }
 
-        private async void Addfolder_Click(object sender, RoutedEventArgs e)
-        {
-            FolderPicker openPicker = new FolderPicker();
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            openPicker.SuggestedStartLocation = PickerLocationId.MusicLibrary;
-            List<string> fileTypeFilter = new List<string>();
-            fileTypeFilter.Add(".mp3");
-            openPicker.FileTypeFilter.Add(".mp3");
-            StorageFolder folder = await openPicker.PickSingleFolderAsync();
-            
- 
-            var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
-            var query = folder.CreateFileQueryWithOptions(queryOptions);
-            IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
-            LocalSongsVM.GetLocalSongsVM().ReadMusicFiles(fileList);
-
-        }
-
         private async void AddSongBtn_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker openPicker = new FileOpenPicker();
@@ -335,23 +330,15 @@ namespace MusicPlayer
             openPicker.SuggestedStartLocation = PickerLocationId.VideosLibrary;
             openPicker.FileTypeFilter.Add(".mp3");
             StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
+            Play(file);
+            MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
+            StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
+            if (!LocalSongsVM.GetLocalSongsVM().HasSong(file.Path))
             {
-                Play(file);
-                MusicProperties musicProperties = await file.Properties.GetMusicPropertiesAsync();
-                StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView);
-                if (!LocalSongsVM.GetLocalSongsVM().HasSong(file.Path))
-                {
-                    Song song = new Song(file.Path, musicProperties, thumbnail);
-                    LocalSongsVM.GetLocalSongsVM().Songs.Add(song);
-                    DBManager.AddSong(song, "_Songs_");
-                }
+                Song song = new Song(file.Path, musicProperties, thumbnail);
+                LocalSongsVM.GetLocalSongsVM().Songs.Add(song);
+                DBManager.AddSong(song, "_Songs_");
             }
-        }
-        private void volumeChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-
-            player.MediaPlayer.Volume = e.NewValue; //binding its?
         }
     }
 }

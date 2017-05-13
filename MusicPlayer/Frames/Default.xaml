@@ -91,21 +91,20 @@
                         <RowDefinition Height="1.5*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="20"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock  Text="{Binding Title}" Grid.Column="0" MaxWidth="250"
-                           FontSize="36"/>
-                        <Button Name="search" Click="SearchLRCOnline" Grid.Column="2" Opacity="0">
-                            搜索歌词
-                        </Button>
-                    </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="{Binding Title}"
+                                    Grid.Column="0"
+                                    MaxWidth="250"
+                                    FontSize="36"
+                                    Margin="0, 0, 20, 0"/>
+                        <Button Name="search"
+                                Click="SearchLRCOnline"
+                                Grid.Column="2"
+                                Visibility="Collapsed"
+                                Content="搜索歌词" />
+                    </StackPanel>
 
                     <Grid Grid.Row="1" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -117,33 +116,28 @@
                            FontSize="18"/>
                         <TextBlock Text="{Binding Album}" Grid.Column="2"/>
                     </Grid>
-                    <Grid Grid.Row="2" VerticalAlignment="Center">
+                    <Grid Grid.Row="2"
+                          VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="歌手:" Grid.Row="2"
-                           FontSize="18"/>
-                        <TextBlock Text="{Binding Artist}" Grid.Column="2"/>
+                        <TextBlock Text="歌手："
+                                   Grid.Row="2"
+                                   FontSize="18" />
+                        <TextBlock Text="{Binding Artist}"
+                                   Grid.Column="2" />
                     </Grid>
-                    <Grid  Grid.Row="3" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="10"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="播放次数："
-                           FontSize="18"/>
-                        <!--播放次数这里还没实现， 不好绑定-->
-                        <TextBlock Text="" Grid.Column="2"/>
-                    </Grid>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="4" VerticalAlignment="Center">
+                    <!--<StackPanel Orientation="Horizontal" Grid.Row="3" VerticalAlignment="Center">
                         <TextBlock Text="喜欢" 
                            FontSize="18"/>
                         <Image x:Name="like" Source="ms-appx:///Assets/dislike.png" Width="20" Margin="20, 5, 0, 0" Tapped="likeButton"/>
-                    </StackPanel>
+                    </StackPanel>-->
+                    <AppBarButton x:Name="FavoriteBtn"
+                                  Grid.Row="3"
+                                  Icon="Favorite"
+                                  Click="FavoriteBtn_Click"/>
                 </Grid>
             </Grid>
         </Grid>

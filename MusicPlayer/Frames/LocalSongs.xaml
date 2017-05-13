@@ -28,8 +28,7 @@
                         Click="AddSongsToListBtn_Click" />
                 <Button x:Name="DeleteSongsBtn"
                         Content="删除"
-                        IsEnabled="False"
-                        Opacity="0"
+                        Visibility="Collapsed"
                         Click="DeleteSongsBtn_Click" />
             </StackPanel>
             <Line Stretch="Fill"

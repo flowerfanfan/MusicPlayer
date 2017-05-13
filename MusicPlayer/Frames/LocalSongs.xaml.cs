@@ -86,14 +86,12 @@ namespace MusicPlayer.Frames
                 if (localSongsVM.HasSelected())
                 {
                     AddSongsToListBtn.Content = ADD;
-                    DeleteSongsBtn.Opacity = 1;
-                    DeleteSongsBtn.IsEnabled = true;
+                    DeleteSongsBtn.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     AddSongsToListBtn.Content = CANCEL;
-                    DeleteSongsBtn.IsEnabled = false;
-                    DeleteSongsBtn.Opacity = 0;
+                    DeleteSongsBtn.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -104,8 +102,7 @@ namespace MusicPlayer.Frames
             isSelecting = false;
             localSongsVM.DeleteSelectedSongs();
             AddSongsToListBtn.Content = EDIT;
-            DeleteSongsBtn.IsEnabled = false;
-            DeleteSongsBtn.Opacity = 0;
+            DeleteSongsBtn.Visibility = Visibility.Collapsed;
             SongListLV.SelectionMode = ListViewSelectionMode.Single;
             SongListLV.IsItemClickEnabled = true;
         }

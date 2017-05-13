@@ -56,7 +56,8 @@ namespace MediaPlayer
                 TimeSpan t = new TimeSpan();
                 bool success = TimeSpan.TryParse("00:" + temp[2 * i - 1], out t);
                 if (!success) ;
-                    lrc.Add(new Sentence(t, temp[2 * i].Replace("\r", "").Replace("\\n", "\n"), i));
+                if (2 * i > temp.Length) break;
+                lrc.Add(new Sentence(t, temp[2 * i].Replace("\r", "").Replace("\\n", "\n"), i));
             }
         }
         //这个可以更新currentIndex的。

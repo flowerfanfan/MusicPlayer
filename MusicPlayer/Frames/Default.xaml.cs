@@ -42,8 +42,7 @@ namespace MusicPlayer
         MediaPlayerElement player = MainPage.Current.player;
         public Song song;
         static bool Isinit = false;
-        public Button FavoriteBtnControl { get; set; }
-        public Image FavoriteBtnImg { get; set; }
+        public Image FavoriteBtnControl { get; set; }
         public BitmapImage Like { get; set; }
         public BitmapImage Dislike { get; set; }
 
@@ -57,7 +56,6 @@ namespace MusicPlayer
                 this.InitializeComponent();
                 Current = this;
                 FavoriteBtnControl = FavoriteBtn;
-                FavoriteBtnImg = FavoriteImg;
                 Like = new BitmapImage(new Uri("ms-appx:///Assets/like.png"));
                 Dislike = new BitmapImage(new Uri("ms-appx:///Assets/dislike.png"));
             }
@@ -170,20 +168,20 @@ namespace MusicPlayer
             //ContentFrame.Navigate(typeof(Default), s);
         }
 
-        private void FavoriteBtn_Click(object sender, RoutedEventArgs e)
+        private void FavoriteBtn_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if (song != null)
             {
-                if (((BitmapImage)FavoriteImg.Source).UriSource == Dislike.UriSource)
+                if (((BitmapImage)FavoriteBtn.Source).UriSource == Dislike.UriSource)
                 {
                     FavoriteVM.GetFavoriteVM().AddFavoriteSong(song);
-                    FavoriteImg.Source = Like;
+                    FavoriteBtn.Source = Like;
                 }
                 else
                 {
                     FavoriteVM.GetFavoriteVM().RemoveFavoriteSong(song);
-                    FavoriteImg.Source = Dislike;
-                } 
+                    FavoriteBtn.Source = Dislike;
+                }
             }
         }
     }

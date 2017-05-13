@@ -19,6 +19,8 @@ namespace MusicPlayer.ViewModels
         public ObservableCollection<SongList> SelectedLists { get; set; }
         private ObservableCollection<Song> SelectedSongs;
 
+        public ObservableCollection<Song> PlayingList;
+
         private MySongListVM()
         {
             DBManager = DataBaseManager.GetDBManager();

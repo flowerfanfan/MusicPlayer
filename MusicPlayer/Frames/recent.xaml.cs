@@ -29,6 +29,7 @@ namespace MusicPlayer.Frames
     /// </summary>
     public sealed partial class recent : Page
     {
+        public static recent Current;
         Song song;
         ObservableCollection<Song> songs = new ObservableCollection<Song>();
         public LocalSongsVM localSongsVM { get; set; }
@@ -38,6 +39,7 @@ namespace MusicPlayer.Frames
             DataContextChanged += Recent_DataContextChanged;
             this.InitializeComponent();
             //localSongsVM = LocalSongsVM.GetLocalSongsVM();
+            Current = this;
         }
 
         private void Recent_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -61,7 +63,7 @@ namespace MusicPlayer.Frames
         {
             getRecentFiles();
         }
-        async void getRecentFiles()
+        public async void getRecentFiles()
         {
             AccessListEntryView entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries;
             //存放得到的recent歌曲
@@ -87,8 +89,10 @@ namespace MusicPlayer.Frames
         }
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
+            MySongListVM.GetMySongListVM().PlayingList = songs;
             StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
+            
         }
 
         private void clear_Click(object sender, RoutedEventArgs e)

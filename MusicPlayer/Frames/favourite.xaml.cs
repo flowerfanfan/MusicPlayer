@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,7 +26,7 @@ namespace MusicPlayer.Frames
     public sealed partial class favourite : Page
     {
         public FavoriteVM favoriteVM { get; set; }
-
+        Song song;
         public favourite()
         {
             this.InitializeComponent();
@@ -33,14 +34,21 @@ namespace MusicPlayer.Frames
             favoriteVM = FavoriteVM.GetFavoriteVM();
         }
 
-        private void GridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void UnFavoriteBtn_Tapped(object sender, TappedRoutedEventArgs e)
         {
-
+            favoriteVM.RemoveFavoriteSong(((Song)((Image)sender).DataContext));
         }
 
-        private void UnFavoriteBtn_Click(object sender, RoutedEventArgs e)
+        private void Select_Songs(object sender, ItemClickEventArgs e)
         {
-            favoriteVM.RemoveFavoriteSong(((Song)((Button)sender).DataContext));
+            song = (Song)e.ClickedItem;
+        }
+
+        private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            MySongListVM.GetMySongListVM().PlayingList = FavoriteVM.GetFavoriteVM().FavoriteSongs;
+            StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
+            MainPage.Current.Play(file);
         }
     }
 }

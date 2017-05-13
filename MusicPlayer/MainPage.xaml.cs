@@ -224,10 +224,10 @@ namespace MusicPlayer
                 Default.Current.FavoriteBtnControl.Visibility = Visibility.Visible;
                 if (FavoriteVM.GetFavoriteVM().NoSuchSong(s))
                 {
-                    Default.Current.FavoriteBtnImg.Source = Default.Current.Dislike;
+                    Default.Current.FavoriteBtnControl.Source = Default.Current.Dislike;
                 } else
                 {
-                    Default.Current.FavoriteBtnImg.Source = Default.Current.Like;
+                    Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
                 ContentFrame.Navigate(typeof(Default), s);
             }
@@ -390,6 +390,28 @@ namespace MusicPlayer
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
+        }
+        private void previous_Click(object sender, RoutedEventArgs e)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            int k = list.getIndexOf(Default.Current.song);
+            int previous = (k - 1 + list.Count) % list.Count;
+            PlaySongAt(previous);
+        }
+
+        private async void PlaySongAt(int k)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            mediaFile = await StorageFile.GetFileFromPathAsync(list.ElementAt(k).FilePath);
+            Play(mediaFile);
+        }
+
+        private void next_Click(object sender, RoutedEventArgs e)
+        {
+            var list = MySongListVM.GetMySongListVM().PlayingList;
+            int k = list.getIndexOf(Default.Current.song);
+            int next = (k + 1) % list.Count;
+            PlaySongAt(next);
         }
     }
 }

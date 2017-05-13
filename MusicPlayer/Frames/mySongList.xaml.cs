@@ -29,6 +29,7 @@ namespace MusicPlayer.Frames
             this.InitializeComponent();
 
             mySongListVM = MySongListVM.GetMySongListVM();
+            mySongListVM.SongsInClickedList.Clear();
         }
 
         // 点击歌单，展示歌曲列表

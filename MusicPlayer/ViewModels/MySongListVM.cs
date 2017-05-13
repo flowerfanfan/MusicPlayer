@@ -80,12 +80,27 @@ namespace MusicPlayer.ViewModels
             ObservableCollection<Song> songsInList = SongsInList[name];
             foreach (Song song in SongsToBeAddedToList)
             {
-                songsInList.Add(song);
+                if (!IsSongInList(song, songsInList))
+                {
+                    songsInList.Add(song);
+                    // 在数据库中添加
+                    DBManager.AddSong(song, name);
+                }
             }
             UpdateNumberInList(name);
-            // 在数据库中添加
-            DBManager.AddSongs(SongsToBeAddedToList, name);
             SongsToBeAddedToList.Clear();
+        }
+
+        private bool IsSongInList(Song song, ObservableCollection<Song> songsInList)
+        {
+            foreach (Song item in songsInList)
+            {
+                if (song.FilePath == item.FilePath)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void UpdateNumberInList(string name)

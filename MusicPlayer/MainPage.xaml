@@ -272,7 +272,12 @@
                     </Flyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton x:Name="ShareButton" Icon="Go"  Label="Share" Click="share_Click"/>
+            <AppBarButton x:Name="ShareButton" Label="Share" Click="share_Click">
+                <!--修改了一下share的图标感觉这样更好看一点-->
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
 

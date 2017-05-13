@@ -48,6 +48,7 @@
                   IsMultiSelectCheckBoxEnabled="True"
                   SelectionChanged="SongListLV_SelectionChanged"
                   ItemClick="Select_Songs"
+                  IsItemClickEnabled="True"
                   DoubleTapped="PlaySong">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Song">

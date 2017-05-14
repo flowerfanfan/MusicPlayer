@@ -137,6 +137,7 @@
     <Compile Include="ViewModels\FavoriteVM.cs" />
     <Compile Include="ViewModels\LocalSongsVM.cs" />
     <Compile Include="ViewModels\MySongListVM.cs" />
+    <Compile Include="ViewModels\PlayingListVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

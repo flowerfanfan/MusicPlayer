@@ -32,12 +32,6 @@ namespace MusicPlayer.Frames
         public SearchResults()
         {
             this.InitializeComponent();
-            ResultsLV.DataContextChanged += ResultsLV_DataContextChanged;
-        }
-
-        private void ResultsLV_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-        {
-            ResultsLV.ItemsSource = ResultSongs;
         }
 
         private void ResultsLV_ItemClick(object sender, ItemClickEventArgs e)
@@ -47,12 +41,15 @@ namespace MusicPlayer.Frames
 
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
+            MainPage.Current.playingListVM.SetPlayingList(ResultSongs);
             StorageFile file = await StorageFile.GetFileFromPathAsync(ClickedSong.FilePath);
             MainPage.Current.Play(file);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
             string searchContent = (string)e.Parameter;
             ResultSongs = LocalSongsVM.GetLocalSongsVM().SearchSongs(searchContent);
             if (ResultSongs.Count != 0)

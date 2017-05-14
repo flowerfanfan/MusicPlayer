@@ -45,6 +45,7 @@ namespace MusicPlayer
         public DataBaseManager DBManager { get; set; }
         public ObservableCollection<Song> PlayingList { get; set; }
         public Song ClickedSong { get; set; }
+        public PlayingListVM playingListVM { get; set; }
         public ProgressData media = new ProgressData();
         public StorageFile mediaFile = null;
         public MainPage()
@@ -63,7 +64,7 @@ namespace MusicPlayer
             double t = ContentFrame.ActualWidth;
 
             DBManager = DataBaseManager.GetDBManager();
-            PlayingList = new ObservableCollection<Song>();
+            playingListVM = new PlayingListVM();
         }
 
 
@@ -203,20 +204,13 @@ namespace MusicPlayer
                 if (FavoriteVM.GetFavoriteVM().NoSuchSong(s))
                 {
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Dislike;
-                } else
+                }
+                else
                 {
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
                 // 设置正在播放
-                if (MySongListVM.GetMySongListVM().IfPlayingListChanged())
-                {
-                    ObservableCollection<Song> temp = MySongListVM.GetMySongListVM().PlayingList;
-                    PlayingList.Clear();
-                    foreach (Song song in temp)
-                    {
-                        PlayingList.Add(song);
-                    }
-                }
+
 
                 ContentFrame.Navigate(typeof(Default), s);
             }
@@ -415,7 +409,7 @@ namespace MusicPlayer
 
         private void previous_Click(object sender, RoutedEventArgs e)
         {
-            var list = MySongListVM.GetMySongListVM().PlayingList;
+            var list = playingListVM.PlayingList;
             int k = list.getIndexOf(Default.Current.song);
             int previous = (k - 1 + list.Count) % list.Count;
             PlaySongAt(previous);
@@ -423,14 +417,14 @@ namespace MusicPlayer
 
         private async void PlaySongAt(int k)
         {
-            var list = MySongListVM.GetMySongListVM().PlayingList;
+            var list = playingListVM.PlayingList;
             mediaFile = await StorageFile.GetFileFromPathAsync(list.ElementAt(k).FilePath);
             Play(mediaFile);
         }
 
         private void next_Click(object sender, RoutedEventArgs e)
         {
-            var list = MySongListVM.GetMySongListVM().PlayingList;
+            var list = playingListVM.PlayingList;
             int k = list.getIndexOf(Default.Current.song);
             int next = (k + 1) % list.Count;
             PlaySongAt(next);
@@ -453,7 +447,7 @@ namespace MusicPlayer
             /*if(((App)App.Current).IsSuspend)*/
             {
                 var composite = new ApplicationDataCompositeValue();
-                composite["PlayingList"] = MySongListVM.GetMySongListVM().PlayingList;
+                composite["PlayingList"] = playingListVM.PlayingList;
                 composite["PlayingSong"] = mediaFile;
                 ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
                 //Date need to complete
@@ -465,7 +459,7 @@ namespace MusicPlayer
         {
             {
                 var composite = new ApplicationDataCompositeValue();
-                //composite["PlayingList"] = MySongListVM.GetMySongListVM().PlayingList as Object;
+                //composite["PlayingList"] = playingListVM.PlayingList as Object;
                 composite["PlayingSong"] = mediaFile.Path;
                 ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
                 //Date need to complete
@@ -477,7 +471,7 @@ namespace MusicPlayer
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("MainPageData"))
             {
                 var composite = ApplicationData.Current.LocalSettings.Values["MainPageData"] as ApplicationDataCompositeValue;
-                //if (composite.ContainsKey("PlayingList")) MySongListVM.GetMySongListVM().PlayingList = (ObservableCollection<Song>)composite["PlayingList"];
+                //if (composite.ContainsKey("PlayingList")) playingListVM.PlayingList = (ObservableCollection<Song>)composite["PlayingList"];
                 if (composite.ContainsKey("PlayingSong"))
                 {
                     string filePath = (string)composite["PlayingSong"];

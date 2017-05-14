@@ -30,6 +30,7 @@ using MusicPlayer.Helper;
 using Windows.Storage.Search;
 using MusicPlayer.Tile;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Navigation;
 //“空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409 上有介绍
 
 namespace MusicPlayer
@@ -42,16 +43,18 @@ namespace MusicPlayer
         Lyric lrc = new Lyric();
         public static MainPage Current;
         public DataBaseManager DBManager { get; set; }
+        public ObservableCollection<Song> PlayingList { get; set; }
         public Song ClickedSong { get; set; }
         public PlayingListVM playingListVM { get; set; }
-
+        public ProgressData media = new ProgressData();
+        public StorageFile mediaFile = null;
         public MainPage()
         {
-            //SAY("Hello World!");
             //设置页面为static， 以便于得到控件
             this.InitializeComponent();
             Current = this;
-
+            App.Current.Suspending += Current_Suspending;
+            player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
             InitialColorSetting();
 
             InitialPlayerSetting();
@@ -63,6 +66,8 @@ namespace MusicPlayer
             DBManager = DataBaseManager.GetDBManager();
             playingListVM = new PlayingListVM();
         }
+
+
 
         //设置窗口栏的颜色
         void InitialColorSetting()
@@ -119,12 +124,6 @@ namespace MusicPlayer
         }
 
 
-        /*播放用到的代码*/
-        /*这里数据绑定写得实在是烂， 迟早要重写*/
-        /*鉴于我的FullScreen也写得很烂， 我就先不加了orz*/
-        public ProgressData media = new ProgressData();
-        public StorageFile mediaFile = null;
-
         async void NotifyUser(string msg)
         {
             await new MessageDialog(msg).ShowAsync();
@@ -160,18 +159,9 @@ namespace MusicPlayer
                 bool fileFromPicker = true;
                 var thumbnail = await file.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.MusicView);
                 player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(file);
-
-                //MostRecentlyUsedList 添加。
-               /* if (StorageApplicationPermissions.MostRecentlyUsedList.ContainsItem(file.Name))
-                    StorageApplicationPermissions.MostRecentlyUsedList.Remove(file.Name);*/
                 StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace(file.Name, file);
-                //自动播放！
-                player.MediaPlayer.Play();
                 play_Click(player, null);
-
-                
                 mediaFile = file;
-                player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
                 if (StorageApplicationPermissions.FutureAccessList.CheckAccess(file))
                     fileFromPicker = false;
                 else
@@ -179,12 +169,8 @@ namespace MusicPlayer
                     fileFromPicker = true;
                     StorageApplicationPermissions.FutureAccessList.AddOrReplace(file.Name, file);
                 }
-
-
-
                 string lrcPath = file.Path.Replace(".mp3", ".lrc");
                 StorageFile lrcFile = null;
-
                 try
                 {
                     lrcFile = await StorageFile.GetFileFromPathAsync(lrcPath);
@@ -194,14 +180,6 @@ namespace MusicPlayer
                     if (fileFromPicker)
                     {
                         await new MessageDialog(ex.Message + ", 请手动添加歌词文件， 或者直接按“取消”进行无歌词播放").ShowAsync();
-                        /*
-                        StorageFolder parent = null;
-                        StorageFile lrcFile = null;
-                        parent = await file.GetParentAsync();
-                        while (parent == null) ; //在这里无限等待了
-                        lrcFile = await parent.GetFileAsync(file.DisplayName + ".lrc");
-                        */
-
                         FileOpenPicker openPicker = new FileOpenPicker();
                         openPicker.ViewMode = PickerViewMode.Thumbnail;
                         openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
@@ -226,12 +204,13 @@ namespace MusicPlayer
                 if (FavoriteVM.GetFavoriteVM().NoSuchSong(s))
                 {
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Dislike;
-                } else
+                }
+                else
                 {
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
                 // 设置正在播放
-                
+
 
                 ContentFrame.Navigate(typeof(Default), s);
             }
@@ -405,6 +384,24 @@ namespace MusicPlayer
             }
         }
 
+        /*
+        private void SearchContent_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SearchContent.Text.ToString() != "")
+            {
+                SearchBtn.IsEnabled = true;
+            }
+            else
+            {
+                SearchBtn.IsEnabled = false;
+            }
+        }
+
+        private void SearchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
+        }*/
+
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
@@ -442,6 +439,50 @@ namespace MusicPlayer
         {
             StorageFile file = await StorageFile.GetFileFromPathAsync(ClickedSong.FilePath);
             Play(file);
+        }
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            /*if(((App)App.Current).IsSuspend)*/
+            {
+                var composite = new ApplicationDataCompositeValue();
+                composite["PlayingList"] = playingListVM.PlayingList;
+                composite["PlayingSong"] = mediaFile;
+                ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
+                //Date need to complete
+            }
+        }
+
+
+        private void Current_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
+        {
+            {
+                var composite = new ApplicationDataCompositeValue();
+                //composite["PlayingList"] = playingListVM.PlayingList as Object;
+                composite["PlayingSong"] = mediaFile.Path;
+                ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
+                //Date need to complete
+            }
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (ApplicationData.Current.LocalSettings.Values.ContainsKey("MainPageData"))
+            {
+                var composite = ApplicationData.Current.LocalSettings.Values["MainPageData"] as ApplicationDataCompositeValue;
+                //if (composite.ContainsKey("PlayingList")) playingListVM.PlayingList = (ObservableCollection<Song>)composite["PlayingList"];
+                if (composite.ContainsKey("PlayingSong"))
+                {
+                    string filePath = (string)composite["PlayingSong"];
+                    mediaFile = await StorageFile.GetFileFromPathAsync(filePath);
+                    player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(mediaFile);
+                    /* while (player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)*/
+                    Song s = await mediaFile.ToSong();
+                    ContentFrame.Navigate(typeof(Default), s);
+                }
+            }
+            ApplicationData.Current.LocalSettings.Values.Remove("MainPageData");
         }
     }
 }

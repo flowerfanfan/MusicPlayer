@@ -8,7 +8,7 @@
       mc:Ignorable="d"
       NavigationCacheMode="Enabled">
 
-    <Grid Background="#A9A9A9">
+    <Grid Background="MintCream">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
             <RowDefinition Height="*" />
@@ -18,10 +18,12 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="我的音乐"
                            FontSize="36"
+                           Foreground="Black"
                            VerticalAlignment="Center"
                            Margin="20, 0, 0, 0" />
                 <AppBarButton x:Name="RefreshBtn"
                               VerticalAlignment="Bottom"
+                              Foreground="Black"
                               Icon="Refresh"
                               Click="RefreshBtn_Click" />
             </StackPanel>
@@ -31,9 +33,11 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Margin="0, 0, 20, 0"
+                        Foreground="Black"
                         Click="AddSongsToListBtn_Click" />
                 <AppBarButton x:Name="DeleteSongsBtn" 
                                       Icon="Delete" 
+                                      Foreground="Black"
                                       Margin="-5, 0, 0, 0"
                                       VerticalAlignment="Bottom"
                                       HorizontalAlignment="Right"
@@ -69,9 +73,11 @@
                         <StackPanel Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                                        FontSize="25"
+                                       Foreground="Black"
                                        VerticalAlignment="Top" />
                             <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
                                        FontSize="20"
+                                       Foreground="Black"
                                        VerticalAlignment="Bottom" />
                         </StackPanel>
                     </StackPanel>

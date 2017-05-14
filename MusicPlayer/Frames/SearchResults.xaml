@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#A9A9A9">
+    <Grid Background="MintCream">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
             <RowDefinition Height="*" />
@@ -17,6 +17,7 @@
         <Grid>
             <TextBlock Text="搜索结果"
                        FontSize="36"
+                       Foreground="Black"
                        VerticalAlignment="Center"
                        Margin="20, 0, 0, 0" />
             <Line Stretch="Fill"
@@ -30,6 +31,7 @@
 
         <TextBlock x:Name="NoResultTB"
                    Grid.Row="1"
+                   Foreground="Black"
                    Text="抱歉，没有找到和您的输入相关的结果。"
                    FontSize="30"
                    HorizontalAlignment="Center"
@@ -53,9 +55,11 @@
                         <StackPanel Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                                        FontSize="25"
+                                       Foreground="Black"
                                        VerticalAlignment="Top" />
                             <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
                                        FontSize="20"
+                                       Foreground="Black"
                                        VerticalAlignment="Bottom" />
                         </StackPanel>
                     </StackPanel>

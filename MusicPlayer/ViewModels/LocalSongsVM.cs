@@ -82,7 +82,7 @@ namespace MusicPlayer.ViewModels
             // 清空数据
             ObservableCollection<Song> tempSongs = new ObservableCollection<Song>(Songs);
 
-            LocalSongs.Current.Frame.IsEnabled = false;
+            //LocalSongs.Current.Frame.IsEnabled = false;
 
             Songs.Clear();
             DBManager.ClearSongs("_Songs_");
@@ -109,7 +109,7 @@ namespace MusicPlayer.ViewModels
             Songs.CollectionChanged += Songs_CollectionChanged;
 
 
-            LocalSongs.Current.Frame.IsEnabled = true;
+            //LocalSongs.Current.Frame.IsEnabled = true;
             // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
             /*
              List<string> fileTypeFilter = new List<string>();

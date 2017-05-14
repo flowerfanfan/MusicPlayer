@@ -506,5 +506,6 @@ namespace MusicPlayer
             }
             ApplicationData.Current.LocalSettings.Values.Remove("MainPageData");
         }
+
     }
 }

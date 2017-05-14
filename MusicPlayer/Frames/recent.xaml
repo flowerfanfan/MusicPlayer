@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       NavigationCacheMode="Enabled">
 
-    <Grid Background="#A9A9A9">
+    <Grid Background="MintCream">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
             <RowDefinition Height="*" />
@@ -19,15 +19,18 @@
                 <!--这里设置题头-->
                 <TextBlock Text="最近播放"
                            FontSize="36"
+                           Foreground="Black"
                            VerticalAlignment="Center"
                            Name="PageTitle"
                            Margin="20, 0, 0, 0" />
                 <AppBarButton x:Name="RefreshBtn"
+                              Foreground="Black"
                               VerticalAlignment="Bottom"
                               Icon="Refresh"
                               Click="RefreshBtn_Click" />
             </StackPanel>
             <AppBarButton x:Name="clearRecent"
+                          Foreground="Black"
                               VerticalAlignment="Bottom"
                               Icon="Delete"
                               HorizontalAlignment="Right"
@@ -60,9 +63,11 @@
                         <StackPanel Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Bind Title, Mode=TwoWay}"
                                        FontSize="25"
+                                       Foreground="Black"
                                        VerticalAlignment="Top" />
                             <TextBlock Text="{x:Bind Artist, Mode=TwoWay}"
                                        FontSize="20"
+                                       Foreground="Black"
                                        VerticalAlignment="Bottom" />
                         </StackPanel>
                     </StackPanel>

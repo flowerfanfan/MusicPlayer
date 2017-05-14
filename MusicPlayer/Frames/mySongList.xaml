@@ -7,7 +7,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d">
 
-    <Grid Background="#A9A9A9">
+    <Grid Background="MintCream">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
             <RowDefinition Height="*" />
@@ -20,6 +20,7 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="我的歌单"
                        FontSize="36"
+                       Foreground="Black"
                        VerticalAlignment="Center"
                        Margin="20, 0, 0, 0" />
         </StackPanel>
@@ -27,6 +28,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Content="编辑"
+                Foreground="Black"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Click="DeleteListsBtn_Click" 
@@ -35,6 +37,7 @@
         <Button x:Name="DeleteSongsBtn"
                 Grid.Column="1"
                 Content="编辑"
+                Foreground="Black"
                 Click="DeleteSongsBtn_Click"
                 HorizontalAlignment="Right"
                 Margin="0, 0, 20, 0" 
@@ -61,12 +64,15 @@
                     <StackPanel Grid.Column="1"
                                 Margin="10">
                         <TextBlock Text="{x:Bind Name, Mode=OneWay}"
+                                   Foreground="Black"
                                    FontSize="25" TextTrimming="CharacterEllipsis"/>
                         <TextBlock />
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Number, Mode=OneWay}"
+                                       Foreground="Black"
                                        FontSize="15" />
                             <TextBlock Text=" 首"
+                                       Foreground="Black"
                                        FontSize="15" />
                         </StackPanel>
                     </StackPanel>
@@ -95,9 +101,11 @@
                         <StackPanel Margin="20, 0, 0, 0">
                             <TextBlock Text="{x:Bind Title, Mode=OneWay}"
                                        FontSize="25"
+                                       Foreground="Black"
                                        VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
                             <TextBlock Text="{x:Bind Artist, Mode=OneWay}"
                                        FontSize="20"
+                                       Foreground="Black"
                                        VerticalAlignment="Bottom" TextTrimming="CharacterEllipsis"/>
                         </StackPanel>
                     </StackPanel>

@@ -32,21 +32,13 @@
                 Click="DeleteListsBtn_Click" 
                 Margin="0, 0, 20, 0"/>
 
-        <StackPanel x:Name="ClickedListHead"
-                    Grid.Column="1"
-                    Orientation="Horizontal"
-                    Visibility="Collapsed">
-            <TextBlock x:Name="ClickedListNameTB"
-                       Text="歌单"
-                       FontSize="36"
-                       VerticalAlignment="Center"
-                       Margin="20, 0, 0, 0" />
-        </StackPanel>
         <Button x:Name="DeleteSongsBtn"
-                Grid.Row="0"
                 Grid.Column="1"
                 Content="编辑"
-                Click="DeleteSongsBtn_Click" HorizontalAlignment="Right" Margin="0, 0, 20, 0" Visibility="Collapsed"/>
+                Click="DeleteSongsBtn_Click"
+                HorizontalAlignment="Right"
+                Margin="0, 0, 20, 0" 
+                Visibility="Collapsed"/>
 
         <Line Grid.ColumnSpan="2"
               Stretch="Fill"

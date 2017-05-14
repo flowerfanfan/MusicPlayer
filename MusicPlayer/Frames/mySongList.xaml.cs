@@ -37,8 +37,6 @@ namespace MusicPlayer.Frames
         {
             string clickedListName = ((SongList)e.ClickedItem).Name;
             mySongListVM.SetClickedList(clickedListName);
-            ClickedListNameTB.Text = clickedListName;
-            ClickedListHead.Visibility = Visibility.Visible;
             DeleteSongsBtn.Visibility = Visibility.Visible;
         }
 

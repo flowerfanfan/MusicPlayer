@@ -407,6 +407,7 @@ namespace MusicPlayer
 
         private void previous_Click(object sender, RoutedEventArgs e)
         {
+            if (Default.Current.song == null) return;
             var list = playingListVM.PlayingList;
             int k = list.getIndexOf(Default.Current.song);
             int previous = (k - 1 + list.Count) % list.Count;
@@ -422,6 +423,7 @@ namespace MusicPlayer
 
         private void next_Click(object sender, RoutedEventArgs e)
         {
+            if (Default.Current.song == null) return;
             var list = playingListVM.PlayingList;
             int k = list.getIndexOf(Default.Current.song);
             int next = (k + 1) % list.Count;

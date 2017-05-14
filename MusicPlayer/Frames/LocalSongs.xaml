@@ -50,6 +50,7 @@
         </Grid>
 
         <ListView x:Name="SongListLV"
+                  x:FieldModifier="Public"
                   Grid.Row="1"
                   Padding="20"
                   ItemsSource="{x:Bind localSongsVM.Songs, Mode=OneWay}"

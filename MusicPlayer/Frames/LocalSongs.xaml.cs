@@ -23,12 +23,13 @@ namespace MusicPlayer.Frames
         private string ADD = "添加到歌单";
         private bool isSelecting;
         Song song;
-
+        public static LocalSongs Current;
         public LocalSongs()
         {
             this.InitializeComponent();
 
             localSongsVM = LocalSongsVM.GetLocalSongsVM();
+            Current = this;
         }
 
         // 刷新按钮点击事件

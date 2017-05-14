@@ -1,4 +1,5 @@
-﻿using MusicPlayer.Frames;
+﻿using MusicPlayer.DataBase;
+using MusicPlayer.Frames;
 using MusicPlayer.Models;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace MusicPlayer.ViewModels
     public class PlayingListVM
     {
         public ObservableCollection<Song> PlayingList { get; set; }
-        //private bool isPlayingListChanged;
 
         public PlayingListVM()
         {
-            PlayingList = new ObservableCollection<Song>();
-            PlayingList = LocalSongsVM.GetLocalSongsVM().Songs;
+            PlayingList = DataBaseManager.GetDBManager().GetSongs("_PlayingList_");
+            if (PlayingList.Count == 0)
+            {
+                PlayingList = LocalSongsVM.GetLocalSongsVM().Songs;
+            }
         }
 
         public void SetPlayingList(ObservableCollection<Song> playingList)

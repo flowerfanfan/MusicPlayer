@@ -65,6 +65,19 @@ namespace MusicPlayer.DataBase
             {
                 stmt.Step();
             }
+            // 加载_PlayingList_表
+            using (var stmt = Conn.Prepare(@"CREATE TABLE IF NOT EXISTS
+                                             `_PlayingList_` (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                                    FilePath VARCHAR(300),
+                                                    Title VARCHAR(200),
+                                                    Artist VARCHAR(200),
+                                                    Album VARCHAR(200),
+                                                    Length VARCHAR(10),
+                                                    Cover BLOB
+                                                   );"))
+            {
+                stmt.Step();
+            }
         }
 
         // 返回歌曲表中所有歌曲的数据
@@ -80,6 +93,13 @@ namespace MusicPlayer.DataBase
                 }
             }
             return data;
+        }
+
+        // 保存退出时正在播放的列表
+        public void SavePlayingList(ObservableCollection<Song> playingList)
+        {
+            ClearSongs("_PlayingList_");
+            AddSongs(playingList, "_PlayingList_");
         }
 
         // 返回 SongList 表中所有歌单及歌单对应的表中所有歌曲的数据
@@ -119,7 +139,7 @@ namespace MusicPlayer.DataBase
                 stmt.Bind(6, song.CoverBytes);
                 stmt.Step();
             }
-            if (listName != "_Songs_" && listName != "_FavoriteSongs_")
+            if (listName != "_Songs_" && listName != "_FavoriteSongs_" && listName != "_PlayingList_")
             {
                 using (var stmt = Conn.Prepare(@"UPDATE SongLists SET Number = ? WHERE Name = ?"))
                 {
@@ -148,22 +168,6 @@ namespace MusicPlayer.DataBase
             foreach (Song song in songs)
             {
                 AddSong(song, listName);
-            }
-            if (listName != "_Songs_")
-            {
-                int number;
-                using (var stmt = Conn.Prepare(@"SELECT Number FROM SongLists WHERE Name = ?"))
-                {
-                    stmt.Bind(1, listName);
-                    stmt.Step();
-                    number = Convert.ToInt32((Int64)stmt["Number"]);
-                }
-                using (var stmt = Conn.Prepare(@"UPDATE SongLists SET Number = ? WHERE Name = ?"))
-                {
-                    stmt.Bind(1, number + songs.Count);
-                    stmt.Bind(2, listName);
-                    stmt.Step();
-                }
             }
         }
 

@@ -209,8 +209,6 @@ namespace MusicPlayer
                 {
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
-                // 设置正在播放
-
 
                 ContentFrame.Navigate(typeof(Default), s);
             }

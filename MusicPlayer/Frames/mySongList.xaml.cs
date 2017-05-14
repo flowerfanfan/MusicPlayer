@@ -169,6 +169,10 @@ namespace MusicPlayer.Frames
 
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
+            if (mySongListVM.ClickedListChanged())
+            {
+                MainPage.Current.playingListVM.SetPlayingList(mySongListVM.SongsInClickedList);
+            }
             StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
         }

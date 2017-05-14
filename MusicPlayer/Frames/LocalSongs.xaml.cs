@@ -114,8 +114,7 @@ namespace MusicPlayer.Frames
 
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
-            MySongListVM.GetMySongListVM().PlayingList = localSongsVM.Songs;
-            MySongListVM.GetMySongListVM().IsPlayingListChanged = true;
+            MainPage.Current.playingListVM.SetPlayingList(localSongsVM.Songs);
             StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
         }

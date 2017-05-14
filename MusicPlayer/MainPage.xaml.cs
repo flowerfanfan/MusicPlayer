@@ -42,8 +42,8 @@ namespace MusicPlayer
         Lyric lrc = new Lyric();
         public static MainPage Current;
         public DataBaseManager DBManager { get; set; }
-        public ObservableCollection<Song> PlayingList { get; set; }
         public Song ClickedSong { get; set; }
+        public PlayingListVM playingListVM { get; set; }
 
         public MainPage()
         {
@@ -61,7 +61,7 @@ namespace MusicPlayer
             double t = ContentFrame.ActualWidth;
 
             DBManager = DataBaseManager.GetDBManager();
-            PlayingList = new ObservableCollection<Song>();
+            playingListVM = new PlayingListVM();
         }
 
         //设置窗口栏的颜色
@@ -231,15 +231,7 @@ namespace MusicPlayer
                     Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
                 }
                 // 设置正在播放
-                if (MySongListVM.GetMySongListVM().IfPlayingListChanged())
-                {
-                    ObservableCollection<Song> temp = MySongListVM.GetMySongListVM().PlayingList;
-                    PlayingList.Clear();
-                    foreach (Song song in temp)
-                    {
-                        PlayingList.Add(song);
-                    }
-                }
+                
 
                 ContentFrame.Navigate(typeof(Default), s);
             }
@@ -413,24 +405,6 @@ namespace MusicPlayer
             }
         }
 
-        /*
-        private void SearchContent_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (SearchContent.Text.ToString() != "")
-            {
-                SearchBtn.IsEnabled = true;
-            }
-            else
-            {
-                SearchBtn.IsEnabled = false;
-            }
-        }
-
-        private void SearchBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
-        }*/
-
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
@@ -438,7 +412,7 @@ namespace MusicPlayer
 
         private void previous_Click(object sender, RoutedEventArgs e)
         {
-            var list = MySongListVM.GetMySongListVM().PlayingList;
+            var list = playingListVM.PlayingList;
             int k = list.getIndexOf(Default.Current.song);
             int previous = (k - 1 + list.Count) % list.Count;
             PlaySongAt(previous);
@@ -446,14 +420,14 @@ namespace MusicPlayer
 
         private async void PlaySongAt(int k)
         {
-            var list = MySongListVM.GetMySongListVM().PlayingList;
+            var list = playingListVM.PlayingList;
             mediaFile = await StorageFile.GetFileFromPathAsync(list.ElementAt(k).FilePath);
             Play(mediaFile);
         }
 
         private void next_Click(object sender, RoutedEventArgs e)
         {
-            var list = MySongListVM.GetMySongListVM().PlayingList;
+            var list = playingListVM.PlayingList;
             int k = list.getIndexOf(Default.Current.song);
             int next = (k + 1) % list.Count;
             PlaySongAt(next);

@@ -17,11 +17,8 @@ namespace MusicPlayer.ViewModels
         public string ClickedListName { get; set; }
         public ObservableCollection<Song> SongsToBeAddedToList { get; set; }
         public ObservableCollection<SongList> SelectedLists { get; set; }
-        public bool IsPlayingListChanged { get; set; }
-
         private ObservableCollection<Song> SelectedSongs;
-
-        public ObservableCollection<Song> PlayingList;
+        private bool isClickedListChanged;
 
         private MySongListVM()
         {
@@ -32,7 +29,6 @@ namespace MusicPlayer.ViewModels
             SongsToBeAddedToList = new ObservableCollection<Song>();
             SelectedLists = new ObservableCollection<SongList>();
             SelectedSongs = new ObservableCollection<Song>();
-            IsPlayingListChanged = false;
             LoadSongLists();
         }
 
@@ -131,9 +127,18 @@ namespace MusicPlayer.ViewModels
                     SongsInClickedList.Add(song);
                 }
                 ClickedListName = name;
-                PlayingList = SongsInList[name];
-                IsPlayingListChanged = true;
+                isClickedListChanged = true;
             }
+        }
+
+        public bool ClickedListChanged()
+        {
+            if (isClickedListChanged)
+            {
+                isClickedListChanged = false;
+                return true;
+            }
+            return false;
         }
 
         // 批量删除选中的歌单
@@ -200,16 +205,6 @@ namespace MusicPlayer.ViewModels
         public void RemoveSelectedSong(Song song)
         {
             SelectedSongs.Remove(song);
-        }
-
-        public bool IfPlayingListChanged()
-        {
-            if (IsPlayingListChanged)
-            {
-                IsPlayingListChanged = false;
-                return true;
-            }
-            return false;
         }
     }
 }

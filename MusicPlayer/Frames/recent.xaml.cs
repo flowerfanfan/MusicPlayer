@@ -31,7 +31,7 @@ namespace MusicPlayer.Frames
     {
         public static recent Current;
         Song song;
-        ObservableCollection<Song> songs = new ObservableCollection<Song>();
+        public ObservableCollection<Song> songs = new ObservableCollection<Song>();
         public LocalSongsVM localSongsVM { get; set; }
         public recent()
         {
@@ -89,7 +89,7 @@ namespace MusicPlayer.Frames
         }
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
-            MySongListVM.GetMySongListVM().PlayingList = songs;
+            MainPage.Current.playingListVM.SetPlayingList(songs);
             StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
             

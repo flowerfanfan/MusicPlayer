@@ -46,7 +46,7 @@ namespace MusicPlayer.Frames
 
         private async void PlaySong(object sender, DoubleTappedRoutedEventArgs e)
         {
-            MySongListVM.GetMySongListVM().PlayingList = FavoriteVM.GetFavoriteVM().FavoriteSongs;
+            MainPage.Current.playingListVM.SetPlayingList(favoriteVM.FavoriteSongs);
             StorageFile file = await StorageFile.GetFileFromPathAsync(song.FilePath);
             MainPage.Current.Play(file);
         }

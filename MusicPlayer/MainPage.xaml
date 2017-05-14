@@ -245,7 +245,7 @@
                             </Style>
                         </Flyout.FlyoutPresenterStyle>
 
-                        <ListView ItemsSource="{x:Bind PlayingList, Mode=OneWay}"
+                        <ListView ItemsSource="{x:Bind playingListVM.PlayingList, Mode=OneWay}"
                                   IsItemClickEnabled="True"
                                   ItemClick="Select_Songs"
                                   DoubleTapped="PlaySong">

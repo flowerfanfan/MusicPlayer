@@ -317,10 +317,17 @@ namespace MusicPlayer
 
             if (folder != null)
             {
+                Current.Frame.IsEnabled = false;
+                var t = new MessageDialog("请等待...");
+                await t.ShowAsync();
                 var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
                 var query = folder.CreateFileQueryWithOptions(queryOptions);
                 IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
                 LocalSongsVM.GetLocalSongsVM().ReadMusicFiles(fileList);
+
+                Current.Frame.IsEnabled = true;
+
+                new MessageDialog("歌曲导入完成。");
             }
         }
 

@@ -81,9 +81,12 @@ namespace MusicPlayer.ViewModels
         {
             // 清空数据
             ObservableCollection<Song> tempSongs = new ObservableCollection<Song>(Songs);
+
+            LocalSongs.Current.Frame.IsEnabled = false;
+
             Songs.Clear();
             DBManager.ClearSongs("_Songs_");
-
+            
 
             try {
                 foreach (Song s in tempSongs) {
@@ -105,16 +108,17 @@ namespace MusicPlayer.ViewModels
             DBManager.AddSongs(Songs, "_Songs_");
             Songs.CollectionChanged += Songs_CollectionChanged;
 
-            
+
+            LocalSongs.Current.Frame.IsEnabled = true;
             // 读取“音乐”文件夹根目录及子文件夹内的歌曲信息
-           /*
-            List<string> fileTypeFilter = new List<string>();
-            fileTypeFilter.Add(".mp3");
-            var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
-            var query = KnownFolders.MusicLibrary.CreateFileQueryWithOptions(queryOptions);
-            IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
-            ReadMusicFiles(fileList);
-            */
+            /*
+             List<string> fileTypeFilter = new List<string>();
+             fileTypeFilter.Add(".mp3");
+             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
+             var query = KnownFolders.MusicLibrary.CreateFileQueryWithOptions(queryOptions);
+             IReadOnlyList<StorageFile> fileList = await query.GetFilesAsync();
+             ReadMusicFiles(fileList);
+             */
         }
 
         private void Songs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

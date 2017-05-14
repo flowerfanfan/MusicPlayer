@@ -232,7 +232,6 @@
                     </Grid>
                 </Grid>
 
-                <!--歌词，之前在这里的歌手，专辑信息被我删了，麻烦在上面重新绑定一下。。-->
                 <Grid x:Name="lrcSpace"
                       Grid.Column="1"
                       Margin="0, 50, 0, 0">
@@ -280,7 +279,6 @@
                         <TextBlock Name="lrcText"
                                    Foreground="Black"
                                    Text="" HorizontalAlignment="Center">
-                    <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->
                         </TextBlock>
                     </ScrollViewer>
                     <Grid Grid.Row="2" Margin="0, 0, 20, 0">

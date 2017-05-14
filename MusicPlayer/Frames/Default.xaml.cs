@@ -28,13 +28,7 @@ namespace MusicPlayer
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
     public sealed partial class Default : Page
-    {/*
-        public Default()
-        {
-            this.InitializeComponent();
-        }
-        */
-
+    {
         //这种用static的方法或许能帮助避免多次生成不同页面的方法， 但是我暂时还没去想。
         public static Default Current;
         DispatcherTimer timer;
@@ -63,11 +57,6 @@ namespace MusicPlayer
 
         private void PlayingPage_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            /*
-            songTitle.Text = song.Title;
-            songArtist.Text = song.Artist;
-            songAlbum.Text = song.Album;
-            */
             if (song != null)
             {
                 MainPage.Current.SongArtist.Text = song.Artist;
@@ -85,8 +74,6 @@ namespace MusicPlayer
             {
                 song = (Song)e.Parameter;
                 lrc = song.lyric;
-                /*
-                tn_pic.ImageSource = song.Cover;*/
                 setLRC();
                 if (!Isinit)
                 {
@@ -98,10 +85,6 @@ namespace MusicPlayer
         }
         void setLRC()
         {
-            /*
-            songTitle.Text = song.Title;
-            songAlbum.Text = "Album: " + song.Album;
-            songArtist.Text = "Artist: " + song.Artist;*/
             lrcText.Text = lrc.getAllText();
             lrcText.LineStackingStrategy = LineStackingStrategy.BaselineToBaseline;
             lrcText.LineHeight = Parameter.lyricLineHeight;
@@ -140,8 +123,6 @@ namespace MusicPlayer
                 int lineNum = sentence.Split('\n').Length - 1;
                 if (lrc.currentIndex != previousIndex)
                     adjustScrollOffset(lrc.getLyricLines());
-
-                //lyricBlock.Text = sentence;
             }
         }
         void adjustScrollOffset(double k)
@@ -171,9 +152,7 @@ namespace MusicPlayer
             else
             {
                 lrc = new Lyric(lyric);
-                //var s = Default.Current.song;
                 setLRC();
-                //ContentFrame.Navigate(typeof(Default), s);
             }
         }
 

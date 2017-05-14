@@ -79,7 +79,6 @@ namespace MusicPlayer.Binding
             //其他时候，浪费布局空间（小时不需要输出）
             double value = (double)v;
             if (value== 0.0) value = 0.1;
-            //string s = TimeSpan.FromSeconds((double)value).ToString();
             string minutes = ((int)value / 60).ToString();
             if (((int)value) / 60 < 10) minutes = "0" + minutes;
             string seconds = (((int)value) % 60).ToString();

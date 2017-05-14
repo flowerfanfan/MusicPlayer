@@ -64,10 +64,6 @@
                     <RowDefinition Height="6*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <!--
-            这里需要加上适当的Margin padding 以及调整字体大小，颜色。
-            忙着写其他的， 还没弄。
-            -->
                 <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -91,7 +87,6 @@
                 </Grid>
                 <ScrollViewer Name="lrcContainer" Grid.Row="1">
                     <TextBlock Name="lrcText" Text="">
-                    <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->
                     </TextBlock>
                 </ScrollViewer>
             </Grid>

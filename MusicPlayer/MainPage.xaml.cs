@@ -242,7 +242,6 @@ namespace MusicPlayer
             if (Math.Abs(player.MediaPlayer.PlaybackSession.Position.TotalSeconds - timeline.Value) > 1)
                 player.MediaPlayer.PlaybackSession.Position = TimeSpan.FromSeconds((double)timeline.Value);
             player.MediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
-            //if (Math.Abs(timeline.Value - media.Max) < 0.2) stop_Click(null, null);
         }
 
         /*把play和pause button合到一起了*/
@@ -389,24 +388,6 @@ namespace MusicPlayer
             }
         }
 
-        /*
-        private void SearchContent_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (SearchContent.Text.ToString() != "")
-            {
-                SearchBtn.IsEnabled = true;
-            }
-            else
-            {
-                SearchBtn.IsEnabled = false;
-            }
-        }
-
-        private void SearchBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ContentFrame.Navigate(typeof(SearchResults), SearchContent.Text.ToString());
-        }*/
-
         private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             ContentFrame.Navigate(typeof(SearchResults), args.QueryText.ToString());
@@ -451,13 +432,11 @@ namespace MusicPlayer
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            /*if(((App)App.Current).IsSuspend)*/
             {
                 var composite = new ApplicationDataCompositeValue();
                 composite["PlayingList"] = playingListVM.PlayingList;
                 composite["PlayingSong"] = mediaFile;
                 ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
-                //Date need to complete
             }
         }
 
@@ -466,14 +445,11 @@ namespace MusicPlayer
         {
             {
                 var composite = new ApplicationDataCompositeValue();
-                //composite["PlayingList"] = playingListVM.PlayingList as Object;
                 if (mediaFile != null)
                 {
                     composite["PlayingSong"] = mediaFile.Path;
                     ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
-                }
-                
-                //Date need to complete
+                }                
             }
         }
 
@@ -482,13 +458,11 @@ namespace MusicPlayer
             if (ApplicationData.Current.LocalSettings.Values.ContainsKey("MainPageData"))
             {
                 var composite = ApplicationData.Current.LocalSettings.Values["MainPageData"] as ApplicationDataCompositeValue;
-                //if (composite.ContainsKey("PlayingList")) playingListVM.PlayingList = (ObservableCollection<Song>)composite["PlayingList"];
                 if (composite.ContainsKey("PlayingSong"))
                 {
                     string filePath = (string)composite["PlayingSong"];
                     mediaFile = await StorageFile.GetFileFromPathAsync(filePath);
                     player.MediaPlayer.Source = MediaSource.CreateFromStorageFile(mediaFile);
-                    /* while (player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)*/
                     Song s = await mediaFile.ToSong();
                     ContentFrame.Navigate(typeof(Default), s);
 

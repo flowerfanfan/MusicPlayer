@@ -38,7 +38,6 @@ namespace MusicPlayer.Frames
             DataContext = songs;
             DataContextChanged += Recent_DataContextChanged;
             this.InitializeComponent();
-            //localSongsVM = LocalSongsVM.GetLocalSongsVM();
             Current = this;
         }
 
@@ -51,13 +50,11 @@ namespace MusicPlayer.Frames
         {
             if (e.Parameter != null)
                 PageTitle.Text = (string)e.Parameter;
-            //LocalSongsVM.GetLocalSongsVM().Songs.Clear();
 
             RefreshBtn_Click(null, null);
         }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            // LocalSongsVM.GetLocalSongsVM().Songs.Clear();
         }
         private void RefreshBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -78,7 +75,6 @@ namespace MusicPlayer.Frames
                     songs.Add(s);
                 }
             }
-            //LocalSongsVM.GetLocalSongsVM().Songs = songs;
 
         }
 

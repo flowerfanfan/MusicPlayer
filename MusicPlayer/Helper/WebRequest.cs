@@ -44,7 +44,6 @@ namespace MusicPlayer.Helper
             JArray songs = (JArray)jresult["result"]["songs"];
             foreach (var s in songs)
             {
-                //await new MessageDialog(s["id"].ToString()).ShowAsync();
                 Ids.Add(s["id"].ToString());
             }
             return Ids;

@@ -23,23 +23,18 @@
                                 Value="False" />
                         <Setter Target="ContentFrame.HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Target="ContentFrame.HorizontalAlignment" Value="Stretch"/>
-                        <!--<Setter Target="column0.Width" Value="0"/>
-                        <Setter Target="column1.Width" Value="0"/>
-                        <Setter Target="column2.Width" Value="0"/>-->
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="500" />
                     </VisualState.StateTriggers>
                 </VisualState>
+                
                 <VisualState>
                     <VisualState.Setters>
                         <Setter Target="MenuList.IsPaneOpen"
                                 Value="True" />
                         <Setter Target="ContentFrame.HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Target="ContentFrame.HorizontalAlignment" Value="Stretch"/>
-                        <!--<Setter Target="column0.Width" Value="40"/>
-                        <Setter Target="column1.Width" Value="200"/>
-                        <Setter Target="column2.Width" Value="450"/>-->
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="800" />
@@ -173,7 +168,6 @@
                                        Foreground="White"
                                        Height="20"
                                        Width="180"/>
-                            <!--这里可以做一个flyout， 分别是添加音乐和添加文件夹-->
                             <AppBarButton x:Name="AddSongBtn"
                                           Icon="Add"
                                           Width="50"
@@ -304,7 +298,6 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton x:Name="ShareButton" Label="Share" Click="share_Click" Foreground="White">
-                <!--修改了一下share的图标感觉这样更好看一点-->
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;" Foreground="White"/>
                 </AppBarButton.Icon>

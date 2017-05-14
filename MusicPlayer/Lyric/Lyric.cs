@@ -28,7 +28,6 @@ namespace MediaPlayer
         public int currentIndex;
         public Lyric()
         {
-            //
             currentIndex = 0;
         }
         public Lyric(string text)
@@ -45,7 +44,6 @@ namespace MediaPlayer
                 re += s.content;
             }
             return re;
-            //return result;
         }
         public void getLrc(string text)
         {

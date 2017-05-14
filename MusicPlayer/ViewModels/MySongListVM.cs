@@ -119,13 +119,13 @@ namespace MusicPlayer.ViewModels
         // 用户点击一个歌单后，设置展示数据源
         public void SetClickedList(string name)
         {
+            SongsInClickedList.Clear();
+            foreach (Song song in SongsInList[name])
+            {
+                SongsInClickedList.Add(song);
+            }
             if (ClickedListName != name)
             {
-                SongsInClickedList.Clear();
-                foreach (Song song in SongsInList[name])
-                {
-                    SongsInClickedList.Add(song);
-                }
                 ClickedListName = name;
                 isClickedListChanged = true;
             }

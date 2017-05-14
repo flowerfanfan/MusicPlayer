@@ -26,12 +26,18 @@ namespace MusicPlayer.Frames
     /// </summary>
     public sealed partial class SearchResults : Page
     {
-        public ObservableCollection<Song> ResultSongs { get; set; }
+        public ObservableCollection<Song> ResultSongs = new ObservableCollection<Song>();
         public Song ClickedSong { get; set; }
 
         public SearchResults()
         {
             this.InitializeComponent();
+            ResultsLV.DataContextChanged += ResultsLV_DataContextChanged;
+        }
+
+        private void ResultsLV_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            ResultsLV.ItemsSource = ResultSongs;
         }
 
         private void ResultsLV_ItemClick(object sender, ItemClickEventArgs e)

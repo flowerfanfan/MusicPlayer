@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\dislike.png" />
+    <Content Include="Assets\down.jpg" />
     <Content Include="Assets\heart-128.png" />
     <Content Include="Assets\like.png" />
     <Content Include="Assets\logo-300.png" />
@@ -157,6 +158,7 @@
     <Content Include="Assets\singer.png" />
     <Content Include="Assets\songs-128.png" />
     <Content Include="Assets\time-128.png" />
+    <Content Include="Assets\up.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

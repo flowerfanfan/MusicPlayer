@@ -155,7 +155,7 @@ namespace MusicPlayer
             {
                 offset -= staticlength;
             }
-            lrcContainer.ChangeView(null, offset, null, false);
+            lrcContainer.ChangeView(null, offset + Parameter.Offset, null, false);
         }
 
         private void SearchLRCOnline(object sender, RoutedEventArgs e)
@@ -183,6 +183,26 @@ namespace MusicPlayer
                     FavoriteBtn.Source = Dislike;
                 }
             }
+        }
+
+        private void LRCup_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Parameter.Offset += 10;
+            var session = player.MediaPlayer.PlaybackSession;
+            string sentence = lrc.getCurrentSentence(session.Position.TotalSeconds);
+            //lyric跳转了的时候
+            int lineNum = sentence.Split('\n').Length - 1;
+            adjustScrollOffset(lrc.getLyricLines());
+        }
+
+        private void LRCdown_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Parameter.Offset -= 10;
+            var session = player.MediaPlayer.PlaybackSession;
+            string sentence = lrc.getCurrentSentence(session.Position.TotalSeconds);
+            //lyric跳转了的时候
+            int lineNum = sentence.Split('\n').Length - 1;
+            adjustScrollOffset(lrc.getLyricLines());
         }
     }
 }

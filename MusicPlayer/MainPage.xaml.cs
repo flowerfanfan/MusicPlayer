@@ -276,14 +276,14 @@ namespace MusicPlayer
 
             try
             {
-                request.Data.Properties.Title = mediaFile.DisplayName;
-                request.Data.Properties.Description = "这是我喜欢听的音乐， 分享给你们，一起听一下吧~（这台词可以改）";
+                request.Data.Properties.Title = "分享音乐: " + mediaFile.DisplayName;
+                request.Data.Properties.Description = "这是我喜欢听的音乐， 分享给你们，一起听一下吧~\n";
                 RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromFile(mediaFile);
                 List<IStorageItem> musicList = new List<IStorageItem>();
                 musicList.Add(mediaFile as IStorageItem);
                 request.Data.SetStorageItems(musicList);
                 var ymd = DateTime.Now;
-                request.Data.SetText("这是我喜欢听的音乐， 分享给你们，一起听一下吧~（这台词可以改）\n" + ymd.Year.ToString() + "年" + ymd.Month.ToString() + "月" + ymd.Day.ToString() + "日");
+                request.Data.SetText("这是我喜欢听的音乐， 分享给你们，一起听一下吧~\n" + ymd.Year.ToString() + "年" + ymd.Month.ToString() + "月" + ymd.Day.ToString() + "日\n");
 
             }
             catch (NullReferenceException ex)
@@ -480,6 +480,17 @@ namespace MusicPlayer
                     /* while (player.MediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)*/
                     Song s = await mediaFile.ToSong();
                     ContentFrame.Navigate(typeof(Default), s);
+
+
+                    Default.Current.FavoriteBtnControl.Visibility = Visibility.Visible;
+                    if (FavoriteVM.GetFavoriteVM().NoSuchSong(s))
+                    {
+                        Default.Current.FavoriteBtnControl.Source = Default.Current.Dislike;
+                    }
+                    else
+                    {
+                        Default.Current.FavoriteBtnControl.Source = Default.Current.Like;
+                    }
                 }
             }
             ApplicationData.Current.LocalSettings.Values.Remove("MainPageData");

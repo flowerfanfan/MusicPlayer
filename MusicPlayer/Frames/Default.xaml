@@ -247,12 +247,17 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0">
+                    <Grid Grid.Row="0" Margin="0, 0, 20, 0">
                         <Button Name="search"
                                 Click="SearchLRCOnline"
                                 Grid.Column="2"
                                 Visibility="Collapsed"
                                 Content="搜索歌词" HorizontalAlignment="Center"/>
+                        <Image x:Name="LRCup"
+                               HorizontalAlignment="Right"
+                           Source="ms-appx:///Assets/up.jpg"
+                           Visibility="Visible"
+                           Tapped="LRCup_Tapped" />
                     </Grid>
                     <ScrollViewer Name="lrcContainer"
                                   Grid.Row="1">
@@ -264,6 +269,15 @@
                         这里可以加一个矩形框之类的， 高亮一下当前歌词。
                         -->
                     </ScrollViewer>
+                    <Grid Grid.Row="2" Margin="0, 0, 20, 0">
+                        <Image x:Name="LRCdown"
+                               HorizontalAlignment="Right"
+                           Grid.Row="3"
+                           Source="ms-appx:///Assets/down.jpg"
+                           
+                           Visibility="Visible"
+                           Tapped="LRCdown_Tapped" />
+                    </Grid>
                 </Grid>
 
             </Grid>

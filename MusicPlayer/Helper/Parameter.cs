@@ -11,5 +11,6 @@ namespace MusicPlayer
     static class Parameter
     {
         static public double lyricLineHeight = 60;
+        static public double Offset = 0;
     }
 }

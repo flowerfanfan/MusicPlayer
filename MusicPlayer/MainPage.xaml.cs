@@ -458,8 +458,12 @@ namespace MusicPlayer
             {
                 var composite = new ApplicationDataCompositeValue();
                 //composite["PlayingList"] = playingListVM.PlayingList as Object;
-                composite["PlayingSong"] = mediaFile.Path;
-                ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
+                if (mediaFile != null)
+                {
+                    composite["PlayingSong"] = mediaFile.Path;
+                    ApplicationData.Current.LocalSettings.Values["MainPageData"] = composite;
+                }
+                
                 //Date need to complete
             }
         }

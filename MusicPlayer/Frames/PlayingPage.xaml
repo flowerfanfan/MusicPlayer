@@ -31,40 +31,40 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Width="auto" >
-            <Image Name="decorateBar" Source="ms-appx:///Assets/player_needle.scale-200.png" Width="120" Height="250"  VerticalAlignment="Center" Margin="60 , 0, 0, 270" Canvas.ZIndex="100" Grid.Row="1" Grid.RowSpan="1" RenderTransformOrigin="0.20,0.08">
-                <Image.RenderTransform>
-                    <RotateTransform Angle="-40" x:Name="rotateTrans"/>
-                </Image.RenderTransform>
+                <Image Name="decorateBar" Source="ms-appx:///Assets/player_needle.scale-200.png" Width="120" Height="250"  VerticalAlignment="Center" Margin="60 , 0, 0, 270" Canvas.ZIndex="100" Grid.Row="1" Grid.RowSpan="1" RenderTransformOrigin="0.20,0.08">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="-40" x:Name="rotateTrans"/>
+                    </Image.RenderTransform>
 
-            </Image>
-            <Ellipse x:Name="ring" Width="250" Height="250" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="out_Img" ImageSource="ms-appx:///Assets/player_disk_cover.scale-200.png"/>
-                </Ellipse.Fill>
-                <Ellipse.RenderTransform>
-                    <TransformGroup>
-                        <RotateTransform x:Name="out_rotation" x:FieldModifier="Public"/>
-                    </TransformGroup>
-                </Ellipse.RenderTransform>
-            </Ellipse>
-            <Ellipse x:Name="ellipse" Width="150" Height="150" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="tn_pic" ImageSource="{Binding Cover}"/>
-                </Ellipse.Fill>
-                <Ellipse.RenderTransform>
-                    <TransformGroup>
-                        <RotateTransform x:Name="rotation" x:FieldModifier="Public"/>
-                    </TransformGroup>
-                </Ellipse.RenderTransform>
-            </Ellipse>
-        </Grid>
-        <Grid Grid.Column="1" Width="auto" Margin="0, 50, 0, 0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="6*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <!--
+                </Image>
+                <Ellipse x:Name="ring" Width="250" Height="250" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="out_Img" ImageSource="ms-appx:///Assets/player_disk_cover.scale-200.png"/>
+                    </Ellipse.Fill>
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform x:Name="out_rotation" x:FieldModifier="Public"/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Ellipse x:Name="ellipse" Width="150" Height="150" Margin="10,10,10,10" VerticalAlignment="Center" Grid.Row="1">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="tn_pic" ImageSource="{Binding Cover}"/>
+                    </Ellipse.Fill>
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform x:Name="rotation" x:FieldModifier="Public"/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+            </Grid>
+            <Grid Grid.Column="1" Width="auto" Margin="0, 50, 0, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--
             这里需要加上适当的Margin padding 以及调整字体大小，颜色。
             忙着写其他的， 还没弄。
             -->
@@ -87,18 +87,15 @@
                         <TextBlock Grid.Column="2"  Text="Artist: " HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="3" Name="songArtist" Text="{Binding Artist}" HorizontalAlignment="Left"/>
                     </Grid>
-               
+
                 </Grid>
                 <ScrollViewer Name="lrcContainer" Grid.Row="1">
-                <TextBlock Name="lrcText" Text="">
+                    <TextBlock Name="lrcText" Text="">
                     <!--歌词有点难绑定， 会的小伙伴可以改成绑定， 我先用propertyChanged事件里面调用函数来进行歌词替换-->
-                </TextBlock>
-                <!--
-                        这里可以加一个矩形框之类的， 高亮一下当前歌词。
-                        -->
-            </ScrollViewer>
-        </Grid>
-        <!--
+                    </TextBlock>
+                </ScrollViewer>
+            </Grid>
+            <!--
                 <Canvas Name="_compositionCanvas" Grid.Column="1" HorizontalAlignment="Stretch" Width= "268" Height="201" Visibility="Collapsed">
 
                 </Canvas>

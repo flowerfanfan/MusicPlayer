@@ -105,6 +105,7 @@ namespace MusicPlayer
             lrcText.Text = lrc.getAllText();
             lrcText.LineStackingStrategy = LineStackingStrategy.BaselineToBaseline;
             lrcText.LineHeight = Parameter.lyricLineHeight;
+            lrcText.VerticalAlignment = VerticalAlignment.Top;
         }
         private void InitRotate()
         {
@@ -162,10 +163,18 @@ namespace MusicPlayer
         {
             string title = song.Title;
             string lyric = WebRequest.getLyric(title);
-            lrc = new Lyric(lyric);
-            //var s = Default.Current.song;
-            setLRC();
-            //ContentFrame.Navigate(typeof(Default), s);
+            if (lyric == "No lyric")
+            {
+                Current.lrcText.Text = "暂无歌词";
+                Current.lrcText.VerticalAlignment = VerticalAlignment.Center;
+            }
+            else
+            {
+                lrc = new Lyric(lyric);
+                //var s = Default.Current.song;
+                setLRC();
+                //ContentFrame.Navigate(typeof(Default), s);
+            }
         }
 
         private void FavoriteBtn_Tapped(object sender, TappedRoutedEventArgs e)
